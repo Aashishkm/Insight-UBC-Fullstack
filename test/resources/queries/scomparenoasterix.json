@@ -1,0 +1,68 @@
+{
+	"title": "scomparenoasterix",
+	"input": {
+		"WHERE": {
+			"IS": {
+				"sections_instructor": "aviles, leticia"
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_avg"
+			],
+			"ORDER": "sections_avg"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_dept": "isci",
+			"sections_avg": 77.41
+		},
+		{
+			"sections_dept": "biol",
+			"sections_avg": 78.28
+		},
+		{
+			"sections_dept": "biol",
+			"sections_avg": 78.61
+		},
+		{
+			"sections_dept": "biol",
+			"sections_avg": 79.76
+		},
+		{
+			"sections_dept": "biol",
+			"sections_avg": 80.84
+		},
+		{
+			"sections_dept": "isci",
+			"sections_avg": 81.89
+		},
+		{
+			"sections_dept": "isci",
+			"sections_avg": 82.38
+		},
+		{
+			"sections_dept": "isci",
+			"sections_avg": 82.81
+		},
+		{
+			"sections_dept": "biol",
+			"sections_avg": 82.95
+		},
+		{
+			"sections_dept": "biol",
+			"sections_avg": 83.34
+		},
+		{
+			"sections_dept": "isci",
+			"sections_avg": 83.76
+		},
+		{
+			"sections_dept": "isci",
+			"sections_avg": 84
+		}
+	]
+}

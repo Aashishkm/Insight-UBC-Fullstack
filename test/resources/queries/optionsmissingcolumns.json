@@ -1,0 +1,15 @@
+{
+	"title": "optionsmissingcolumns",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"ORDER": "sections_tie"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

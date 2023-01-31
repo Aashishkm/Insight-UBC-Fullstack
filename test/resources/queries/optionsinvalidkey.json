@@ -1,0 +1,18 @@
+{
+	"title": "optionsinvalidkey",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_t"
+			],
+			"ORDER": "sections_title"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

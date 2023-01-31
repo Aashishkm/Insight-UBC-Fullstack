@@ -1,0 +1,19 @@
+{
+	"title": "emptystring",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"",
+				""
+			],
+			"ORDER": ""
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

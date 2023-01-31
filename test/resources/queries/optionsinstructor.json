@@ -1,0 +1,166 @@
+{
+	"title": "optionsinstructor",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_instructor"
+			],
+			"ORDER": "sections_instructor"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": ""
+		},
+		{
+			"sections_instructor": "amaral, deborah;ford, laurie"
+		},
+		{
+			"sections_instructor": "brew, nancy"
+		},
+		{
+			"sections_instructor": "brew, nancy"
+		},
+		{
+			"sections_instructor": "burrows, marlene;harding, jillian;krist, jennifer;mccuaig, fairleth"
+		},
+		{
+			"sections_instructor": "burrows, marlene;harding, jillian;krist, jennifer;mccuaig, fairleth"
+		},
+		{
+			"sections_instructor": "cannon, joanna"
+		},
+		{
+			"sections_instructor": "cole, kenneth"
+		},
+		{
+			"sections_instructor": "cole, kenneth"
+		},
+		{
+			"sections_instructor": "cole, kenneth"
+		},
+		{
+			"sections_instructor": "coria, lino"
+		},
+		{
+			"sections_instructor": "cox, daniel"
+		},
+		{
+			"sections_instructor": "frank, erica"
+		},
+		{
+			"sections_instructor": "fraser, ailana"
+		},
+		{
+			"sections_instructor": "gomez, jose"
+		},
+		{
+			"sections_instructor": "grady, albert wayne"
+		},
+		{
+			"sections_instructor": "grow, laura"
+		},
+		{
+			"sections_instructor": "grow, laura"
+		},
+		{
+			"sections_instructor": "grow, laura"
+		},
+		{
+			"sections_instructor": "grow, laura"
+		},
+		{
+			"sections_instructor": "karu, kalle"
+		},
+		{
+			"sections_instructor": "kishor, nand"
+		},
+		{
+			"sections_instructor": "krist, jennifer"
+		},
+		{
+			"sections_instructor": "laba, izabella"
+		},
+		{
+			"sections_instructor": "maillard, keith"
+		},
+		{
+			"sections_instructor": "morgan, tannis"
+		},
+		{
+			"sections_instructor": "neault, roberta a"
+		},
+		{
+			"sections_instructor": "porath, marion"
+		},
+		{
+			"sections_instructor": "wilk, diana"
+		}
+	]
+}

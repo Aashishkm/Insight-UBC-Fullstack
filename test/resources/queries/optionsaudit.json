@@ -1,0 +1,166 @@
+{
+	"title": "optionsaudit",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_audit"
+			],
+			"ORDER": "sections_audit"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 0
+		},
+		{
+			"sections_audit": 1
+		},
+		{
+			"sections_audit": 1
+		}
+	]
+}

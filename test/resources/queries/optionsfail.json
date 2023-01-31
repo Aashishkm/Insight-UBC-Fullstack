@@ -1,0 +1,166 @@
+{
+	"title": "optionsfail",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_fail"
+			],
+			"ORDER": "sections_fail"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		},
+		{
+			"sections_fail": 0
+		}
+	]
+}

@@ -1,0 +1,19 @@
+{
+	"title": "sectionnotadded",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"sections40_avg": 97
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections40_dept",
+				"sections40_avg"
+			],
+			"ORDER": "sections40_avg"
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}
