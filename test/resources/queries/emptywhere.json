@@ -1,0 +1,32 @@
+{
+ "title": "emptywhere",
+ "input": {
+  "WHERE": {
+  },
+  "OPTIONS": {
+   "COLUMNS": [
+    "sections3_dept"
+   ]
+  }
+ },
+ "errorExpected": false,
+ "expected": [
+  {
+   "sections_dept": "bioc,"
+
+ },
+   {
+    "sections_dept": "biol"
+   },
+   {
+     "sections_dept": "arcl"
+   },
+   {
+     "sections_dept": "adhe"
+   },
+   {
+     "sections_dept": "aanb"
+   }
+ ]
+
+}
