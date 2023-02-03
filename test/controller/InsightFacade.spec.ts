@@ -111,4 +111,40 @@ describe("InsightFacade", function () {
 			}
 		);
 	});
+	describe("PerformQuery2", () => {
+		before( () => {
+			facade = new InsightFacade();
+		});
+		const simpleQueryString = "{\n" +
+			"\n" +
+			"    \"WHERE\":{\n" +
+			"\n" +
+			"       \"GT\":{\n" +
+			"\n" +
+			"          \"sections_avg\":97\n" +
+			"\n" +
+			"       }\n" +
+			"\n" +
+			"    },\n" +
+			"\n" +
+			"    \"OPTIONS\":{\n" +
+			"\n" +
+			"       \"COLUMNS\":[\n" +
+			"\n" +
+			"          \"sections_dept\",\n" +
+			"\n" +
+			"          \"sections_avg\"\n" +
+			"\n" +
+			"       ],\n" +
+			"\n" +
+			"       \"ORDER\":\"sections_avg\"\n" +
+			"\n" +
+			"    }\n" +
+			"\n" +
+			"}";
+		const simpleQueryObj = JSON.parse(simpleQueryString);
+		it("should test structure of query", async () => {
+			const result = await facade.performQuery(simpleQueryObj);
+		});
+	});
 });
