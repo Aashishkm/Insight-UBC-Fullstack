@@ -216,9 +216,15 @@ describe("InsightFacade", function () {
 
 			facade = new InsightFacade();
 
+			let mini: string;
+			mini = getContentFromArchives("minipair.zip");
+
+			let dataset1 = facade.addDataset("sections", sections, InsightDatasetKind.Sections);
+			let dataset2 = facade.addDataset("sections2", sections, InsightDatasetKind.Sections);
+			let dataset3 = facade.addDataset("sections3", mini, InsightDatasetKind.Sections);
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [facade.addDataset("sections", sections, InsightDatasetKind.Sections)];
+			const loadDatasetPromises = [dataset1, dataset2 ,dataset3];
 
 			return Promise.all(loadDatasetPromises);
 		});
@@ -235,11 +241,10 @@ describe("InsightFacade", function () {
 			(input) => facade.performQuery(input),
 			"./test/resources/queries",
 			{
-				assertOnResult: (actual, expected) => {
-					// requires same order
-					// eventually need another folderTest with
-					// expect(actual).to.deep.members(expected);
-					expect(actual).to.deep.equal(expected);
+				assertOnResult: async (actual, expected) => {
+					const test = await expected;
+					expect(actual).to.have.members(test);
+					expect(actual).to.have.length(test.length);
 				},
 				errorValidator: (error): error is PQErrorKind =>
 					error === "ResultTooLargeError" || error === "InsightError" || error === "NotFoundError",
