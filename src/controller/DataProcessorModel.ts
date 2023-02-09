@@ -27,8 +27,7 @@ export class DataProcessorModel {
 
 		let returnPromise = new Promise<string[]>((resolve,reject) => {
 			zip.loadAsync(content, {base64: true})
-				.then(() => {
-					let newZip = new JSZip();
+				.then((newZip: JSZip) => {
 					/* if(newZip.length === 0) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
 					} */
