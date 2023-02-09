@@ -20,27 +20,26 @@ export class DataProcessorModel {
 
 	public addDataset(id: string, content: string, insight: InsightFacade): Promise<string[]> {
 		let zip = new JSZip();
-		let promiseArray = Array<Promise<string>>();
+		let promiseArray = Array<Promise<any>>();
 		let dataset: DatasetModel;
 
 		let returnPromise = new Promise<string[]>((resolve, reject) => {
 			zip.loadAsync(content, {base64: true})
 				.then((newZip: JSZip) => {
-					if (newZip.length === 0) {
+					/* if (newZip.folder.length === 0) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
-					}
-					if (!(newZip.folder ?? "courses".length > 0)) {
+					} */
+					if (!(newZip.folder(/courses/).length > 0)) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
 					}
 					// if (zipFile.fo)
-
 					newZip.forEach(function (relativePath, file) {
-						promiseArray.push(file.async("string"));
+						promiseArray.push(file.async("text"));
 					});
 					// json.parse takes a base 64 string and converts in into an javascript object
 					// wait for all the "courses" to finish being converted
 					Promise.all(promiseArray)
-						.then((stringData: string[]) => {
+						.then((stringData: any) => {
 							// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
 							this.parseStuff(stringData, id)
 								.then((result) => {
@@ -58,7 +57,7 @@ export class DataProcessorModel {
 						});
 				})
 				.catch((error) => {
-					return Promise.reject(error);
+					return reject(new InsightError("bad"));
 				});
 		});
 		return returnPromise;
@@ -68,7 +67,6 @@ export class DataProcessorModel {
 		let kind = InsightDatasetKind.Sections;
 		let numRows = 0;
 		let dataset = new DatasetModel({id, kind, numRows});
-
 		let courseData: any;
 		// goes through each course
 		for (let c of string) {
