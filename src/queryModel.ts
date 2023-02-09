@@ -46,6 +46,7 @@ class QueryClass {
 	public columns?: Key[];
 	public order?: Key;
 }
+
 class Filter {
 	// superclass for Filter objects
 }
