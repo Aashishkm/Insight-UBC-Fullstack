@@ -6,6 +6,8 @@ export class CourseModel {
 
 	// want to take in content and assign it section data?
 
-	// constructor() {}
+	 constructor() {
+		 this.sections = [];
+	 }
 
 }

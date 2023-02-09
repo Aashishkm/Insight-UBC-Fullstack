@@ -8,5 +8,7 @@ export class DatasetModel {
 
 	constructor(insightDataset: InsightDataset) {
 		this.insightDataset = insightDataset;
+		this.courses = [];
+		this.sections = [];
 	}
 }

@@ -17,6 +17,8 @@ export default class InsightFacade implements IInsightFacade {
 	public datasets: Map<string, DatasetModel>;
 	// map.keys -->
 	constructor() {
+		this.addedDatasetIds = [];
+		this.datasets = new Map<string, DatasetModel>();
 		console.log("InsightFacadeImpl::init()");
 	}
 
@@ -44,11 +46,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Invalid content"));
 		}
 		try {
-			dataProcessor.addDataset(id, content, this).then(()=> {
-				return Promise.resolve(this.addedDatasetIds);
-			}).catch((error) => {
-				return Promise.reject(error);
-			});
+			return dataProcessor.addDataset(id, content, this);
 		} catch (e) {
 			return Promise.reject("Not implemented.");
 		}

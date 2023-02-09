@@ -28,18 +28,17 @@ export class DataProcessorModel {
 		let returnPromise = new Promise<string[]>((resolve,reject) => {
 			zip.loadAsync(content, {base64: true})
 				.then((newZip: JSZip) => {
-					/* if(newZip.length === 0) {
+					if(newZip.length === 0) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
-					} */
-					if (!(newZip.folder("courses").length > 0)) {
+					}
+					if (!(newZip.folder ?? ("courses").length > 0)) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
 					}
 					// if (zipFile.fo)
 
-					newZip.folder("courses").forEach(function (relativePath, file) {
+					newZip.forEach(function (relativePath, file) {
 						promiseArray.push(file.async("string"));
 					});
-
 					// json.parse takes a base 64 string and converts in into an javascript object
 					// wait for all the "courses" to finish being converted
 					Promise.all(promiseArray)
@@ -84,8 +83,6 @@ export class DataProcessorModel {
 				if(!(this.checkValidSection(courseData, sectionData))) {
 					continue;
 				}
-
-
 				let validSection = new SectionModel(courseData[sectionData].Uuid, courseData[sectionData].id, courseData[sectionData].Title, courseData[sectionData].Instructor, courseData[sectionData].Dept, courseData[sectionData].Year, courseData[sectionData].Avg, courseData[sectionData].Pass, courseData[sectionData].Fail, courseData[sectionData].Audit);
 				courses.sections.push(validSection);
 				dataset.sections.push(validSection);
