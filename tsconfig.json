@@ -5,6 +5,8 @@
 		"noImplicitAny": true,
 		"removeComments": true,
 		"preserveConstEnums": true,
+		"strictNullChecks": false,
+
 		"sourceMap": true,
 		"typeRoots": [
 			"./node_modules/@types"

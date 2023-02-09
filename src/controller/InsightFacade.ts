@@ -3,6 +3,8 @@ import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, Insigh
 import {handleOptions, handleWhere, validateQuery} from "../performQueryHelpers";
 
 import {QueryModel} from "../queryModel";
+
+import {DatasetModel} from "../Models/DatasetModel";
 import {DataProcessorModel} from "./DataProcessorModel";
 
 /**
@@ -12,13 +14,15 @@ import {DataProcessorModel} from "./DataProcessorModel";
  */
 export default class InsightFacade implements IInsightFacade {
 	public addedDatasetIds: string[];
-	public datasets: Map<string, datasetModel>;
+	public datasets: Map<string, DatasetModel>;
+	// map.keys -->
 	constructor() {
 		console.log("InsightFacadeImpl::init()");
 	}
 
 
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
+		let dataProcessor = new DataProcessorModel();
 		if (id === null) {
 			return Promise.reject(new InsightError("Invalid dataset id 0"));
 		}
@@ -40,7 +44,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Invalid content"));
 		}
 		try {
-			return DataProcessorModel.addDataset(id, content, this);
+			return dataProcessor.addDataset(id, content, this);
 		} catch (e) {
 			return Promise.reject("Not implemented.");
 		}
