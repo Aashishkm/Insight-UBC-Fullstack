@@ -1,10 +1,7 @@
-import {query} from "express";
-import {generateKey} from "crypto";
-import Log from "@ubccpsc310/folder-test/build/Log";
+
 export {QueryModel,
 	Options,
 	Key,
-	Comparator,
 	Logic,
 	MKey,
 	SKey,
@@ -22,10 +19,8 @@ export {QueryModel,
 type MField = "avg" | "pass" | "fail" | "audit" | "year";
 type SField = "dept" | "id" | "instructor" | "title" | "uuid";
 type MComparator = "LT" | "GT" | "EQ";
-type SComparator = "IS";
 type Logic = "AND" | "OR";
-type Negation = "NOT";
-type Comparator = MComparator | SComparator | Logic | Negation;
+
 interface QueryModel {
 	 WHERE: Where;
 	 OPTIONS: Options;
@@ -42,8 +37,8 @@ interface Where {
 }
 
 class QueryClass {
-	public where?: Filter;
-	public columns?: Key[];
+	public where: Filter = {};
+	public columns: Key[] = [];
 	public order?: Key;
 }
 
@@ -51,8 +46,8 @@ class Filter {
 	// superclass for Filter objects
 }
 class LogicComparison implements Filter {
-	 private comparator: Logic;
-	 private filterList: Filter[];
+	public comparator: Logic;
+	public filterList: Filter[];
 	constructor(comparator: Logic, filterList: Filter[]) {
 		this.comparator = comparator;
 		this.filterList = filterList;
@@ -60,9 +55,9 @@ class LogicComparison implements Filter {
 }
 //
 class MComparison implements Filter {
-	private comparator: MComparator;
-	private mKey: MKey;
-	private num: number;
+	public comparator: MComparator;
+	public mKey: MKey;
+	public num: number;
 
 	constructor(comparator: MComparator, mKey: MKey, num: number) {
 		this.comparator = comparator;
@@ -72,8 +67,8 @@ class MComparison implements Filter {
 }
 //
 class SComparison implements Filter {
-	private sKey: SKey;
-	private inputString: string;
+	public sKey: SKey;
+	public inputString: string;
 
 	constructor(sKey: SKey, inputString: string) {
 		this.sKey = sKey;
@@ -82,7 +77,7 @@ class SComparison implements Filter {
 }
 
 class NComparison implements Filter {
-	private filter: Filter;
+	public filter: Filter;
 
 	constructor(filter: Filter) {
 		this.filter = filter;

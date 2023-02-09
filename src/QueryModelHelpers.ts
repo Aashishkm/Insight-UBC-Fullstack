@@ -1,7 +1,7 @@
 import {
 	Key, Options, QueryModel, Where, LogicComparison, Filter, MComparison,
-	MKey, SKey, SComparison, NComparison, MComparator, MField, QueryClass
-} from "./queryModel";
+	MKey, SKey, SComparison, NComparison, MComparator, QueryClass
+} from "./QueryModel";
 import {InsightError} from "./controller/IInsightFacade";
 
 
