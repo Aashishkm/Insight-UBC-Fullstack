@@ -25,43 +25,45 @@ export class DataProcessorModel {
 		let promiseArray = Array<Promise<string>>();
 		let dataset: DatasetModel;
 
-		zip.loadAsync(content, {base64: true})
-			.then((newZip: JSZip) => {
-				/* if(newZip.length === 0) {
-					return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
-				} */
-				if (!(newZip.folder("courses").length > 0)) {
-					return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
-				}
-				// if (zipFile.fo)
+		let returnPromise = new Promise<string[]>((resolve,reject) => {
+			zip.loadAsync(content, {base64: true})
+				.then(() => {
+					let newZip = new JSZip();
+					/* if(newZip.length === 0) {
+						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
+					} */
+					if (!(newZip.folder("courses").length > 0)) {
+						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
+					}
+					// if (zipFile.fo)
 
-				newZip.folder("courses").forEach(function (relativePath, file) {
-					promiseArray.push(file.async("string"));
-				});
-
-				// json.parse takes a base 64 string and converts in into an javascript object
-				// wait for all the "courses" to finish being converted
-				Promise.all(promiseArray)
-					.then((stringData: string[]) => {
-						// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
-						 this.parseStuff(stringData, id).then((result)=>{
-							dataset = result;
-							// push the newly (approved) data to our memory
-							insight.addedDatasetIds.push(id);
-							insight.datasets.set(id, dataset);
-						}).catch((error) => {
-							return Promise.reject(error);
-
-						});
-					}).catch((error) => {
-						return Promise.reject(error);
+					newZip.folder("courses").forEach(function (relativePath, file) {
+						promiseArray.push(file.async("string"));
 					});
 
-			}).catch((error) => {
-				return Promise.reject(error);
-			});
+					// json.parse takes a base 64 string and converts in into an javascript object
+					// wait for all the "courses" to finish being converted
+					Promise.all(promiseArray)
+						.then((stringData: string[]) => {
+							// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
+							this.parseStuff(stringData, id).then((result) => {
+								dataset = result;
+								insight.datasets.set(id, dataset);
+								// push the newly (approved) data to our memory
+								return Promise.resolve(insight.addedDatasetIds.push(id));
+							}).catch((error) => {
+								return Promise.reject(error);
 
-		return Promise.reject(new InsightError("error"));
+							});
+						}).catch((error) => {
+							return Promise.reject(error);
+						});
+
+				}).catch((error) => {
+					return Promise.reject(error);
+				});
+		});
+		return returnPromise;
 	}
 
 	public parseStuff(string: string[], id: string): Promise<DatasetModel> {

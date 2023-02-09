@@ -92,7 +92,7 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should accept a dataset with no courses direcotry and emppty datain sections", function() {
+		it("should reject a dataset with no courses direcotry and emppty datain sections", function() {
 			let ultra: string;
 			ultra = getContentFromArchives("ultramini.zip");
 
@@ -100,7 +100,7 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should accept a dataset with no courses direcotry and emppty datain sections", function() {
+		it("should reject a dataset with no courses direcotry and emppty datain sections", function() {
 			let ultra: string;
 			ultra = getContentFromArchives("ultramini.zip");
 
@@ -108,7 +108,7 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should accept a dataset with emppty datain sections", function() {
+		it("should reject a dataset with emppty data in sections", function() {
 			let emptysection: string;
 			emptysection = getContentFromArchives("emptystringsection.zip");
 
