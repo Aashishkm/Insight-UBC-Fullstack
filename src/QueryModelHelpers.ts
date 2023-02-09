@@ -4,6 +4,7 @@ import {
 } from "./QueryModel";
 import {InsightError} from "./controller/IInsightFacade";
 
+
 export{hasWhereAndOptions, handleOptions, handleWhere, isOptions, isWhere,
 	isFilterList, isSComparison, isMComparison};
 function handleOptions(options: any, queryClass: QueryClass) {
