@@ -10,12 +10,13 @@ import {
 import {
 	handleWhere,
 	handleOptions, hasWhereAndOptions
-} from "../performQueryHelpers";
+} from "../QueryModelHelpers";
 
 import {
 	QueryClass,
 	QueryModel
-} from "../queryModel";
+} from "../QueryModel";
+import PerformQueryHelpers from "../PerformQueryHelpers";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -37,16 +38,17 @@ export default class InsightFacade implements IInsightFacade {
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 
-		// reject bad query with InsightError
+		// reject query without WHERE and OPTIONS
 		if (!hasWhereAndOptions(query)) {
 			return Promise.reject(InsightError);
 		};
+		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([0]);
 
 		const validQuery = query as QueryModel;
 		let queryClass: QueryClass = new QueryClass();
 		handleWhere(validQuery.WHERE, queryClass);
 		handleOptions(validQuery.OPTIONS, queryClass);
-		console.log(queryClass);
+		performQueryHelpers.getWhere(queryClass.where);
 		return Promise.resolve([]);
 	}
 
