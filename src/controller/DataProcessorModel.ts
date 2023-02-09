@@ -8,8 +8,6 @@ import {CourseModel} from "../Models/CourseModel";
 import {SectionModel} from "../Models/SectionModel";
 
 export class DataProcessorModel {
-
-
 	// check zip file
 	// parse through the zip file
 	// convert the data to string
@@ -25,13 +23,13 @@ export class DataProcessorModel {
 		let promiseArray = Array<Promise<string>>();
 		let dataset: DatasetModel;
 
-		let returnPromise = new Promise<string[]>((resolve,reject) => {
+		let returnPromise = new Promise<string[]>((resolve, reject) => {
 			zip.loadAsync(content, {base64: true})
 				.then((newZip: JSZip) => {
-					if(newZip.length === 0) {
+					if (newZip.length === 0) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
 					}
-					if (!(newZip.folder ?? ("courses").length > 0)) {
+					if (!(newZip.folder ?? "courses".length > 0)) {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
 					}
 					// if (zipFile.fo)
@@ -44,20 +42,22 @@ export class DataProcessorModel {
 					Promise.all(promiseArray)
 						.then((stringData: string[]) => {
 							// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
-							this.parseStuff(stringData, id).then((result) => {
-								dataset = result;
-								insight.datasets.set(id, dataset);
-								// push the newly (approved) data to our memory
-								return Promise.resolve(insight.addedDatasetIds.push(id));
-							}).catch((error) => {
-								return Promise.reject(error);
-
-							});
-						}).catch((error) => {
+							this.parseStuff(stringData, id)
+								.then((result) => {
+									dataset = result;
+									insight.datasets.set(id, dataset);
+									// push the newly (approved) data to our memory
+									return Promise.resolve(insight.addedDatasetIds.push(id));
+								})
+								.catch((error) => {
+									return Promise.reject(error);
+								});
+						})
+						.catch((error) => {
 							return Promise.reject(error);
 						});
-
-				}).catch((error) => {
+				})
+				.catch((error) => {
 					return Promise.reject(error);
 				});
 		});
@@ -67,7 +67,7 @@ export class DataProcessorModel {
 	public parseStuff(string: string[], id: string): Promise<DatasetModel> {
 		let kind = InsightDatasetKind.Sections;
 		let numRows = 0;
-		let dataset = new DatasetModel({id, kind , numRows});
+		let dataset = new DatasetModel({id, kind, numRows});
 
 		let courseData: any;
 		// goes through each course
@@ -80,10 +80,21 @@ export class DataProcessorModel {
 			}
 			// goes through each section (hopefully)
 			for (let sectionData in courseData) {
-				if(!(this.checkValidSection(courseData, sectionData))) {
+				if (!this.checkValidSection(courseData, sectionData)) {
 					continue;
 				}
-				let validSection = new SectionModel(courseData[sectionData].Uuid, courseData[sectionData].id, courseData[sectionData].Title, courseData[sectionData].Instructor, courseData[sectionData].Dept, courseData[sectionData].Year, courseData[sectionData].Avg, courseData[sectionData].Pass, courseData[sectionData].Fail, courseData[sectionData].Audit);
+				let validSection = new SectionModel(
+					courseData[sectionData].Uuid,
+					courseData[sectionData].id,
+					courseData[sectionData].Title,
+					courseData[sectionData].Instructor,
+					courseData[sectionData].Dept,
+					courseData[sectionData].Year,
+					courseData[sectionData].Avg,
+					courseData[sectionData].Pass,
+					courseData[sectionData].Fail,
+					courseData[sectionData].Audit
+				);
 				courses.sections.push(validSection);
 				dataset.sections.push(validSection);
 				dataset.insightDataset.numRows++;
@@ -91,7 +102,6 @@ export class DataProcessorModel {
 			if (courses.sections.length > 0) {
 				dataset.courses.push(courses);
 			}
-
 		}
 		if (dataset.insightDataset.numRows === 0) {
 			return Promise.reject(new InsightError("Dataset has no valid sections and is invalid "));
@@ -101,11 +111,20 @@ export class DataProcessorModel {
 	}
 
 	public checkValidSection(courseData: any, sectionData: string): boolean {
-
-		if (courseData[sectionData].Uuid === undefined || courseData[sectionData].id === undefined || courseData[sectionData].Title === undefined || courseData[sectionData].Instructor === undefined || courseData[sectionData].Dept === undefined || courseData[sectionData].Year === undefined || courseData[sectionData].Avg === undefined || courseData[sectionData].Pass === undefined || courseData[sectionData].Fail === undefined || courseData[sectionData].Audit === undefined) {
+		if (
+			courseData[sectionData].Uuid === undefined ||
+			courseData[sectionData].id === undefined ||
+			courseData[sectionData].Title === undefined ||
+			courseData[sectionData].Instructor === undefined ||
+			courseData[sectionData].Dept === undefined ||
+			courseData[sectionData].Year === undefined ||
+			courseData[sectionData].Avg === undefined ||
+			courseData[sectionData].Pass === undefined ||
+			courseData[sectionData].Fail === undefined ||
+			courseData[sectionData].Audit === undefined
+		) {
 			return false;
 		}
 		return true;
 	}
-
 }

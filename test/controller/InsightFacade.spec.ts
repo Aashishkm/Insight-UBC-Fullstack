@@ -28,63 +28,60 @@ describe("InsightFacade", function () {
 		// Just in case there is anything hanging around from a previous run of the test suite
 	});
 
-	describe("addDataset", function() {
-		beforeEach(function() {
+	describe("addDataset", function () {
+		beforeEach(function () {
 			clearDisk();
 			facade = new InsightFacade();
 		});
 
-		it ("should reject with  an empty dataset id", function() {
+		it("should reject with  an empty dataset id", function () {
 			const result = facade.addDataset("", sections, InsightDatasetKind.Sections);
 
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it ("should reject same name", function(){
-			const result = facade.addDataset("aaa", sections, InsightDatasetKind.Sections)
-				.then(() => {
-					return facade.addDataset("aaa", sections, InsightDatasetKind.Sections);
-				});
+		it("should reject same name", function () {
+			const result = facade.addDataset("aaa", sections, InsightDatasetKind.Sections).then(() => {
+				return facade.addDataset("aaa", sections, InsightDatasetKind.Sections);
+			});
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-
-		it("should reject name with underscore", function() {
+		it("should reject name with underscore", function () {
 			const result = facade.addDataset("a_b", sections, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject name with only whitespace", function() {
+		it("should reject name with only whitespace", function () {
 			const result = facade.addDataset("  ", sections, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject content that is not a zip file without courses folder", function() {
+		it("should reject content that is not a zip file without courses folder", function () {
 			const result = facade.addDataset("nonzip", "Randomstringggg", InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject an empty zip file", function() {
+		it("should reject an empty zip file", function () {
 			let empty: string;
 			empty = getContentFromArchives("empty.zip");
 			const result = facade.addDataset("empty-zip", empty, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject an empty zip file with a courses folder", function() {
+		it("should reject an empty zip file with a courses folder", function () {
 			let empty2: string;
 			empty2 = getContentFromArchives("emptywithcourses.zip");
 			const result = facade.addDataset("empty-zip", empty2, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject the wrong InsightDatasetKind ", function() {
-
+		it("should reject the wrong InsightDatasetKind ", function () {
 			const result = facade.addDataset("wrongdatasetkind", sections, InsightDatasetKind.Rooms);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject a dataset with invalidJSON", function() {
+		it("should reject a dataset with invalidJSON", function () {
 			let bad: string;
 			bad = getContentFromArchives("badjson.zip");
 
@@ -92,7 +89,7 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject a dataset with no courses direcotry and emppty datain sections", function() {
+		it("should reject a dataset with no courses direcotry and emppty datain sections", function () {
 			let ultra: string;
 			ultra = getContentFromArchives("ultramini.zip");
 
@@ -100,7 +97,7 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject a dataset with no courses direcotry and emppty datain sections", function() {
+		it("should reject a dataset with no courses direcotry and emppty datain sections", function () {
 			let ultra: string;
 			ultra = getContentFromArchives("ultramini.zip");
 
@@ -108,7 +105,7 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject a dataset with emppty data in sections", function() {
+		it("should reject a dataset with emppty data in sections", function () {
 			let emptysection: string;
 			emptysection = getContentFromArchives("emptystringsection.zip");
 
@@ -116,87 +113,81 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.deep.equal(["nodata"]);
 		});
 
-		it("should reject a dataset with no sections", function() {
+		it("should reject a dataset with no sections", function () {
 			let nosections: string;
 			nosections = getContentFromArchives("Nosections.zip");
 			const result = facade.addDataset("nosections", nosections, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-
-		it("Should resolve with a correct dataset", function() {
-			return facade.addDataset("testing", sections, InsightDatasetKind.Sections)
+		it("Should resolve with a correct dataset", function () {
+			return facade
+				.addDataset("testing", sections, InsightDatasetKind.Sections)
 				.then((result) => {
 					//	result should be the name of the id
 					expect(result).to.deep.equal(["testing"]);
 				})
 				.catch((error) => {
 					expect.fail("shouldn't end up here");
-
 				});
 		});
-
 	});
 
-	describe("removeDataset", function() {
-		beforeEach(function() {
+	describe("removeDataset", function () {
+		beforeEach(function () {
 			clearDisk();
 			facade = new InsightFacade();
 		});
 
-		it ("should reject a dataset id that is empty", function() {
+		it("should reject a dataset id that is empty", function () {
 			const result = facade.removeDataset("");
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it ("should reject a dataset with an underscore", function() {
+		it("should reject a dataset with an underscore", function () {
 			const result = facade.removeDataset("a_b");
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it ("should reject a dataset with only whitespace", function() {
+		it("should reject a dataset with only whitespace", function () {
 			const result = facade.removeDataset(" ");
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it ("should reject a dataset that doesn't exist", function() {
+		it("should reject a dataset that doesn't exist", function () {
 			const result = facade.removeDataset("random");
 			return expect(result).to.eventually.be.rejectedWith(NotFoundError);
 		});
 
-
-		it ("should successfully remove a dataset that is already added", function() {
-			return facade.addDataset("ab", sections, InsightDatasetKind.Sections)
+		it("should successfully remove a dataset that is already added", function () {
+			return facade
+				.addDataset("ab", sections, InsightDatasetKind.Sections)
 				.then((result) => {
 					expect(result).to.deep.equal(["ab"]);
 					return facade.removeDataset("ab");
 				})
 				.then((res) => {
-						//	check assertion for string
+					//	check assertion for string
 					expect(res).to.equal("ab");
 				})
 				.catch((error) => {
 					expect.fail("should have accepted!");
 				});
 		});
-
 	});
 
-	describe("listDataset", function() {
-
-		beforeEach(function() {
+	describe("listDataset", function () {
+		beforeEach(function () {
 			clearDisk();
 			facade = new InsightFacade();
 		});
 
-		it("should list an empty dataset", async function() {
+		it("should list an empty dataset", async function () {
 			const dataset = await facade.listDatasets();
 			expect(dataset).to.deep.equal([]);
-
-
 		});
 
-		it("should list a dataset with stuff in it", async function() {
+		it("should list a dataset with stuff in it", async function () {
 			await facade.addDataset("ab", sections, InsightDatasetKind.Sections);
 
 			const dataset = await facade.listDatasets();
@@ -224,7 +215,7 @@ describe("InsightFacade", function () {
 			let dataset3 = facade.addDataset("sections3", mini, InsightDatasetKind.Sections);
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [dataset1, dataset2 ,dataset3];
+			const loadDatasetPromises = [dataset1, dataset2, dataset3];
 
 			return Promise.all(loadDatasetPromises);
 		});
@@ -263,32 +254,33 @@ describe("InsightFacade", function () {
 		);
 	});
 	describe("PerformQuery2", () => {
-		before( () => {
+		before(() => {
 			facade = new InsightFacade();
 		});
-		const simpleQueryString = "{\n" +
+		const simpleQueryString =
+			"{\n" +
 			"\n" +
-			"    \"WHERE\":{\n" +
+			'    "WHERE":{\n' +
 			"\n" +
-			"       \"GT\":{\n" +
+			'       "GT":{\n' +
 			"\n" +
-			"          \"sections_avg\":97\n" +
+			'          "sections_avg":97\n' +
 			"\n" +
 			"       }\n" +
 			"\n" +
 			"    },\n" +
 			"\n" +
-			"    \"OPTIONS\":{\n" +
+			'    "OPTIONS":{\n' +
 			"\n" +
-			"       \"COLUMNS\":[\n" +
+			'       "COLUMNS":[\n' +
 			"\n" +
-			"          \"sections_dept\",\n" +
+			'          "sections_dept",\n' +
 			"\n" +
-			"          \"sections_avg\"\n" +
+			'          "sections_avg"\n' +
 			"\n" +
 			"       ],\n" +
 			"\n" +
-			"       \"ORDER\":\"sections_avg\"\n" +
+			'       "ORDER":"sections_avg"\n' +
 			"\n" +
 			"    }\n" +
 			"\n" +

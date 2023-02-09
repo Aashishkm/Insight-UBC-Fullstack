@@ -1,6 +1,6 @@
 import {Options, Body, Columns, Key} from "./queryModel";
 
-export{validateQuery, handleOptions, handleWhere};
+export {validateQuery, handleOptions, handleWhere};
 
 function validateQuery(query: unknown): boolean {
 	// TODO

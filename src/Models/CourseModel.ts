@@ -3,11 +3,9 @@ import {SectionModel} from "./SectionModel";
 export class CourseModel {
 	public sections: SectionModel[];
 
-
 	// want to take in content and assign it section data?
 
-	 constructor() {
-		 this.sections = [];
-	 }
-
+	constructor() {
+		this.sections = [];
+	}
 }

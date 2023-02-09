@@ -1,4 +1,4 @@
-import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, InsightResult,} from "./IInsightFacade";
+import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
 
 import {handleOptions, handleWhere, validateQuery} from "../performQueryHelpers";
 
@@ -21,7 +21,6 @@ export default class InsightFacade implements IInsightFacade {
 		this.datasets = new Map<string, DatasetModel>();
 		console.log("InsightFacadeImpl::init()");
 	}
-
 
 	public addDataset(id: string, content: string, kind: InsightDatasetKind): Promise<string[]> {
 		let dataProcessor = new DataProcessorModel();
@@ -57,11 +56,10 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
-
 		// reject bad query with InsightError
 		if (!validateQuery(query)) {
 			return Promise.reject(InsightError);
-		};
+		}
 
 		const validQuery = query as QueryModel;
 		handleWhere(validQuery.WHERE);

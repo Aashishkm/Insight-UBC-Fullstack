@@ -9,7 +9,18 @@ export class SectionModel {
 	private pass: number;
 	private fail: number;
 	private audit: number;
-	constructor(uuid: string, id: string, title: string, instructor: string, dept: string, year: number, avg: number, pass: number, fail: number, audit: number ) {
+	constructor(
+		uuid: string,
+		id: string,
+		title: string,
+		instructor: string,
+		dept: string,
+		year: number,
+		avg: number,
+		pass: number,
+		fail: number,
+		audit: number
+	) {
 		this.uuid = uuid;
 		this.id = id;
 		this.title = title;

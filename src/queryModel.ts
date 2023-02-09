@@ -7,19 +7,18 @@ type MComparator = "LT" | "GT" | "EQ";
 type Logic = "AND" | "OR";
 type Negation = "NOT";
 interface QueryModel {
-	 WHERE: Body;
-	 OPTIONS: Options;
+	WHERE: Body;
+	OPTIONS: Options;
 }
 
 interface Body {
-	 filter: Filter;
+	filter: Filter;
 }
 
 interface FilterList {
 	filterList: Filter | Filter[];
 }
-class Filter {
-}
+class Filter {}
 
 interface Options {
 	COLUMNS: Key[];
