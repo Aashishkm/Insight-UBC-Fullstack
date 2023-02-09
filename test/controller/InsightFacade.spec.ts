@@ -287,9 +287,144 @@ describe("InsightFacade", function () {
 			"    }\n" +
 			"\n" +
 			"}";
+		const complexQueryStr = "{\n" +
+			"\n" +
+			"    \"WHERE\":{\n" +
+			"\n" +
+			"       \"OR\":[\n" +
+			"\n" +
+			"          {\n" +
+			"\n" +
+			"             \"AND\":[\n" +
+			"\n" +
+			"                {\n" +
+			"\n" +
+			"                   \"GT\":{\n" +
+			"\n" +
+			"                      \"ubc_avg\":90\n" +
+			"\n" +
+			"                   }\n" +
+			"\n" +
+			"                },\n" +
+			"\n" +
+			"                {\n" +
+			"\n" +
+			"                   \"IS\":{\n" +
+			"\n" +
+			"                      \"ubc_dept\":\"adhe\"\n" +
+			"\n" +
+			"                   }\n" +
+			"\n" +
+			"                }\n" +
+			"\n" +
+			"             ]\n" +
+			"\n" +
+			"          },\n" +
+			"\n" +
+			"          {\n" +
+			"\n" +
+			"             \"EQ\":{\n" +
+			"\n" +
+			"                \"ubc_avg\":95\n" +
+			"\n" +
+			"             }\n" +
+			"\n" +
+			"          }\n" +
+			"\n" +
+			"       ]\n" +
+			"\n" +
+			"    },\n" +
+			"\n" +
+			"    \"OPTIONS\":{\n" +
+			"\n" +
+			"       \"COLUMNS\":[\n" +
+			"\n" +
+			"          \"ubc_dept\",\n" +
+			"\n" +
+			"          \"ubc_id\",\n" +
+			"\n" +
+			"          \"ubc_avg\"\n" +
+			"\n" +
+			"       ],\n" +
+			"\n" +
+			"       \"ORDER\":\"ubc_avg\"\n" +
+			"\n" +
+			"    }\n" +
+			"\n" +
+			"}";
+		const failingQueryStr = "{\n" +
+			"\n" +
+			"    \"WHERE\":{\n" +
+			"\n" +
+			"       \"OR\":[\n" +
+			"\n" +
+			"          {\n" +
+			"\n" +
+			"             \"AND\":[\n" +
+			"\n" +
+			"                {\n" +
+			"\n" +
+			"                   \"GT\":{\n" +
+			"\n" +
+			"                      \"ubc_avg\":90\n" +
+			"\n" +
+			"                   }\n" +
+			"\n" +
+			"                },\n" +
+			"\n" +
+			"                {\n" +
+			"\n" +
+			"                   \"IS\":{\n" +
+			"\n" +
+			"                      \"ubc_dept\":\"adhe\"\n" +
+			"\n" +
+			"                   }\n" +
+			"\n" +
+			"                }\n" +
+			"\n" +
+			"             ]\n" +
+			"\n" +
+			"          },\n" +
+			"\n" +
+			"          {\n" +
+			"\n" +
+			"             \"EQ\":{\n" +
+			"\n" +
+			"                \"ubc_avg\":95\n" +
+			"\n" +
+			"             }\n" +
+			"\n" +
+			"          }\n" +
+			"\n" +
+			"       ]\n" +
+			"\n" +
+			"    },\n" +
+			"\n" +
+			"    \"OPTIONS\":{\n" +
+			"\n" +
+			"       \"COLUMNS\":[\n" +
+			"\n" +
+			"          \"ubc_dept\",\n" +
+			"\n" +
+			"          \"ubc_id\",\n" +
+			"\n" +
+			"          \"ubc_avg\"\n" +
+			"\n" +
+			"       ]" +
+			"    }\n" +
+			"\n" +
+			"}";
+		const complexQueryObj = JSON.parse(complexQueryStr);
 		const simpleQueryObj = JSON.parse(simpleQueryString);
+		const failingQueryObj = JSON.parse(failingQueryStr);
 		it("should test structure of query", async () => {
 			const result = await facade.performQuery(simpleQueryObj);
+		});
+		it("should test more complex query structure", async () => {
+			const result = await facade.performQuery(complexQueryObj);
+		});
+		it("should fail", async () => {
+			const result = await facade.performQuery(failingQueryObj);
 		});
 	});
 });

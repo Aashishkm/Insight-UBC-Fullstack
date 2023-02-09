@@ -1,11 +1,26 @@
-import {IInsightFacade, InsightDataset, InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
-
-import {handleOptions, handleWhere, validateQuery} from "../performQueryHelpers";
-
-import {QueryModel} from "../queryModel";
 
 import {DatasetModel} from "../Models/DatasetModel";
 import {DataProcessorModel} from "./DataProcessorModel";
+
+import {
+	IInsightFacade,
+	InsightDataset,
+	InsightDatasetKind,
+	InsightError,
+	InsightResult,
+	NotFoundError,
+} from "./IInsightFacade";
+
+import {
+	handleWhere,
+	handleOptions, hasWhereAndOptions
+} from "../performQueryHelpers";
+
+import {
+	QueryClass,
+	QueryModel
+} from "../queryModel";
+
 
 /**
  * This is the main programmatic entry point for the project.
@@ -57,18 +72,20 @@ export default class InsightFacade implements IInsightFacade {
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
 		// reject bad query with InsightError
-		if (!validateQuery(query)) {
+		if (!hasWhereAndOptions(query)) {
 			return Promise.reject(InsightError);
 		}
 
 		const validQuery = query as QueryModel;
-		handleWhere(validQuery.WHERE);
-		handleOptions(validQuery.OPTIONS);
-
+		let queryClass: QueryClass = new QueryClass();
+		handleWhere(validQuery.WHERE, queryClass);
+		handleOptions(validQuery.OPTIONS, queryClass);
+		console.log(queryClass);
 		return Promise.resolve([]);
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {
 		return Promise.reject("Not implemented.");
 	}
+
 }
