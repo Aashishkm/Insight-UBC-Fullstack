@@ -44,7 +44,11 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Invalid content"));
 		}
 		try {
-			return dataProcessor.addDataset(id, content, this);
+			dataProcessor.addDataset(id, content, this).then(()=> {
+				return Promise.resolve(this.addedDatasetIds);
+			}).catch((error) => {
+				return Promise.reject(error);
+			});
 		} catch (e) {
 			return Promise.reject("Not implemented.");
 		}

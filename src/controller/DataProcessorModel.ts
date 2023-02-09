@@ -1,6 +1,6 @@
 import {InsightDatasetKind, InsightError} from "./IInsightFacade";
 import InsightFacade from "./InsightFacade";
-
+// import * as JSZip from "jszip";
 import JSZip, {JSZipObject} from "jszip";
 import * as fs from "fs";
 import {DatasetModel} from "../Models/DatasetModel";
@@ -85,7 +85,7 @@ export class DataProcessorModel {
 					continue;
 				}
 
-				// eslint-disable-next-line max-len
+
 				let validSection = new SectionModel(courseData[sectionData].Uuid, courseData[sectionData].id, courseData[sectionData].Title, courseData[sectionData].Instructor, courseData[sectionData].Dept, courseData[sectionData].Year, courseData[sectionData].Avg, courseData[sectionData].Pass, courseData[sectionData].Fail, courseData[sectionData].Audit);
 				courses.sections.push(validSection);
 				dataset.sections.push(validSection);
@@ -104,7 +104,7 @@ export class DataProcessorModel {
 	}
 
 	public checkValidSection(courseData: any, sectionData: string): boolean {
-		// eslint-disable-next-line max-len
+
 		if (courseData[sectionData].Uuid === undefined || courseData[sectionData].id === undefined || courseData[sectionData].Title === undefined || courseData[sectionData].Instructor === undefined || courseData[sectionData].Dept === undefined || courseData[sectionData].Year === undefined || courseData[sectionData].Avg === undefined || courseData[sectionData].Pass === undefined || courseData[sectionData].Fail === undefined || courseData[sectionData].Audit === undefined) {
 			return false;
 		}

@@ -9,7 +9,6 @@ export class SectionModel {
 	private pass: number;
 	private fail: number;
 	private audit: number;
-	// eslint-disable-next-line max-len
 	constructor(uuid: string, id: string, title: string, instructor: string, dept: string, year: number, avg: number, pass: number, fail: number, audit: number ) {
 		this.uuid = uuid;
 		this.id = id;
