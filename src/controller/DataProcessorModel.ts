@@ -4,10 +4,11 @@ import InsightFacade from "./InsightFacade";
 import JSZip, {JSZipObject} from "jszip";
 import * as fs from "fs";
 import {DatasetModel} from "../Models/DatasetModel";
+import {CourseModel} from "../Models/CourseModel";
+import {SectionModel} from "../Models/SectionModel";
 
 export class DataProcessorModel {
 
-	// constructor(){}
 
 	// check zip file
 	// parse through the zip file
@@ -37,41 +38,76 @@ export class DataProcessorModel {
 				newZip.folder("courses").forEach(function (relativePath, file) {
 					promiseArray.push(file.async("string"));
 				});
-				// json.parse takes a base 64 string and converts in into an object
-				Promise.all(promiseArray).then((stringData: string[]) => {
-					return this.parseStuff(stringData);
-				});
+
+				// json.parse takes a base 64 string and converts in into an javascript object
+				// wait for all the "courses" to finish being converted
+				Promise.all(promiseArray)
+					.then((stringData: string[]) => {
+						// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
+						 this.parseStuff(stringData, id).then((result)=>{
+							dataset = result;
+							// push the newly (approved) data to our memory
+							insight.addedDatasetIds.push(id);
+							insight.datasets.set(id, dataset);
+						}).catch((error) => {
+							return Promise.reject(error);
+
+						});
+					}).catch((error) => {
+						return Promise.reject(error);
+					});
 
 			}).catch((error) => {
 				return Promise.reject(error);
 			});
 
-		insight.addedDatasetIds.push(id);
-		insight.datasets.set(id, new DatasetModel());
 		return Promise.reject(new InsightError("error"));
 	}
 
-	public parseStuff(string: string[]) {
-		let dataset = new DatasetModel();
-		let javaObject: any;
-		for (let s of string) {
+	public parseStuff(string: string[], id: string): Promise<DatasetModel> {
+		let kind = InsightDatasetKind.Sections;
+		let numRows = 0;
+		let dataset = new DatasetModel({id, kind , numRows});
+
+		let courseData: any;
+		// goes through each course
+		for (let c of string) {
+			let courses = new CourseModel();
 			try {
-				javaObject = JSON.parse(s);
+				courseData = JSON.parse(c);
 			} catch (e) {
 				throw new InsightError("Problem parsing - JSON invalid?");
 			}
+			// goes through each section (hopefully)
+			for (let sectionData in courseData) {
+				if(!(this.checkValidSection(courseData, sectionData))) {
+					continue;
+				}
 
-			for (let element in javaObject["result"]) {
-				throw new InsightError("Problem parsing - JSON invalid?");
+				// eslint-disable-next-line max-len
+				let validSection = new SectionModel(courseData[sectionData].Uuid, courseData[sectionData].id, courseData[sectionData].Title, courseData[sectionData].Instructor, courseData[sectionData].Dept, courseData[sectionData].Year, courseData[sectionData].Avg, courseData[sectionData].Pass, courseData[sectionData].Fail, courseData[sectionData].Audit);
+				courses.sections.push(validSection);
+				dataset.sections.push(validSection);
+				dataset.insightDataset.numRows++;
 			}
-		}
+			if (courses.sections.length > 0) {
+				dataset.courses.push(courses);
+			}
 
+		}
 		if (dataset.insightDataset.numRows === 0) {
-			return Promise.reject(new InsightError("Dataset has no sections and is invalid "));
+			return Promise.reject(new InsightError("Dataset has no valid sections and is invalid "));
 		}
 
-
+		return Promise.resolve(dataset);
 	}
 
+	public checkValidSection(courseData: any, sectionData: string): boolean {
+		// eslint-disable-next-line max-len
+		if (courseData[sectionData].Uuid === undefined || courseData[sectionData].id === undefined || courseData[sectionData].Title === undefined || courseData[sectionData].Instructor === undefined || courseData[sectionData].Dept === undefined || courseData[sectionData].Year === undefined || courseData[sectionData].Avg === undefined || courseData[sectionData].Pass === undefined || courseData[sectionData].Fail === undefined || courseData[sectionData].Audit === undefined) {
+			return false;
+		}
+		return true;
+	}
 
 }
