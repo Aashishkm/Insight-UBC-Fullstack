@@ -124,7 +124,7 @@ describe("InsightFacade", function () {
 			let ultra: string;
 			ultra = getContentFromArchives("minipair.zip");
 			return facade
-				.addDataset("testing", ultra, InsightDatasetKind.Sections)
+				.addDataset("testing", sections, InsightDatasetKind.Sections)
 				.then((result) => {
 					//	result should be the name of the id
 					expect(result).to.deep.equal(["testing"]);
