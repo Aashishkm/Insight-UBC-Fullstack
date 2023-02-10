@@ -45,6 +45,7 @@ export class DataProcessorModel {
 									insight.datasets.set(id, result);
 									// push the newly (approved) data to our memory
 									insight.addedDatasetIds.push(id);
+									// saveToDisk(result);
 									return resolve(insight.addedDatasetIds);
 								})
 								.catch((error) => {
@@ -126,4 +127,6 @@ export class DataProcessorModel {
 		}
 		return true;
 	}
+
+	// public saveToDisk()
 }

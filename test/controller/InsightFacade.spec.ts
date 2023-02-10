@@ -98,12 +98,12 @@ describe("InsightFacade", function () {
 		});
 
 
-		it("should reject a dataset with emppty data in sections", function () {
+		it("should accept a dataset with emppty data in some sections, but not all", function () {
 			let emptysection: string;
 			emptysection = getContentFromArchives("emptystringsection.zip");
 
 			const result = facade.addDataset("nodata", emptysection, InsightDatasetKind.Sections);
-			return expect(result).to.eventually.be.rejectedWith(InsightError);
+			return expect(result).to.eventually.deep.equal(["nodata"]);
 		});
 
 		it("should reject a dataset with no sections", function () {
