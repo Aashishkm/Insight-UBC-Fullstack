@@ -59,6 +59,10 @@ export default class InsightFacade implements IInsightFacade {
 		if (content === null) {
 			return Promise.reject(new InsightError("Invalid content"));
 		}
+		if(this.datasets.has(id)) {
+			return Promise.reject(new InsightError("Duplicate ids"));
+		}
+
 		try {
 			return dataProcessor.addDataset(id, content, this);
 		} catch (e) {
