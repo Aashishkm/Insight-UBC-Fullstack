@@ -29,7 +29,7 @@ export class DataProcessorModel {
 						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
 					} */
 					if (!(newZip.folder(/courses/).length > 0)) {
-						return Promise.reject(new InsightError("Zip file doesn't have courses directory"));
+						return reject(new InsightError("Zip file doesn't have courses directory"));
 					}
 
 					newZip.folder("courses")?.forEach(function (relativePath, file) {
@@ -45,14 +45,15 @@ export class DataProcessorModel {
 									insight.datasets.set(id, result);
 									// push the newly (approved) data to our memory
 									insight.addedDatasetIds.push(id);
+									// saveToDisk(result);
 									return resolve(insight.addedDatasetIds);
 								})
 								.catch((error) => {
-									return Promise.reject(error);
+									return reject(new InsightError("bad"));
 								});
 						})
 						.catch((error) => {
-							return Promise.reject(error);
+							return reject(new InsightError("bad"));
 						});
 				})
 				.catch((error) => {
@@ -68,13 +69,14 @@ export class DataProcessorModel {
 		let dataset = new DatasetModel({id, kind, numRows});
 		// let courseData: JSON;
 		let anyData: any;
+		// if (JS)
 		// goes through each course
 		for (let c of string) {
 			let courses = new CourseModel();
 			try {
 				anyData = JSON.parse(c);
 			} catch (e) {
-				throw new InsightError("Problem parsing - JSON invalid?");
+				return Promise.reject(new InsightError("Problem parsing - JSON invalid?"));
 			}
 			// goes through each section (hopefully)
 			for (let sectionData in anyData.result) {
@@ -125,4 +127,6 @@ export class DataProcessorModel {
 		}
 		return true;
 	}
+
+	// public saveToDisk()
 }
