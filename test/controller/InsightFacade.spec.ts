@@ -12,6 +12,8 @@ import {folderTest} from "@ubccpsc310/folder-test";
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
+import {DatasetModel} from "../../src/Models/DatasetModel";
+import {DataProcessorModel} from "../../src/controller/DataProcessorModel";
 
 use(chaiAsPromised);
 
@@ -128,6 +130,8 @@ describe("InsightFacade", function () {
 			return facade
 				.addDataset("testing", ultra, InsightDatasetKind.Sections)
 				.then((result) => {
+					// let p = new DataProcessorModel();
+					// p.loadDatasetFromDisk("ts");
 					//	result should be the name of the id
 					expect(result).to.deep.equal(["testing"]);
 				})

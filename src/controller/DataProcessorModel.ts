@@ -5,7 +5,6 @@ import JSZip from "jszip";
 import {DatasetModel} from "../Models/DatasetModel";
 import {CourseModel} from "../Models/CourseModel";
 import {SectionModel} from "../Models/SectionModel";
-import * as string_decoder from "string_decoder";
 import * as fs from "fs-extra";
 
 
@@ -153,5 +152,16 @@ export class DataProcessorModel {
 			throw new InsightError("unable to write file to disk");
 		}
 	 }
-
+	 public loadDatasetFromDisk(id: string) {
+		let dataset: DatasetModel;
+		try {
+			let file = fs.readJSONSync("./data/" + id + ".json");
+			dataset = file;
+			// console.log(file);
+			// console.log(dataset.insightDataset.id);
+			return dataset;
+		} catch (e) {
+			return new InsightError("dataset doesn't exist");
+		}
+	 }
 }
