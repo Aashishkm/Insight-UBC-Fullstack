@@ -1,6 +1,7 @@
 
 import {DatasetModel} from "../Models/DatasetModel";
 import {DataProcessorModel} from "./DataProcessorModel";
+import * as fs from "fs-extra";
 
 import {
 	IInsightFacade,
@@ -72,7 +73,38 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public removeDataset(id: string): Promise<string> {
-		return Promise.reject("Not implemented.");
+		if (id === null) {
+			return Promise.reject(new InsightError("Invalid dataset id 0"));
+		}
+		if (id.includes("_")) {
+			return Promise.reject(new InsightError("Invalid dataset id 1"));
+		}
+		// should represent empty string?
+		if (!id) {
+			return Promise.reject(new InsightError("Invalid dataset id 2"));
+		}
+		// if the id is only spaces
+		if (id.trim().length === 0) {
+			return Promise.reject(new InsightError("Invalid dataset id 3"));
+		}
+
+		if (!(this.datasets.has(id))) {
+			return Promise.reject(new NotFoundError("Dataset Not added"));
+		}
+		this.datasets.delete(id);
+		let index = this.addedDatasetIds.indexOf(id);
+		delete this.addedDatasetIds[index];
+		let returnPromise = new Promise<string>((resolve, reject) => {
+			fs.remove("./data/" + id + ".json")
+				.then(() => {
+					return resolve(id);
+				}).catch((error) => {
+					return Promise.reject(new InsightError("Remove failed"));
+				});
+		});
+
+		return returnPromise;
+		// notes --> should I be removing stuff in disk that are i disk but aren't in memory?
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
