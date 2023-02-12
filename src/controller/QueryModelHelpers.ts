@@ -1,9 +1,10 @@
 import {
 	Key, Options, QueryModel, Where, LogicComparison, Filter, MComparison,
-	MKey, SKey, SComparison, NComparison, MComparator, QueryClass
-} from "./QueryModel";
-import {InsightError} from "./controller/IInsightFacade";
-
+	MKey, SKey, SComparison, NComparison, MComparator, QueryClass, MField, SField
+} from "../Models/QueryModel";
+import {InsightError} from "./IInsightFacade";
+import {isOptions, isWhere, isFilterList, isSComparison,
+	isMComparison, isKey} from "./QueryModelHelpersValidation";
 
 export{hasWhereAndOptions, handleOptions, handleWhere, isOptions, isWhere,
 	isFilterList, isSComparison, isMComparison};
@@ -17,7 +18,7 @@ function handleOptions(options: any, queryClass: QueryClass) {
 	if (isOptions(options)) {
 		queryClass.columns = getColumnKeys(options.COLUMNS);
 		if (options.ORDER) {
-			queryClass.order = getOrderKey(options.ORDER);
+			queryClass.order = getOrderKey(options.ORDER, queryClass.columns);
 		}
 	} else {
 		throw new InsightError("Options not formatted correctly");
@@ -31,7 +32,10 @@ function handleWhere(where: any, queryClass: QueryClass) {
 	 *
 	 * should throw an InsightError if WHERE is improperly formatted
 	 */
-	if (isWhere(where)) {
+	if (Object.keys(where).length === 0) {
+		// empty body matches all entries
+		queryClass.where = {};
+	} else if (isWhere(where)) {
 		queryClass.where = makeFilterObjects(where as Where);
 	} else {
 		throw new InsightError("Where is not formatted correctly");
@@ -89,27 +93,40 @@ function makeFilterObjectsList(filterList: Filter[]): Filter[] {
 	filterList.forEach((filter) => {
 		resultFilterList.push(makeFilterObjects(filter));
 	});
+	if (resultFilterList.length === 0) {
+		throw new InsightError("Logic Comparisons cannot have empty arrays");
+	}
 	return resultFilterList;
 }
 
+
 function getColumnKeys(columns: Key[]): Key[] {
-	/** Takes in a list of unchecked Filter objects and returns checked a list of filter objects
-	 * @param filterList a list of unchecked Filter objects
-	 * @returns Filter[]
-	 *
-	 * recursively calls makeFilterObjects
-	 */
 	let keyList: Key[] = [];
 	// push each string into a key array
 	JSON.parse(JSON.stringify(columns)).forEach((value: string) => {
-		keyList.push(new Key(value));
+		if (isKey(value)) {
+			keyList.push(new Key(value));
+		}
 	});
+	if (keyList.length === 0) {
+		throw new InsightError("COLUMNS must be an non-empty array");
+	}
 	return keyList;
 }
 
-function getOrderKey(key: Key): Key {
+function getOrderKey(key: Key, columnKeys: Key[]): Key {
 	// perhaps need to validate key string before
-	return new Key(JSON.parse(JSON.stringify(key)));
+	if (!isKey(JSON.parse(JSON.stringify(key)))) {
+		throw new InsightError("Order key invalid");
+	}
+	const ret = new Key(JSON.parse(JSON.stringify(key)));
+	if (!columnKeys.includes(ret)) {
+		// TODO create fn to compare keys
+		console.log(columnKeys);
+		console.log(ret);
+		throw new InsightError("ORDER key must be in COLUMNS");
+	}
+	return ret;
 }
 
 function getMComparisonModel(mComparator: MComparator, key: any): MComparison {
@@ -147,145 +164,12 @@ function getNComparisonModel(filter: Filter): NComparison {
 function hasWhereAndOptions(arg: any): arg is QueryModel {
 	return arg.WHERE !== undefined && arg.OPTIONS !== undefined;
 }
-// returns true if arg has property COLUMNS defined
-// TODO needs more testing
-function isOptions(arg: any): arg is Options {
-	if (arg.COLUMNS === undefined) {
-		throw new InsightError("OPTIONS missing COLUMNS");
-	} else if (arg.ORDER === undefined && hasRequiredLength(arg, 2)) {
-		// throw error if it does not have order and columns
-		throw new InsightError("invalid keys in OPTIONS 1");
-	} else if (!(hasRequiredLength(arg, 1) || hasRequiredLength(arg, 2))) {
-		throw new InsightError("invalid keys in OPTIONS");
-	} else {
-		return true;
-	}
-
-}
-
-function isFilter(arg: any): arg is Filter {
-	if (!hasComparator(arg)) {
-		throw new InsightError("filter does not have a comparator");
-	} else if (!hasRequiredLength(arg, 1)) {
-		throw new InsightError("filter should only have 1 key");
-	} else {
-		return true;
-	}
-}
-
-// returns true if WHERE is properly formatted with one comparator throws InsightError if no comparator or only 1 key
-function isWhere(arg: any): arg is Where {
-	if (!hasComparator(arg)) {
-		throw new InsightError("WHERE does not have a comparator");
-	} else if (!hasRequiredLength(arg, 1)) {
-		throw new InsightError("WHERE should only have 1 key");
-	} else {
-		return true;
-	}
-}
-// returns true if arg is a list and every element in list is a filter
-function isFilterList(arg: any): arg is Filter[] {
-	if (arg.constructor.name !== "Array") {
-		throw new InsightError("Logic comparison does not have filter list");
-	}
-	arg.forEach((filter: any) => {
-		isFilter(filter);
-	});
-	return true;
-}
-
-// returns true if MComparison is formatted correctly
-function isMComparison(arg: any): boolean {
-	if (!hasRequiredLength(arg, 1)) {
-		throw new InsightError("MComparison has too many keys");
-	} else {
-		for (const property in arg) {
-			isMKey(JSON.parse(JSON.stringify(property)));
-			if (!(typeof arg[property] === "number")) {
-				throw new InsightError("Comparison must have number");
-			}
-		}
-	}
-	return true;
-}
-
-function isMKey(input: any): boolean {
-	if(!input.includes("_")) {
-		throw new InsightError("MKey does not have '_'");
-	}
-	let inputArr: string[] = input.split("_");
-	if (inputArr.length > 2) {
-		throw new InsightError("MKey has more than 1 '_'");
-	}
-	if (!isMField(inputArr[1])) {
-		console.log(inputArr[1]);
-		throw new InsightError("MField is invalid");
-	}
-	return true;
-}
-
-function isMField(arg: string): boolean {
-	return (arg === "avg" ||
-		arg === "pass" ||
-		arg === "fail" ||
-		arg === "audit" ||
-		arg === "year");
-}
-
-function isSComparison(arg: any): boolean {
-	if (!hasRequiredLength(arg, 1)) {
-		throw new InsightError("SComparison has too many keys");
-	} else {
-		for (const property in arg) {
-			isSKey(JSON.parse(JSON.stringify(property)));
-			if (!(typeof arg[property] === "string")) {
-				throw new InsightError("Comparison must have string");
-			}
-		}
-	}
-	return true;
-}
-
-function isSKey(input: any): boolean {
-	if(!input.includes("_")) {
-		throw new InsightError("SKey does not have '_'");
-	}
-	let inputArr: string[] = input.split("_");
-	if (inputArr.length > 2) {
-		throw new InsightError("SKey has more than 1 '_'");
-	}
-	if (!isSField(inputArr[1])) {
-		throw new InsightError("SField is invalid");
-	}
-	if (!isSection(inputArr[0])) {
-		throw new InsightError("Invalid section");
-	}
-	return true;
-}
-
-function isSField(arg: string): boolean {
-	return (arg === "dept" ||
-		arg === "id" ||
-		arg === "instructor" ||
-		arg === "title" ||
-		arg === "uuid");
-}
-
-function isSection(arg: string): boolean {
-	// TODO implement isSection and keep track of primary section (can only refer to 1 section at a time)
-	return true;
-}
 // returns true if object has one of the comparators
-function hasComparator(arg: any): boolean {
-	return arg.AND !== undefined ||
-		arg.OR !== undefined ||
-		arg.LT !== undefined ||
-		arg.GT !== undefined ||
-		arg.EQ !== undefined ||
-		arg.IS !== undefined ||
-		arg.NOT !== undefined;
+export function hasComparator(arg: any): boolean {
+	return arg.AND !== undefined || arg.OR !== undefined || arg.LT !== undefined || arg.GT !== undefined ||
+		arg.EQ !== undefined || arg.IS !== undefined || arg.NOT !== undefined;
 }
 // returns true if object has reqLength properties
-function hasRequiredLength(arg: any, reqLength: number): boolean {
+export function hasRequiredLength(arg: any, reqLength: number): boolean {
 	return Object.keys(arg).length === reqLength;
 }

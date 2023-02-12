@@ -15,13 +15,13 @@ import {
 import {
 	handleWhere,
 	handleOptions, hasWhereAndOptions
-} from "../QueryModelHelpers";
+} from "./QueryModelHelpers";
 
 import {
 	QueryClass,
 	QueryModel
-} from "../QueryModel";
-import PerformQueryHelpers from "../PerformQueryHelpers";
+} from "../Models/QueryModel";
+import PerformQueryHelpers from "./PerformQueryHelpers";
 
 
 /**
@@ -111,7 +111,7 @@ export default class InsightFacade implements IInsightFacade {
 
 		// reject query without WHERE and OPTIONS
 		if (!hasWhereAndOptions(query)) {
-			return Promise.reject(InsightError);
+			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		};
 		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([0]);
 

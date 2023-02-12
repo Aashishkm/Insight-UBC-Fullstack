@@ -1,4 +1,4 @@
-import {Filter, MComparison} from "./QueryModel";
+import {Filter, MComparison} from "../Models/QueryModel";
 
 
 export default class PerformQueryHelpers {
