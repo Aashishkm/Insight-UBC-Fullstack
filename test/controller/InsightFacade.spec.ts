@@ -12,6 +12,8 @@ import {folderTest} from "@ubccpsc310/folder-test";
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
+import {DatasetModel} from "../../src/Models/DatasetModel";
+import {DataProcessorModel} from "../../src/controller/DataProcessorModel";
 
 use(chaiAsPromised);
 
@@ -97,6 +99,14 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
+		it("should reject a dataset with a courses directory that isn't the root folder", function () {
+			let notroot: string;
+			notroot = getContentFromArchives("coursesbutnotroot.zip");
+
+			const result = facade.addDataset("notroot", notroot, InsightDatasetKind.Sections);
+			return expect(result).to.eventually.be.rejectedWith(InsightError);
+		});
+
 
 		it("should accept a dataset with emppty data in some sections, but not all", function () {
 			let emptysection: string;
@@ -105,6 +115,7 @@ describe("InsightFacade", function () {
 			const result = facade.addDataset("nodata", emptysection, InsightDatasetKind.Sections);
 			return expect(result).to.eventually.deep.equal(["nodata"]);
 		});
+
 
 		it("should reject a dataset with no sections", function () {
 			let nosections: string;
@@ -117,8 +128,10 @@ describe("InsightFacade", function () {
 			let ultra: string;
 			ultra = getContentFromArchives("minipair.zip");
 			return facade
-				.addDataset("testing", sections, InsightDatasetKind.Sections)
+				.addDataset("testing", ultra, InsightDatasetKind.Sections)
 				.then((result) => {
+					// let p = new DataProcessorModel();
+					// p.loadDatasetFromDisk("ts");
 					//	result should be the name of the id
 					expect(result).to.deep.equal(["testing"]);
 				})
