@@ -4,6 +4,7 @@ import {SectionModel} from "../Models/SectionModel";
 import {InsightError} from "./IInsightFacade";
 
 export default class PerformQueryHelpers {
+	// TODO implement ordering
 	constructor(idList: SectionModel[], datasets: Map<string, DatasetModel>) {
 		this.globalSectionList = idList;
 		this.datasets = datasets;
@@ -119,6 +120,11 @@ export default class PerformQueryHelpers {
 
 	private isIDinDatasets(id: string): boolean {
 		return (this.datasets.has(id));
+	}
+
+	public applyOrder(order: Key, sectionList: SectionModel[]) {
+		// TODO finish me!
+		return sectionList;
 	}
 }
 

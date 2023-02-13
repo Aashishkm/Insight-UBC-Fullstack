@@ -22,6 +22,7 @@ import {
 	QueryModel
 } from "../Models/QueryModel";
 import PerformQueryHelpers from "./PerformQueryHelpers";
+import {SectionModel} from "../Models/SectionModel";
 
 
 /**
@@ -121,9 +122,13 @@ export default class InsightFacade implements IInsightFacade {
 		handleOptions(validQuery.OPTIONS, queryClass);
 		handleWhere(validQuery.WHERE, queryClass);
 		performQueryHelpers.applyWhere(queryClass.where, queryClass.columns);
-		const res = performQueryHelpers.applyColumns(queryClass.columns);
+		const unsortedRes = performQueryHelpers.applyColumns(queryClass.columns);
+		let res = unsortedRes;
+		if (queryClass.order !== undefined) {
+			res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
+		}
 		if (res.length > 5000) {
-			throw new ResultTooLargeError("Over 5k entries grrrrrrrrrrrrrrr");
+			throw new ResultTooLargeError("Over 5k entries :(");
 		}
 		return Promise.resolve(res);
 	}
