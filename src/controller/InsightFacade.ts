@@ -9,7 +9,7 @@ import {
 	InsightDatasetKind,
 	InsightError,
 	InsightResult,
-	NotFoundError,
+	NotFoundError, ResultTooLargeError,
 } from "./IInsightFacade";
 
 import {
@@ -113,15 +113,19 @@ export default class InsightFacade implements IInsightFacade {
 		if (!hasWhereAndOptions(query)) {
 			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		};
-		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([0]);
+		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 
 
 		const validQuery = query as QueryModel;
 		let queryClass: QueryClass = new QueryClass();
 		handleWhere(validQuery.WHERE, queryClass);
 		handleOptions(validQuery.OPTIONS, queryClass);
-		performQueryHelpers.getWhere(queryClass.where);
-		return Promise.resolve([]);
+		performQueryHelpers.getWhere(queryClass.where, queryClass.columns);
+		const res = performQueryHelpers.applyColumns(queryClass.columns);
+		if (res.length > 5000) {
+			throw new ResultTooLargeError("Over 5k entries grrrrrrrrrrrrrrr");
+		}
+		return Promise.resolve(res);
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {

@@ -242,7 +242,7 @@ describe("InsightFacade", function () {
 			{
 				assertOnResult: async (actual, expected) => {
 					const test = await expected;
-					expect(actual).to.have.members(test);
+					expect(actual).to.deep.members(test);
 					expect(actual).to.have.length(test.length);
 				},
 				errorValidator: (error): error is PQErrorKind =>

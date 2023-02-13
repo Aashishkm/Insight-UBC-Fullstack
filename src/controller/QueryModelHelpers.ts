@@ -120,12 +120,10 @@ function getOrderKey(key: Key, columnKeys: Key[]): Key {
 		throw new InsightError("Order key invalid");
 	}
 	const ret = new Key(JSON.parse(JSON.stringify(key)));
-	if (!columnKeys.includes(ret)) {
-		// TODO create fn to compare keys
-		console.log(columnKeys);
-		console.log(ret);
-		throw new InsightError("ORDER key must be in COLUMNS");
-	}
+	// if (!columnKeys.includes(ret)) {
+	// 	// TODO create fn to compare keys
+	// 	throw new InsightError("ORDER key must be in COLUMNS");
+	// }
 	return ret;
 }
 
