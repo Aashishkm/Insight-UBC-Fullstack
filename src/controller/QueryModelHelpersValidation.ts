@@ -3,7 +3,7 @@ import {InsightError} from "./IInsightFacade";
 import {hasComparator, hasRequiredLength} from "./QueryModelHelpers";
 
 export {isSField, isSKey, isMKey, isMField, isSection, isWhere, isFilterList,
-	isSComparison, isMComparison, isOptions, isKey, isField, isFilter};
+	isSComparison, isMComparison, isOptions, isKey, isField, isFilter, isNComparison};
 
 function isSField(arg: string): boolean {
 	return Object.values(SField).includes(arg as unknown as SField);
@@ -146,6 +146,14 @@ function isKey(input: string) {
 		throw new InsightError("Section is invalid");
 	}
 	return true;
+}
+
+function isNComparison(arg: any): arg is Filter {
+	if (!isFilter(arg)) {
+		throw new InsightError("Negation malformed");
+	} else {
+		return true;
+	}
 }
 
 

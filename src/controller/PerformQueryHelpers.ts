@@ -1,6 +1,7 @@
-import {Filter, Key, LogicComparison, MComparison, SComparison} from "../Models/QueryModel";
+import {Filter, Key, LogicComparison, MComparison, NComparison, SComparison} from "../Models/QueryModel";
 import {DatasetModel} from "../Models/DatasetModel";
 import {SectionModel} from "../Models/SectionModel";
+import {InsightError} from "./IInsightFacade";
 
 export default class PerformQueryHelpers {
 	constructor(idList: SectionModel[], datasets: Map<string, DatasetModel>) {
@@ -9,7 +10,7 @@ export default class PerformQueryHelpers {
 	}
 	public globalSectionList: SectionModel[];
 	private datasets: Map<string, DatasetModel>;
-	public getWhere(filter: Filter, columns: Key[]) {
+	public applyWhere(filter: Filter, columns: Key[]) {
 		let idList: SectionModel[] = [];
 		if (Object.keys(filter).length === 0) {
 			const dataset = this.datasets.get(columns[0].idString);
@@ -23,16 +24,16 @@ export default class PerformQueryHelpers {
 	}
 
 	public applyColumns(columns: Key[]) {
-		let arr: any = [];
+		let resultArr: any = [];
 		this.globalSectionList.forEach((section) => {
 			let obj: {[key: string]: any} = {};
 			columns.forEach((key) => {
 				let objProperty = key.idString + "_" + key.field;
 				obj[objProperty] = section[key.field];
 			});
-			arr.push(obj);
+			resultArr.push(obj);
 		});
-		return arr;
+		return resultArr;
 	}
 
 	public applyComparison(filter: Filter): SectionModel[] {
@@ -43,6 +44,8 @@ export default class PerformQueryHelpers {
 			return this.handleSComparison(filter as SComparison);
 		} else if (filter.constructor.name === "MComparison") {
 			return this.handleMComparison(filter as MComparison);
+		} else if (filter.constructor.name === "NComparison") {
+			return this.handleNComparison(filter as NComparison);
 		}
 		return [];
 	}
@@ -76,6 +79,8 @@ export default class PerformQueryHelpers {
 					resultSections.push(section);
 				}
 			});
+		} else {
+			throw new InsightError("dataset not added");
 		}
 		return resultSections;
 	}
@@ -102,8 +107,14 @@ export default class PerformQueryHelpers {
 					}
 				}
 			});
+		} else {
+			throw new InsightError("Dataset not added");
 		}
 		return resultSections;
+	}
+	private handleNComparison(nComparison: NComparison): SectionModel[] {
+		// TODO finish me!
+		return this.applyComparison(nComparison.filter);
 	}
 
 	private isIDinDatasets(id: string): boolean {
@@ -121,14 +132,9 @@ function intersection(sectionLists: SectionModel[][]) {
 	} else {
 		lists = sectionLists;
 	}
-
-	// eslint-disable-next-line @typescript-eslint/prefer-for-of
-	for (let i = 0; i < lists.length; i++) {
-		let currentList = lists[i];
-		// eslint-disable-next-line @typescript-eslint/prefer-for-of
-		for (let y = 0; y < currentList.length; y++) {
-			let currentValue = currentList[y];
-			if(result.indexOf(currentValue) === -1) {
+	for (let currentList of lists) {
+		for (let currentValue of currentList) {
+			if (result.indexOf(currentValue) === -1) {
 				if(lists.filter(function(obj) {
 					return obj.indexOf(currentValue) === -1;
 				}).length === 0) {
@@ -154,16 +160,28 @@ function union(sectionLists: SectionModel[][]) {
 
 	return result;
 }
-function matches(input: string, match: string): boolean {
-	if (!input.includes("*")) {
-		return input === match;
-	} else if (input[0] === "*" && input[input.length] === "*") {
+function matches(input: string, regex: string): boolean {
+	if (!regex.includes("*")) {
+		return input === regex;
+	} else if (regex[0] === "*" && regex[regex.length - 1] === "*") {
+		const match = regex.substring(1, regex.length - 1);
+		if (match.includes("*")) {
+			throw new InsightError("Must only contain wildcards at start or/and end");
+		}
 		return input.includes(match);
-	} else if (input[0] === "*") {
+	} else if (regex[0] === "*") {
+		const match = regex.substring(1);
+		if (match.includes("*")) {
+			throw new InsightError("Must only contain wildcards at start or/and end");
+		}
 		return input.endsWith(match);
-	} else if (input[input.length] === "*") {
+	} else if (regex[regex.length - 1] === "*") {
+		const match = regex.substring(0, regex.length - 1);
+		if (match.includes("*")) {
+			throw new InsightError("Must only contain wildcards at start or/and end");
+		}
 		return input.startsWith(match);
 	}
-	// should not reach
+	console.log("Should not have reached in PerformQueryHelpers.ts matches");
 	return false;
 }

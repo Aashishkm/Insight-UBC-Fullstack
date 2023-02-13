@@ -3,8 +3,10 @@ import {
 	MKey, SKey, SComparison, NComparison, MComparator, QueryClass, MField, SField
 } from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
-import {isOptions, isWhere, isFilterList, isSComparison,
-	isMComparison, isKey} from "./QueryModelHelpersValidation";
+import {
+	isOptions, isWhere, isFilterList, isSComparison,
+	isMComparison, isKey, isNComparison
+} from "./QueryModelHelpersValidation";
 
 export{hasWhereAndOptions, handleOptions, handleWhere, isOptions, isWhere,
 	isFilterList, isSComparison, isMComparison};
@@ -17,6 +19,7 @@ function handleOptions(options: any, queryClass: QueryClass) {
 	 */
 	if (isOptions(options)) {
 		queryClass.columns = getColumnKeys(options.COLUMNS);
+		let checkKey: string = checkKeyConsistency(queryClass.columns);
 		if (options.ORDER) {
 			queryClass.order = getOrderKey(options.ORDER, queryClass.columns);
 		}
@@ -41,6 +44,7 @@ function handleWhere(where: any, queryClass: QueryClass) {
 		throw new InsightError("Where is not formatted correctly");
 	}
 }
+
 
 function makeFilterObjects(filter: Where): Filter {
 	/** Takes in an unchecked filter and creates a filter object
@@ -76,7 +80,9 @@ function makeFilterObjects(filter: Where): Filter {
 		}
 	} else if (filter.NOT !== undefined) {
 		// TODO might need well formed check
-		return getNComparisonModel(makeFilterObjects(filter.NOT));
+		if (isNComparison(filter.NOT)) {
+			return getNComparisonModel(makeFilterObjects(filter.NOT));
+		}
 	}
 	// This should be unreachable
 	throw new InsightError("Something went wrong in makeFilterObjects");
@@ -114,16 +120,22 @@ function getColumnKeys(columns: Key[]): Key[] {
 	return keyList;
 }
 
-function getOrderKey(key: Key, columnKeys: Key[]): Key {
-	// perhaps need to validate key string before
+function getOrderKey(key: Key, columns: Key[]): Key {
+	/** Creates a model order key from given object
+	 * @param key non-validated order key
+	 * @param columns COLUMNS keys
+	 * @returns Key
+	 *
+	 * throws InsightError if it does not mention a COLUMN key
+	 */
+	// TODO perhaps need to validate key string before
 	if (!isKey(JSON.parse(JSON.stringify(key)))) {
 		throw new InsightError("Order key invalid");
 	}
 	const ret = new Key(JSON.parse(JSON.stringify(key)));
-	// if (!columnKeys.includes(ret)) {
-	// 	// TODO create fn to compare keys
-	// 	throw new InsightError("ORDER key must be in COLUMNS");
-	// }
+	if (!isKeyInList(ret, columns)) {
+		throw new InsightError("ORDER key must be in COLUMNS");
+	}
 	return ret;
 }
 
@@ -154,6 +166,34 @@ function getSComparisonModel(key: any): SComparison {
 	return new SComparison(sKey, inputString);
 }
 
+function checkKeyConsistency(keys: Key[]): string {
+	/** Takes in a list of keys and returns the first if all datasets mentioned have the same id
+	 * @param keys a list of keys
+	 *
+	 * @returns Key
+	 * throws InsightError if any key is not consistent
+	 */
+	const firstKeyID: string = keys[0].idString;
+	for (const key of keys) {
+		if (key.idString !== firstKeyID) {
+			throw new InsightError("All datasets mentioned must be the same");
+		}
+	}
+	return firstKeyID;
+}
+
+function compareKeys(key1: Key, key2: Key): boolean {
+	return (key1.idString === key2.idString && key1.field === key2.field);
+}
+
+function isKeyInList(key: Key, keyList: Key[]): boolean {
+	for (const k of keyList) {
+		if (compareKeys(key, k)) {
+			return true;
+		}
+	}
+	return false;
+}
 function getNComparisonModel(filter: Filter): NComparison {
 	return new NComparison(filter);
 }

@@ -118,9 +118,9 @@ export default class InsightFacade implements IInsightFacade {
 
 		const validQuery = query as QueryModel;
 		let queryClass: QueryClass = new QueryClass();
-		handleWhere(validQuery.WHERE, queryClass);
 		handleOptions(validQuery.OPTIONS, queryClass);
-		performQueryHelpers.getWhere(queryClass.where, queryClass.columns);
+		handleWhere(validQuery.WHERE, queryClass);
+		performQueryHelpers.applyWhere(queryClass.where, queryClass.columns);
 		const res = performQueryHelpers.applyColumns(queryClass.columns);
 		if (res.length > 5000) {
 			throw new ResultTooLargeError("Over 5k entries grrrrrrrrrrrrrrr");
