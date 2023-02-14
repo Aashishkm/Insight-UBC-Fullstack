@@ -1,6 +1,6 @@
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
-import {isFilterList, isMComparison, isOptions, isSComparison, isWhere} from "../../src/QueryModelHelpers";
+import {isFilterList, isMComparison, isOptions, isSComparison, isWhere} from "../../src/controller/QueryModelHelpers";
 import {InsightError} from "../../src/controller/IInsightFacade";
 
 use(chaiAsPromised);

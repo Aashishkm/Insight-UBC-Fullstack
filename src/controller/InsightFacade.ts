@@ -9,19 +9,20 @@ import {
 	InsightDatasetKind,
 	InsightError,
 	InsightResult,
-	NotFoundError,
+	NotFoundError, ResultTooLargeError,
 } from "./IInsightFacade";
 
 import {
 	handleWhere,
 	handleOptions, hasWhereAndOptions
-} from "../QueryModelHelpers";
+} from "./QueryModelHelpers";
 
 import {
 	QueryClass,
 	QueryModel
-} from "../QueryModel";
-import PerformQueryHelpers from "../PerformQueryHelpers";
+} from "../Models/QueryModel";
+import PerformQueryHelpers from "./PerformQueryHelpers";
+import {SectionModel} from "../Models/SectionModel";
 
 
 /**
@@ -111,17 +112,26 @@ export default class InsightFacade implements IInsightFacade {
 
 		// reject query without WHERE and OPTIONS
 		if (!hasWhereAndOptions(query)) {
-			return Promise.reject(InsightError);
+			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		};
-		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([0]);
+		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 
 
 		const validQuery = query as QueryModel;
 		let queryClass: QueryClass = new QueryClass();
-		handleWhere(validQuery.WHERE, queryClass);
 		handleOptions(validQuery.OPTIONS, queryClass);
-		performQueryHelpers.getWhere(queryClass.where);
-		return Promise.resolve([]);
+		handleWhere(validQuery.WHERE, queryClass);
+		queryClass.queryId = queryClass.columns[0].idString;
+		performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
+		const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
+		let res: InsightResult[] = unsortedRes;
+		if (queryClass.order !== undefined) {
+			res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
+		}
+		if (res.length > 5000) {
+			throw new ResultTooLargeError("Over 5k entries :(");
+		}
+		return Promise.resolve(res);
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {

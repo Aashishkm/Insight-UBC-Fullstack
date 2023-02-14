@@ -16,11 +16,24 @@ export {QueryModel,
 	SField,
 	QueryClass};
 
-type MField = "avg" | "pass" | "fail" | "audit" | "year";
-type SField = "dept" | "id" | "instructor" | "title" | "uuid";
 type MComparator = "LT" | "GT" | "EQ";
 type Logic = "AND" | "OR";
 
+enum MField {
+	avg = "avg",
+	pass = "pass",
+	fail = "fail",
+	audit = "audit",
+	year = "year"
+}
+
+enum SField {
+	dept = "dept",
+	id = "id",
+	instructor = "instructor",
+	title = "title",
+	uuid = "uuid"
+}
 interface QueryModel {
 	 WHERE: Where;
 	 OPTIONS: Options;
@@ -39,6 +52,7 @@ interface Where {
 class QueryClass {
 	public where: Filter = {};
 	public columns: Key[] = [];
+	public queryId: string = "";
 	public order?: Key;
 }
 

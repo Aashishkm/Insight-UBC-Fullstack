@@ -98,12 +98,13 @@ export class DataProcessorModel {
 					continue;
 				}
 				let validSection = new SectionModel(
-					anyData.result[sectionData].id,
+					anyData.result[sectionData].id.toString(),
 					anyData.result[sectionData].Course,
 					anyData.result[sectionData].Title,
 				    anyData.result[sectionData].Professor,
 					anyData.result[sectionData].Subject,
-					anyData.result[sectionData].Year,
+					(anyData.result[sectionData]["Section"] === "overall") ? 1900
+						: Number.parseInt(anyData.result[sectionData].Year, 10),
 					anyData.result[sectionData].Avg,
 					anyData.result[sectionData].Pass,
 					anyData.result[sectionData].Fail,
