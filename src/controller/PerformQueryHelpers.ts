@@ -212,6 +212,8 @@ function matches(input: string, regex: string): boolean {
 			throw new InsightError("Must only contain wildcards at start or/and end");
 		}
 		return input.startsWith(match);
+	} else if (regex.includes("*")) {
+		throw new InsightError("Invalid input in IS");
 	}
 	// console.error("Should not have reached in PerformQueryHelpers.ts matches");
 	return false;
