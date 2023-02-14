@@ -14,7 +14,6 @@ import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
 import {DatasetModel} from "../../src/Models/DatasetModel";
 import {DataProcessorModel} from "../../src/controller/DataProcessorModel";
-
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
@@ -260,5 +259,82 @@ describe("InsightFacade", function () {
 				},
 			}
 		);
+	});
+
+	describe("Testing environment find the console!", function () {
+		after(() => {
+			clearDisk();
+		});
+		it("should print a bunch of stuff to console... supposably", async () => {
+			facade = new InsightFacade();
+			let dataset1 = await facade.addDataset("ubc", sections, InsightDatasetKind.Sections);
+			const queryStr = "{\n" +
+				"\n" +
+				"    \"WHERE\":{\n" +
+				"\n" +
+				"       \"OR\":[\n" +
+				"\n" +
+				"          {\n" +
+				"\n" +
+				"             \"AND\":[\n" +
+				"\n" +
+				"                {\n" +
+				"\n" +
+				"                   \"GT\":{\n" +
+				"\n" +
+				"                      \"ubc_avg\":90\n" +
+				"\n" +
+				"                   }\n" +
+				"\n" +
+				"                },\n" +
+				"\n" +
+				"                {\n" +
+				"\n" +
+				"                   \"IS\":{\n" +
+				"\n" +
+				"                      \"ubc_dept\":\"adhe\"\n" +
+				"\n" +
+				"                   }\n" +
+				"\n" +
+				"                }\n" +
+				"\n" +
+				"             ]\n" +
+				"\n" +
+				"          },\n" +
+				"\n" +
+				"          {\n" +
+				"\n" +
+				"             \"EQ\":{\n" +
+				"\n" +
+				"                \"ubc_avg\":95\n" +
+				"\n" +
+				"             }\n" +
+				"\n" +
+				"          }\n" +
+				"\n" +
+				"       ]\n" +
+				"\n" +
+				"    },\n" +
+				"\n" +
+				"    \"OPTIONS\":{\n" +
+				"\n" +
+				"       \"COLUMNS\":[\n" +
+				"\n" +
+				"          \"ubc_dept\",\n" +
+				"\n" +
+				"          \"ubc_id\",\n" +
+				"\n" +
+				"          \"ubc_avg\"\n" +
+				"\n" +
+				"       ],\n" +
+				"\n" +
+				"       \"ORDER\":\"ubc_avg\"\n" +
+				"\n" +
+				"    }\n" +
+				"\n" +
+				"} ";
+			const queryObj = JSON.parse(queryStr);
+			await facade.performQuery(queryObj);
+		}).timeout(5000);
 	});
 });

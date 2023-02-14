@@ -213,6 +213,6 @@ function matches(input: string, regex: string): boolean {
 		}
 		return input.startsWith(match);
 	}
-	console.error("Should not have reached in PerformQueryHelpers.ts matches");
+	// console.error("Should not have reached in PerformQueryHelpers.ts matches");
 	return false;
 }
