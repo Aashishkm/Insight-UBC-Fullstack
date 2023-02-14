@@ -52,6 +52,7 @@ interface Where {
 class QueryClass {
 	public where: Filter = {};
 	public columns: Key[] = [];
+	public queryId: string = "";
 	public order?: Key;
 }
 

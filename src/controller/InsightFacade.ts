@@ -121,9 +121,10 @@ export default class InsightFacade implements IInsightFacade {
 		let queryClass: QueryClass = new QueryClass();
 		handleOptions(validQuery.OPTIONS, queryClass);
 		handleWhere(validQuery.WHERE, queryClass);
-		performQueryHelpers.applyWhere(queryClass.where, queryClass.columns);
-		const unsortedRes = performQueryHelpers.applyColumns(queryClass.columns);
-		let res = unsortedRes;
+		queryClass.queryId = queryClass.columns[0].idString;
+		performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
+		const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
+		let res: InsightResult[] = unsortedRes;
 		if (queryClass.order !== undefined) {
 			res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
 		}

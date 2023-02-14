@@ -1,20 +1,23 @@
 import {Filter, Key, LogicComparison, MComparison, NComparison, SComparison} from "../Models/QueryModel";
 import {DatasetModel} from "../Models/DatasetModel";
 import {SectionModel} from "../Models/SectionModel";
-import {InsightError} from "./IInsightFacade";
+import {InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
 
 export default class PerformQueryHelpers {
 	// TODO implement ordering
 	constructor(idList: SectionModel[], datasets: Map<string, DatasetModel>) {
 		this.globalSectionList = idList;
 		this.datasets = datasets;
+		this.currentQueryingDatasetID = "";
 	}
 	public globalSectionList: SectionModel[];
 	private datasets: Map<string, DatasetModel>;
-	public applyWhere(filter: Filter, columns: Key[]) {
+	private currentQueryingDatasetID: string;
+	public applyWhere(filter: Filter, queryingDatasetID: string) {
+		this.currentQueryingDatasetID = queryingDatasetID;
 		let idList: SectionModel[] = [];
 		if (Object.keys(filter).length === 0) {
-			const dataset = this.datasets.get(columns[0].idString);
+			const dataset = this.datasets.get(this.currentQueryingDatasetID);
 			if (dataset !== undefined) {
 				idList = dataset.sections;
 			}
@@ -24,7 +27,7 @@ export default class PerformQueryHelpers {
 		this.globalSectionList = idList;
 	}
 
-	public applyColumns(columns: Key[]) {
+	public applyColumns(columns: Key[]): InsightResult[] {
 		let resultArr: any = [];
 		this.globalSectionList.forEach((section) => {
 			let obj: {[key: string]: any} = {};
@@ -39,8 +42,7 @@ export default class PerformQueryHelpers {
 
 	public applyComparison(filter: Filter): SectionModel[] {
 		if (filter.constructor.name === "LogicComparison") {
-			const obj = this.handleLogicComparison(filter as LogicComparison);
-			return obj;
+			return this.handleLogicComparison(filter as LogicComparison);
 		} else if (filter.constructor.name === "SComparison") {
 			return this.handleSComparison(filter as SComparison);
 		} else if (filter.constructor.name === "MComparison") {
@@ -114,17 +116,34 @@ export default class PerformQueryHelpers {
 		return resultSections;
 	}
 	private handleNComparison(nComparison: NComparison): SectionModel[] {
-		// TODO finish me!
-		return this.applyComparison(nComparison.filter);
+		const datasetAll = this.datasets.get(this.currentQueryingDatasetID);
+		const datasetFiltered = this.applyComparison(nComparison.filter);
+		let res: SectionModel[] = [];
+		if (datasetAll) {
+			res = datasetAll.sections.filter((section) => {
+				return (datasetFiltered.indexOf(section) === -1);
+			});
+		}
+		return res;
 	}
 
 	private isIDinDatasets(id: string): boolean {
 		return (this.datasets.has(id));
 	}
 
-	public applyOrder(order: Key, sectionList: SectionModel[]) {
+	public applyOrder(order: Key, insightResultList: InsightResult[]): InsightResult[] {
 		// TODO finish me!
-		return sectionList;
+		let res = insightResultList;
+		const orderProperty = order.idString + "_" + order.field;
+		res = res.sort((a, b) => {
+			if (a[orderProperty] < b[orderProperty]) {
+				return -1;
+			} if (a[orderProperty] > b[orderProperty]) {
+				return 1;
+			}
+			return 0;
+		});
+		return res;
 	}
 }
 
@@ -163,7 +182,7 @@ function union(sectionLists: SectionModel[][]) {
 	lists.forEach((list) => {
 		result = result.concat(list);
 	});
-
+	result = [...new Set(result)];
 	return result;
 }
 function matches(input: string, regex: string): boolean {

@@ -72,16 +72,15 @@ function makeFilterObjects(filter: Where): Filter {
 		}
 	} else if (filter.LT !== undefined) {
 		if (isMComparison(filter.LT)) {
-			return getMComparisonModel("LT", filter.GT);
+			return getMComparisonModel("LT", filter.LT);
 		}
 	} else if (filter.IS !== undefined) {
 		if (isSComparison(filter.IS)) {
 			return getSComparisonModel(filter.IS);
 		}
 	} else if (filter.NOT !== undefined) {
-		// TODO might need well formed check
 		if (isNComparison(filter.NOT)) {
-			return getNComparisonModel(makeFilterObjects(filter.NOT));
+			return getNComparisonModel(filter.NOT);
 		}
 	}
 	// This should be unreachable
@@ -195,7 +194,7 @@ function isKeyInList(key: Key, keyList: Key[]): boolean {
 	return false;
 }
 function getNComparisonModel(filter: Filter): NComparison {
-	return new NComparison(filter);
+	return new NComparison(makeFilterObjects(filter));
 }
 
 // returns true if arg has properties WHERE and OPTIONS defined

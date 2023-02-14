@@ -103,7 +103,8 @@ export class DataProcessorModel {
 					anyData.result[sectionData].Title,
 				    anyData.result[sectionData].Professor,
 					anyData.result[sectionData].Subject,
-					Number.parseInt(anyData.result[sectionData].Year, 10),
+					(anyData.result[sectionData]["Section"] === "overall") ? 1900
+						: Number.parseInt(anyData.result[sectionData].Year, 10),
 					anyData.result[sectionData].Avg,
 					anyData.result[sectionData].Pass,
 					anyData.result[sectionData].Fail,
