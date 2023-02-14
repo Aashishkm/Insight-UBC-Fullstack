@@ -115,9 +115,15 @@ export default class PerformQueryHelpers {
 		}
 		return resultSections;
 	}
+	// TODO fix this later optimize!
 	private handleNComparison(nComparison: NComparison): SectionModel[] {
 		const datasetAll = this.datasets.get(this.currentQueryingDatasetID);
 		const datasetFiltered = this.applyComparison(nComparison.filter);
+		const datasetFilteredSet = new Set(datasetFiltered);
+		if (datasetAll === undefined) {
+			throw new Error("Something went wrong in handleNComparison");
+		}
+		const datasetAllSet = new Set(datasetAll.sections);
 		let res: SectionModel[] = [];
 		if (datasetAll) {
 			res = datasetAll.sections.filter((section) => {
@@ -207,6 +213,6 @@ function matches(input: string, regex: string): boolean {
 		}
 		return input.startsWith(match);
 	}
-	console.log("Should not have reached in PerformQueryHelpers.ts matches");
+	console.error("Should not have reached in PerformQueryHelpers.ts matches");
 	return false;
 }
