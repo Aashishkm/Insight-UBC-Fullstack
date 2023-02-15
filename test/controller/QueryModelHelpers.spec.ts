@@ -1,6 +1,7 @@
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
-import {isFilterList, isMComparison, isOptions, isSComparison, isWhere} from "../../src/controller/QueryModelHelpers";
+import {isFilterList, validateMComparison, isOptions,
+	validateSComparison, isWhere} from "../../src/controller/QueryModelHelpers";
 import {InsightError} from "../../src/controller/IInsightFacade";
 
 use(chaiAsPromised);
@@ -84,22 +85,22 @@ describe("performQueryHelpers", () => {
 	describe("isSComparison", () => {
 		// Implicitly test isSField and isSKey
 		it("should return true, simple", () => {
-			const result = isSComparison({ubc_id:"test"});
+			const result = validateSComparison({ubc_id:"test"});
 			expect(result).to.be.true;
 		});
 		it("should throw InsightError, invalid sfield", () => {
 			expect(()=> {
-				isSComparison({ubc_notid:"test"});
+				validateSComparison({ubc_notid:"test"});
 			}).to.throw(InsightError);
 		});
 		it("should throw InsightError, multiple keys", () => {
 			expect(()=> {
-				isSComparison({ubc_id:"test", ubc_instr:"test2"});
+				validateSComparison({ubc_id:"test", ubc_instr:"test2"});
 			}).to.throw(InsightError);
 		});
 		it("should throw InsightError, number in string", () => {
 			expect(()=> {
-				isSComparison({ubc_id:3});
+				validateSComparison({ubc_id:3});
 			}).to.throw(InsightError);
 		});
 		// TODO add more tests matching wildcards
@@ -107,32 +108,32 @@ describe("performQueryHelpers", () => {
 	describe("isMComparison", () => {
 		// implicitly test isMKey and isMField
 		it("should return true, simple", () => {
-			const result = isMComparison({ubc_avg:39});
+			const result = validateMComparison({ubc_avg:39});
 			expect(result).to.be.true;
 		});
 		it("should throw InsightError, invalid mField", () => {
 			expect(()=> {
-				isMComparison({ubc_notAvg:39});
+				validateMComparison({ubc_notAvg:39});
 			}).to.throw(InsightError);
 		});
 		it("should throw InsightError, multiple keys", () => {
 			expect(()=> {
-				isMComparison({ubc_pass:90, ubc_audit:32});
+				validateMComparison({ubc_pass:90, ubc_audit:32});
 			}).to.throw(InsightError);
 		});
 		it("should throw InsightError, string in number", () => {
 			expect(()=> {
-				isMComparison({ubc_avg:"3"});
+				validateMComparison({ubc_avg:"3"});
 			}).to.throw(InsightError);
 		});
 		it("should throw InsightError, invalid mKey", () => {
 			expect(()=> {
-				isMComparison({ubcAvg:3});
+				validateMComparison({ubcAvg:3});
 			}).to.throw(InsightError);
 		});
 		it("should throw InsightError, invalid mKey multiple _", () => {
 			expect(()=> {
-				isMComparison({ubc_avg_audit:3});
+				validateMComparison({ubc_avg_audit:3});
 			}).to.throw(InsightError);
 		});
 	});

@@ -261,80 +261,51 @@ describe("InsightFacade", function () {
 		);
 	});
 
-	describe("Testing environment find the console!", function () {
-		after(() => {
+	describe("PerformQuery AND", () => {
+		before(function () {
+			console.info(`Before: ${this.test?.parent?.title}`);
+
+			facade = new InsightFacade();
+			let dataset1 = facade.addDataset("sections", sections, InsightDatasetKind.Sections);
+
+			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
+			// Will *fail* if there is a problem reading ANY dataset.
+			const loadDatasetPromises = [dataset1];
+
+			return Promise.all(loadDatasetPromises);
+		});
+
+		after(function () {
+			console.info(`After: ${this.test?.parent?.title}`);
 			clearDisk();
 		});
-		it("should print a bunch of stuff to console... supposably", async () => {
-			facade = new InsightFacade();
-			let dataset1 = await facade.addDataset("ubc", sections, InsightDatasetKind.Sections);
-			const queryStr = "{\n" +
-				"\n" +
-				"    \"WHERE\":{\n" +
-				"\n" +
-				"       \"OR\":[\n" +
-				"\n" +
-				"          {\n" +
-				"\n" +
-				"             \"AND\":[\n" +
-				"\n" +
-				"                {\n" +
-				"\n" +
-				"                   \"GT\":{\n" +
-				"\n" +
-				"                      \"ubc_avg\":90\n" +
-				"\n" +
-				"                   }\n" +
-				"\n" +
-				"                },\n" +
-				"\n" +
-				"                {\n" +
-				"\n" +
-				"                   \"IS\":{\n" +
-				"\n" +
-				"                      \"ubc_dept\":\"adhe\"\n" +
-				"\n" +
-				"                   }\n" +
-				"\n" +
-				"                }\n" +
-				"\n" +
-				"             ]\n" +
-				"\n" +
-				"          },\n" +
-				"\n" +
-				"          {\n" +
-				"\n" +
-				"             \"EQ\":{\n" +
-				"\n" +
-				"                \"ubc_avg\":95\n" +
-				"\n" +
-				"             }\n" +
-				"\n" +
-				"          }\n" +
-				"\n" +
-				"       ]\n" +
-				"\n" +
-				"    },\n" +
-				"\n" +
-				"    \"OPTIONS\":{\n" +
-				"\n" +
-				"       \"COLUMNS\":[\n" +
-				"\n" +
-				"          \"ubc_dept\",\n" +
-				"\n" +
-				"          \"ubc_id\",\n" +
-				"\n" +
-				"          \"ubc_avg\"\n" +
-				"\n" +
-				"       ],\n" +
-				"\n" +
-				"       \"ORDER\":\"ubc_avg\"\n" +
-				"\n" +
-				"    }\n" +
-				"\n" +
-				"} ";
-			const queryObj = JSON.parse(queryStr);
-			await facade.performQuery(queryObj);
-		}).timeout(5000);
+
+		type PQErrorKind = "ResultTooLargeError" | "InsightError" | "NotFoundError";
+
+		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
+			"Dynamic InsightFacade PerformQuery tests",
+			(input) => facade.performQuery(input),
+			"./test/resources/andqueries",
+			{
+				assertOnResult: async (actual, expected) => {
+					const test = await expected;
+					expect(actual).to.deep.members(test);
+					expect(actual).to.have.length(test.length);
+				},
+				errorValidator: (error): error is PQErrorKind =>
+					error === "ResultTooLargeError" || error === "InsightError" || error === "NotFoundError",
+				assertOnError: (actual, expected) => {
+					if (expected === "NotFoundError") {
+						expect(actual).to.be.instanceof(NotFoundError);
+					} else if (expected === "InsightError") {
+						expect(actual).to.be.instanceof(InsightError);
+					} else if (expected === "ResultTooLargeError") {
+						expect(actual).to.be.instanceof(ResultTooLargeError);
+					} else {
+						expect.fail("UNEXPECTED ERROR");
+					}
+				},
+			}
+		);
 	});
 });
