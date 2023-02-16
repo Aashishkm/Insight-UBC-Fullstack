@@ -16,6 +16,7 @@ export default class PerformQueryHelpers {
 	public applyWhere(filter: Filter, queryingDatasetID: string) {
 		this.currentQueryingDatasetID = queryingDatasetID;
 		let idList: SectionModel[] = [];
+		// if filter is empty e.g. the where clause is empty and should match everywhere
 		if (Object.keys(filter).length === 0) {
 			const dataset = this.datasets.get(this.currentQueryingDatasetID);
 			if (dataset !== undefined) {
@@ -196,25 +197,25 @@ function matches(input: string, regex: string): boolean {
 		return input === regex;
 	} else if (regex[0] === "*" && regex[regex.length - 1] === "*") {
 		const match = regex.substring(1, regex.length - 1);
-		if (match.includes("*")) {
-			throw new InsightError("Must only contain wildcards at start or/and end");
-		}
+		validateSFieldInput(match);
 		return input.includes(match);
 	} else if (regex[0] === "*") {
 		const match = regex.substring(1);
-		if (match.includes("*")) {
-			throw new InsightError("Must only contain wildcards at start or/and end");
-		}
+		validateSFieldInput(match);
 		return input.endsWith(match);
 	} else if (regex[regex.length - 1] === "*") {
 		const match = regex.substring(0, regex.length - 1);
-		if (match.includes("*")) {
-			throw new InsightError("Must only contain wildcards at start or/and end");
-		}
+		validateSFieldInput(match);
 		return input.startsWith(match);
 	} else if (regex.includes("*")) {
-		throw new InsightError("Invalid input in IS");
+		throw new InsightError("Must only contain wildcards at start or/and end");
 	}
-	// console.error("Should not have reached in PerformQueryHelpers.ts matches");
 	return false;
+}
+function validateSFieldInput(inp: string): boolean {
+	if (inp.includes("*")) {
+		throw new InsightError("Must only contain wildcards at start or/and end");
+	} else {
+		return false;
+	}
 }

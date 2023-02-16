@@ -3,7 +3,7 @@ import {InsightError} from "./IInsightFacade";
 import {hasComparator, hasRequiredLength} from "./QueryModelHelpers";
 
 export {isSField, isSKey, isMKey, isMField, isSection, isWhere, isFilterList,
-	isSComparison, isMComparison, isOptions, isKey, isField, isFilter, isNComparison};
+	validateSComparison, validateMComparison, isOptions, isKey, isField, isFilter, isNComparison};
 
 function isSField(arg: string): boolean {
 	return Object.values(SField).includes(arg as unknown as SField);
@@ -31,7 +31,8 @@ function isSection(arg: string): boolean {
 	return true;
 }
 
-function isSComparison(arg: any): boolean {
+function validateSComparison(arg: any) {
+	// TODO implement wildcard checks
 	if (!hasRequiredLength(arg, 1)) {
 		throw new InsightError("SComparison has too many keys");
 	} else {
@@ -42,7 +43,6 @@ function isSComparison(arg: any): boolean {
 			}
 		}
 	}
-	return true;
 }
 
 function isMField(arg: string): boolean {
@@ -66,7 +66,7 @@ function isMKey(input: any): boolean {
 }
 
 // returns true if MComparison is formatted correctly
-function isMComparison(arg: any): boolean {
+function validateMComparison(arg: any) {
 	if (!hasRequiredLength(arg, 1)) {
 		throw new InsightError("MComparison has too many keys");
 	} else {
@@ -77,7 +77,6 @@ function isMComparison(arg: any): boolean {
 			}
 		}
 	}
-	return true;
 }
 
 // returns true if arg is a list and every element in list is a filter
