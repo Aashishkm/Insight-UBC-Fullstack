@@ -12,8 +12,7 @@ import {folderTest} from "@ubccpsc310/folder-test";
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
-import {DatasetModel} from "../../src/Models/DatasetModel";
-import {DataProcessorModel} from "../../src/controller/DataProcessorModel";
+
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
@@ -267,10 +266,12 @@ describe("InsightFacade", function () {
 
 			facade = new InsightFacade();
 			let dataset1 = facade.addDataset("sections", sections, InsightDatasetKind.Sections);
+			let dataset2 = facade.addDataset("ubc", getContentFromArchives("minipair.zip"),
+				InsightDatasetKind.Sections);
 
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [dataset1];
+			const loadDatasetPromises = [dataset1, dataset2];
 
 			return Promise.all(loadDatasetPromises);
 		});
@@ -289,6 +290,7 @@ describe("InsightFacade", function () {
 			{
 				assertOnResult: async (actual, expected) => {
 					const test = await expected;
+					// expect(actual).to.deep.equal(test);
 					expect(actual).to.deep.members(test);
 					expect(actual).to.have.length(test.length);
 				},

@@ -1,0 +1,32 @@
+{
+	"title": "different datasets in columns and where",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"GT": {
+						"sections_fail": 5
+					}
+				},
+				{
+					"EQ": {
+						"sections_year": 2015
+					}
+				},
+				{
+					"LT": {
+						"sections_audit": 10
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"ubc_fail",
+				"ubc_dept"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}
