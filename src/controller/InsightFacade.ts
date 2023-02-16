@@ -13,16 +13,12 @@ import {
 } from "./IInsightFacade";
 
 import {
-	handleWhere,
-	handleOptions, hasWhereAndOptions
-} from "./QueryModelHelpers";
-
-import {
 	QueryClass,
 	QueryModel
 } from "../Models/QueryModel";
 import PerformQueryHelpers from "./PerformQueryHelpers";
 import {SectionModel} from "../Models/SectionModel";
+import QueryModelHelpers from "./QueryModelHelpers";
 
 
 /**
@@ -109,18 +105,15 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
-
-		// reject query without WHERE and OPTIONS
-		if (!hasWhereAndOptions(query)) {
+		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
+		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
+		if (!queryModelHelpers.hasWhereAndOptions(query)) {
 			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		};
-		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
-
-
 		const validQuery = query as QueryModel;
 		let queryClass: QueryClass = new QueryClass();
-		handleOptions(validQuery.OPTIONS, queryClass);
-		handleWhere(validQuery.WHERE, queryClass);
+		queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
+		queryModelHelpers.handleWhere(validQuery.WHERE, queryClass);
 		queryClass.queryId = queryClass.columns[0].idString;
 		performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
 		const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);

@@ -1,0 +1,275 @@
+{
+	"title": "multiple AND with all COLUMNS sorted by TITLE",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"GT": {
+						"sections_fail": 5
+					}
+				},
+				{
+					"IS": {
+						"sections_instructor": "*gregor*"
+					}
+				},
+				{
+					"EQ": {
+						"sections_year": 2015
+					}
+				},
+				{
+					"LT": {
+						"sections_audit": 10
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_fail",
+				"sections_dept",
+				"sections_id",
+				"sections_avg",
+				"sections_instructor",
+				"sections_uuid",
+				"sections_title",
+				"sections_audit",
+				"sections_pass",
+				"sections_year"
+			],
+			"ORDER": "sections_title"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"sections_fail": 6,
+			"sections_dept": "chem",
+			"sections_id": "154",
+			"sections_avg": 64.97,
+			"sections_instructor": "gibson, gregory",
+			"sections_uuid": "89228",
+			"sections_title": "chem for engr",
+			"sections_audit": 0,
+			"sections_pass": 58,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 12,
+			"sections_dept": "apsc",
+			"sections_id": "160",
+			"sections_avg": 73.7,
+			"sections_instructor": "khosravi, hassan;miller, gregor",
+			"sections_uuid": "4218",
+			"sections_title": "comp eng design",
+			"sections_audit": 0,
+			"sections_pass": 131,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 14,
+			"sections_dept": "apsc",
+			"sections_id": "160",
+			"sections_avg": 75.43,
+			"sections_instructor": "khosravi, hassan;miller, gregor",
+			"sections_uuid": "4217",
+			"sections_title": "comp eng design",
+			"sections_audit": 0,
+			"sections_pass": 178,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 46,
+			"sections_dept": "cpsc",
+			"sections_id": "110",
+			"sections_avg": 70.78,
+			"sections_instructor": "kiczales, gregor",
+			"sections_uuid": "62342",
+			"sections_title": "comptn, progrmng",
+			"sections_audit": 0,
+			"sections_pass": 185,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 12,
+			"sections_dept": "biol",
+			"sections_id": "121",
+			"sections_avg": 69.28,
+			"sections_instructor": "bole, gregory michael",
+			"sections_uuid": "55056",
+			"sections_title": "gentcs ecol&evol",
+			"sections_audit": 0,
+			"sections_pass": 210,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 13,
+			"sections_dept": "biol",
+			"sections_id": "121",
+			"sections_avg": 69.42,
+			"sections_instructor": "bole, gregory michael",
+			"sections_uuid": "55053",
+			"sections_title": "gentcs ecol&evol",
+			"sections_audit": 0,
+			"sections_pass": 204,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 10,
+			"sections_dept": "biol",
+			"sections_id": "121",
+			"sections_avg": 71.63,
+			"sections_instructor": "bole, gregory michael",
+			"sections_uuid": "55050",
+			"sections_title": "gentcs ecol&evol",
+			"sections_audit": 0,
+			"sections_pass": 208,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 8,
+			"sections_dept": "chem",
+			"sections_id": "341",
+			"sections_avg": 71.78,
+			"sections_instructor": "dake, gregory",
+			"sections_uuid": "89330",
+			"sections_title": "global challenge",
+			"sections_audit": 0,
+			"sections_pass": 113,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 7,
+			"sections_dept": "geog",
+			"sections_id": "321",
+			"sections_avg": 67.66,
+			"sections_instructor": "gregory, derek john",
+			"sections_uuid": "14459",
+			"sections_title": "hist geog urbanz",
+			"sections_audit": 0,
+			"sections_pass": 55,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 64,
+			"sections_dept": "math",
+			"sections_id": "101",
+			"sections_avg": 59.8,
+			"sections_instructor": "martin, gregory",
+			"sections_uuid": "89969",
+			"sections_title": "int calc ap ph s",
+			"sections_audit": 1,
+			"sections_pass": 218,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 12,
+			"sections_dept": "comm",
+			"sections_id": "290",
+			"sections_avg": 74.72,
+			"sections_instructor": "huh, woonghee tim;werker, gregory",
+			"sections_uuid": "38773",
+			"sections_title": "int quan dec mak",
+			"sections_audit": 0,
+			"sections_pass": 203,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 23,
+			"sections_dept": "comm",
+			"sections_id": "290",
+			"sections_avg": 73.65,
+			"sections_instructor": "huh, woonghee tim;werker, gregory",
+			"sections_uuid": "38772",
+			"sections_title": "int quan dec mak",
+			"sections_audit": 0,
+			"sections_pass": 208,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 6,
+			"sections_dept": "comm",
+			"sections_id": "290",
+			"sections_avg": 76.8,
+			"sections_instructor": "graham, brian;werker, gregory",
+			"sections_uuid": "38771",
+			"sections_title": "int quan dec mak",
+			"sections_audit": 0,
+			"sections_pass": 233,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 26,
+			"sections_dept": "comm",
+			"sections_id": "290",
+			"sections_avg": 72.55,
+			"sections_instructor": "graham, brian;werker, gregory",
+			"sections_uuid": "38770",
+			"sections_title": "int quan dec mak",
+			"sections_audit": 0,
+			"sections_pass": 185,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 32,
+			"sections_dept": "chem",
+			"sections_id": "233",
+			"sections_avg": 65.32,
+			"sections_instructor": "dake, gregory;perrin, david",
+			"sections_uuid": "89253",
+			"sections_title": "org chem biol sc",
+			"sections_audit": 0,
+			"sections_pass": 192,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 60,
+			"sections_dept": "chem",
+			"sections_id": "233",
+			"sections_avg": 56.2,
+			"sections_instructor": "dake, gregory;perrin, david",
+			"sections_uuid": "89252",
+			"sections_title": "org chem biol sc",
+			"sections_audit": 1,
+			"sections_pass": 148,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 21,
+			"sections_dept": "chem",
+			"sections_id": "233",
+			"sections_avg": 73.54,
+			"sections_instructor": "dake, gregory",
+			"sections_uuid": "89251",
+			"sections_title": "org chem biol sc",
+			"sections_audit": 0,
+			"sections_pass": 211,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 21,
+			"sections_dept": "chem",
+			"sections_id": "233",
+			"sections_avg": 68.06,
+			"sections_instructor": "dake, gregory",
+			"sections_uuid": "89250",
+			"sections_title": "org chem biol sc",
+			"sections_audit": 0,
+			"sections_pass": 211,
+			"sections_year": 2015
+		},
+		{
+			"sections_fail": 56,
+			"sections_dept": "chem",
+			"sections_id": "233",
+			"sections_avg": 58.6,
+			"sections_instructor": "dake, gregory;tanner, martin",
+			"sections_uuid": "89249",
+			"sections_title": "org chem biol sc",
+			"sections_audit": 0,
+			"sections_pass": 159,
+			"sections_year": 2015
+		}
+	]
+}

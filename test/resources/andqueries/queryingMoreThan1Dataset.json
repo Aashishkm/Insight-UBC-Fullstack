@@ -1,0 +1,45 @@
+{
+	"title": "multiple AND with all COLUMNS no SORT",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"GT": {
+						"sections_fail": 5
+					}
+				},
+				{
+					"IS": {
+						"ubc_instructor": "*gregor*"
+					}
+				},
+				{
+					"EQ": {
+						"sections_year": 2015
+					}
+				},
+				{
+					"LT": {
+						"sections_audit": 10
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_fail",
+				"sections_dept",
+				"sections_id",
+				"sections_avg",
+				"sections_instructor",
+				"sections_uuid",
+				"sections_title",
+				"sections_audit",
+				"sections_pass",
+				"sections_year"
+			]
+		}
+	},
+	"errorExpected": true,
+	"expected": "InsightError"
+}

@@ -1,6 +1,5 @@
 import {Filter, MField, Options, SField, Where} from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
-import {hasComparator, hasRequiredLength} from "./QueryModelHelpers";
 
 export {isSField, isSKey, isMKey, isMField, isSection, isWhere, isFilterList,
 	validateSComparison, validateMComparison, isOptions, isKey, isField, isFilter, isNComparison};
@@ -153,6 +152,13 @@ function isNComparison(arg: any): arg is Filter {
 	} else {
 		return true;
 	}
+}
+function hasComparator(arg: any): boolean {
+	return arg.AND !== undefined || arg.OR !== undefined || arg.LT !== undefined || arg.GT !== undefined ||
+		arg.EQ !== undefined || arg.IS !== undefined || arg.NOT !== undefined;
+}
+function hasRequiredLength(arg: any, reqLength: number): boolean {
+	return Object.keys(arg).length === reqLength;
 }
 
 
