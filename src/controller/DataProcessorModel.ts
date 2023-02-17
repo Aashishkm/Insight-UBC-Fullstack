@@ -153,14 +153,17 @@ export class DataProcessorModel {
 			throw new InsightError("unable to write file to disk");
 		}
 	 }
-	 public loadDatasetFromDisk(id: string) {
-		let dataset: DatasetModel;
+	 // should be sync according to scott ta
+	public loadDatasetFromDisk(insight: InsightFacade) {
+		// let dataset: DatasetModel;
 		try {
-			let file = fs.readJSONSync("./data/" + id + ".json");
-			dataset = file;
-			// console.log(file);
-			// console.log(dataset.insightDataset.id);
-			return dataset;
+			let directory = fs.readdirSync("./data/");
+			directory.forEach((file) => {
+				let dataset: DatasetModel;
+				dataset = fs.readJSONSync("./data/" + file);
+				insight.datasets.set(dataset.insightDataset.id, dataset);
+				insight.addedDatasetIds.push(dataset.insightDataset.id);
+			});
 		} catch (e) {
 			return new InsightError("dataset doesn't exist");
 		}

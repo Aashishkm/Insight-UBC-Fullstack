@@ -31,8 +31,11 @@ export default class InsightFacade implements IInsightFacade {
 	public datasets: Map<string, DatasetModel>;
 	// map.keys -->
 	constructor() {
+		let saved = new DataProcessorModel();
+
 		this.addedDatasetIds = [];
 		this.datasets = new Map<string, DatasetModel>();
+		saved.loadDatasetFromDisk(this);
 		console.log("InsightFacadeImpl::init()");
 	}
 
