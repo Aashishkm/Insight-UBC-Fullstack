@@ -29,6 +29,9 @@ export default class PerformQueryHelpers {
 	}
 
 	public applyColumns(columns: Key[]): InsightResult[] {
+		if (!this.datasets.has(columns[0].idString)) {
+			throw new InsightError("Dataset not added");
+		}
 		let resultArr: any = [];
 		this.globalSectionList.forEach((section) => {
 			let obj: {[key: string]: any} = {};
@@ -193,7 +196,9 @@ function union(sectionLists: SectionModel[][]) {
 	return result;
 }
 function matches(input: string, regex: string): boolean {
-	if (!regex.includes("*")) {
+	if (regex === "*") {
+		return true;
+	} else if (!regex.includes("*")) {
 		return input === regex;
 	} else if (regex[0] === "*" && regex[regex.length - 1] === "*") {
 		const match = regex.substring(1, regex.length - 1);
