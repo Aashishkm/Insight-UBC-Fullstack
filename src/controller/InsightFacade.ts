@@ -110,21 +110,25 @@ export default class InsightFacade implements IInsightFacade {
 		if (!queryModelHelpers.hasWhereAndOptions(query)) {
 			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
 		};
-		const validQuery = query as QueryModel;
-		let queryClass: QueryClass = new QueryClass();
-		queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
-		queryModelHelpers.handleWhere(validQuery.WHERE, queryClass);
-		queryClass.queryId = queryClass.columns[0].idString;
-		performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
-		const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
-		let res: InsightResult[] = unsortedRes;
-		if (queryClass.order !== undefined) {
-			res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
+		try {
+			const validQuery = query as QueryModel;
+			let queryClass: QueryClass = new QueryClass();
+			queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
+			queryModelHelpers.handleWhere(validQuery.WHERE, queryClass);
+			queryClass.queryId = queryClass.columns[0].idString;
+			performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
+			const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
+			let res: InsightResult[] = unsortedRes;
+			if (queryClass.order !== undefined) {
+				res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
+			}
+			if (res.length > 5000) {
+				throw new ResultTooLargeError("Over 5k entries :(");
+			}
+			return Promise.resolve(res);
+		} catch (e) {
+			return Promise.reject(e);
 		}
-		if (res.length > 5000) {
-			throw new ResultTooLargeError("Over 5k entries :(");
-		}
-		return Promise.resolve(res);
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {
