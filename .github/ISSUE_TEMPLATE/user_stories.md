@@ -17,19 +17,19 @@ Make sure to follow the *Role, Goal, Benefit* framework for the user stories and
 
 ### User Story 1
 
-As a \<role\>, I want to \<goal\>, so that \<benefit\>.
+As a student, I want to check the overall average of past sections for a certain course, so that I can estimate the difficulty of a course.
 
 #### Definitions of Done(s)
 
-Scenario 1: \<The  name  for  the  behaviour  that  will  be  described\> \
-Given: \<Some  initial  application  state  (precondition)\> \
-When: \<The  user  do  some  series  of  action\> \
-Then: \<Some  outcome  state  is  expected  (post-condition)\>
+Scenario 1: Valid course
+Given: The student is on a channel that the bot is listening on.
+When: The student inputs a prefixed command specifying a valid course (e.g. !average CPSC 310).
+Then: The bot prints the historical overall average for that course in the same text channel that the command was called in.
 
-Scenario 2: \<The  name  for  the  behaviour  that  will  be  described\> \
-Given: \<Some  initial  application  state  (precondition)\> \
-When: \<The  user  do  some  series  of  action\> \
-Then: \<Some  outcome  state  is  expected  (post-condition)\>
+Scenario 2: Invalid course
+Given: The student is on a channel that the bot is listening on.
+When: The student inputs a prefixed command specifying an invalid course (e.g. !average ABCD 999).
+Then: The bot will print a message in the same text channel that the command was called in saying it could not find the specified course.
 
 ### User Story 2
 
