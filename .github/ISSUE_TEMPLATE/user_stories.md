@@ -34,19 +34,19 @@ Then: The bot will print a message in the same text channel that the command was
 
 ### User Story 2
 
-As a \<role\>, I want to \<goal\>, so that \<benefit\>.
+As an Instructor/Department Head, I want to be able to remove datasets with outdated course information (ex. courses that don't exist anymore), so that students have the most up to date course insight information.
 
 #### Definitions of Done(s)
 
-Scenario 1: \<The  name  for  the  behaviour  that  will  be  described\> \
-Given: \<Some  initial  application  state  (precondition)\> \
-When: \<The  user  do  some  series  of  action\> \
-Then: \<Some  outcome  state  is  expected  (post-condition)\>
+Scenario 1: Valid Dataset
+Given: The instructor is on a channel that the bot is listening on
+When: The instructor inputs a prefixed command that specifies a valid dataset
+Then: The bot will remove the dataset specified from the database
 
-Scenario 2: \<The  name  for  the  behaviour  that  will  be  described\> \
-Given: \<Some  initial  application  state  (precondition)\> \
-When: \<The  user  do  some  series  of  action\> \
-Then: \<Some  outcome  state  is  expected  (post-condition)\>
+Scenario 2: Invalid Dataset
+Given: The instructor is on a channel that the bot is listening on
+When: The instructor inputs a prefixed command that specifies a certain invalid dataset
+Then: The bot will print a message in the same text channel saying that it could not find the specified dataset, and that the removal was unsuccessful
 
 ### Others
 
