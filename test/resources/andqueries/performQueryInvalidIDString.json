@@ -1,0 +1,33 @@
+{
+  "title": "performQuery invalid ID string (with underscore)",
+  "input": {
+
+    "WHERE":{
+
+      "GT":{
+
+        "sections_avg":97
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+      "COLUMNS":[
+
+        "sect_ions_dept",
+
+        "sections_avg"
+
+      ],
+
+      "ORDER":"sections_avg"
+
+    }
+
+  } ,
+  "errorExpected": true,
+  "expected": "InsightError"
+
+}
