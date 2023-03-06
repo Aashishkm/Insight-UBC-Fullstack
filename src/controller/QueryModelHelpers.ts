@@ -38,6 +38,7 @@ export default class QueryModelHelpers {
 			throw new InsightError("Options not formatted correctly");
 		}
 	}
+
 	public handleWhere(where: any, queryClass: QueryClass) {
 		/** Takes in WHERE from a query and modifies given queryClass's filter
 		 * @param where an object to verify as a WHERE
@@ -54,6 +55,7 @@ export default class QueryModelHelpers {
 			throw new InsightError("Where is not formatted correctly");
 		}
 	}
+
 	public makeFilterObjects(filter: Where): Filter {
 		/** Takes in an unchecked filter and creates a filter object
 		 * @param filter a Where object to be made into a Filter object
@@ -86,6 +88,7 @@ export default class QueryModelHelpers {
 		// This should be unreachable
 		throw new InsightError("Something went wrong in makeFilterObjects");
 	}
+
 	private makeFilterObjectsList(filterList: Filter[]): Filter[] {
 		/** Takes in a list of unchecked Filter objects and returns checked a list of filter objects
 		 * @param filterList a list of unchecked Filter objects
@@ -102,6 +105,7 @@ export default class QueryModelHelpers {
 		}
 		return resultFilterList;
 	}
+
 	public getColumnKeys(columns: Key[]): Key[] {
 		let keyList: Key[] = [];
 		// push each string into a key array
@@ -115,6 +119,7 @@ export default class QueryModelHelpers {
 		}
 		return keyList;
 	}
+
 	private createOrderKey(orderKey: Key, columns: Key[]): Key {
 		/** Creates a model order key from given object
 		 * @param key non-validated order key
@@ -133,6 +138,7 @@ export default class QueryModelHelpers {
 		}
 		return ret;
 	}
+
 	private getMComparisonModel(mComparator: MComparator, mComparison: any): MComparison {
 		validateMComparison(mComparison);
 		let mKey: MKey = new MKey(this.getFirstKeyOfObject(mComparison));
@@ -140,6 +146,7 @@ export default class QueryModelHelpers {
 		let comparisonNum: number = this.getFirstValueOfObject(mComparison) as number;
 		return new MComparison(mComparator, mKey, comparisonNum);
 	}
+
 	private createSComparison(sComparison: any): SComparison {
 		validateSComparison(sComparison);
 		const sKey = new SKey(this.getFirstKeyOfObject(sComparison));
@@ -155,6 +162,7 @@ export default class QueryModelHelpers {
 			throw new InsightError("Must reference same dataset");
 		}
 	}
+
 	private validateMKey(mKey: MKey) {
 		if (this.datasetID === "") {
 			this.datasetID = mKey.idString;
@@ -162,6 +170,7 @@ export default class QueryModelHelpers {
 			throw new InsightError("Must reference same dataset");
 		}
 	}
+
 	private getFirstKeyOfObject(obj: any) {
 		return Object.keys(obj)[0];
 	}
@@ -180,9 +189,11 @@ export default class QueryModelHelpers {
 			}
 		}
 	}
+
 	private compareKeys(key1: Key, key2: Key): boolean {
 		return (key1.idString === key2.idString && key1.field === key2.field);
 	}
+
 	private isKeyInList(key: Key, keyList: Key[]): boolean {
 		for (const k of keyList) {
 			if (this.compareKeys(key, k)) {
@@ -191,9 +202,11 @@ export default class QueryModelHelpers {
 		}
 		return false;
 	}
+
 	private getNComparisonModel(filter: Filter): NComparison {
 		return new NComparison(this.makeFilterObjects(filter));
 	}
+
 	public hasWhereAndOptions(arg: any): arg is QueryModel {
 		return arg.WHERE !== undefined && arg.OPTIONS !== undefined;
 	}
