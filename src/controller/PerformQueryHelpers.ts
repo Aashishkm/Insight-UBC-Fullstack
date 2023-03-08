@@ -10,6 +10,7 @@ export default class PerformQueryHelpers {
 		this.datasets = datasets;
 		this.currentQueryingDatasetID = "";
 	}
+
 	public globalSectionList: SectionModel[];
 	private datasets: Map<string, DatasetModel>;
 	private currentQueryingDatasetID: string;
@@ -56,6 +57,7 @@ export default class PerformQueryHelpers {
 		}
 		return [];
 	}
+
 	public handleLogicComparison(logicComparison: LogicComparison): SectionModel[] {
 		const comparator = logicComparison.comparator;
 		const filters = logicComparison.filterList;
@@ -74,6 +76,7 @@ export default class PerformQueryHelpers {
 			return intersection(list);
 		}
 	}
+
 	private handleSComparison(sComparison: SComparison): SectionModel[] {
 		let resultSections: SectionModel[] = [];
 		const id = sComparison.sKey.idString;
@@ -91,6 +94,7 @@ export default class PerformQueryHelpers {
 		}
 		return resultSections;
 	}
+
 	private handleMComparison(mComparison: MComparison): SectionModel[] {
 		let resultSections: SectionModel[] = [];
 		const id = mComparison.mKey.idString;
@@ -119,6 +123,7 @@ export default class PerformQueryHelpers {
 		}
 		return resultSections;
 	}
+
 	// TODO fix this later optimize!
 	private handleNComparison(nComparison: NComparison): SectionModel[] {
 		const datasetAll = this.datasets.get(this.currentQueryingDatasetID);
@@ -148,7 +153,8 @@ export default class PerformQueryHelpers {
 		res = res.sort((a, b) => {
 			if (a[orderProperty] < b[orderProperty]) {
 				return -1;
-			} if (a[orderProperty] > b[orderProperty]) {
+			}
+			if (a[orderProperty] > b[orderProperty]) {
 				return 1;
 			}
 			return 0;

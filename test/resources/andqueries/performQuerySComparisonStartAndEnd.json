@@ -1,0 +1,769 @@
+{
+  "title": "performQuery SComparison Starts and Ends with ",
+  "input": {
+
+    "WHERE":{
+
+      "IS":{
+
+        "sections_instructor": "*uch*"
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+      "COLUMNS":[
+
+        "sections_dept",
+
+        "sections_instructor"
+
+      ],
+
+      "ORDER":"sections_instructor"
+
+    }
+
+  } ,
+  "errorExpected": false,
+  "expected": [
+      {
+        "sections_dept":"comm",
+        "sections_instructor":"altman, jonas;cubbon, paul;hodgson, antony;kruchten, philippe;simonite, james"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"altman, jonas;cubbon, paul;hodgson, antony;kruchten, philippe;simonite, james"
+      },
+      {
+        "sections_dept":"elec",
+        "sections_instructor":"arefifar, seyed ali;botman, pieter;fels, s sidney;grecu, cristian sorin;kruchten, philippe;lee, terry;lusina, paul;madden, john;najarian, siamak;tang, shuo"
+      },
+      {
+        "sections_dept":"elec",
+        "sections_instructor":"arefifar, seyed ali;botman, pieter;fels, s sidney;grecu, cristian sorin;kruchten, philippe;lee, terry;lusina, paul;madden, john;najarian, siamak;tang, shuo"
+      },
+      {
+        "sections_dept":"elec",
+        "sections_instructor":"arefifar, seyed ali;botman, pieter;fels, s sidney;grecu, cristian sorin;kruchten, philippe;lee, terry;lusina, paul;madden, john;najarian, siamak;tang, shuo"
+      },
+      {
+        "sections_dept":"elec",
+        "sections_instructor":"arefifar, seyed ali;botman, pieter;fels, s sidney;grecu, cristian sorin;kruchten, philippe;lee, terry;lusina, paul;madden, john;najarian, siamak;tang, shuo"
+      },
+      {
+        "sections_dept":"cpen",
+        "sections_instructor":"arefifar, seyed ali;botman, pieter;fels, s sidney;grecu, cristian sorin;kruchten, philippe;lee, terry;lusina, paul;madden, john;najarian, siamak;tang, shuo"
+      },
+      {
+        "sections_dept":"cpen",
+        "sections_instructor":"arefifar, seyed ali;botman, pieter;fels, s sidney;grecu, cristian sorin;kruchten, philippe;lee, terry;lusina, paul;madden, john;najarian, siamak;tang, shuo"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"baer, ursula;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"baer, ursula;struch, gela"
+      },
+      {
+        "sections_dept":"span",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"span",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"span",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"span",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"span",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"span",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"last",
+        "sections_instructor":"beauchesne, kim"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"berbee, mary;couch, brett;de wreede, robert"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"berbee, mary;couch, brett;de wreede, robert"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"berbee, mary;couch, brett;de wreede, robert"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"berbee, mary;couch, brett;hawkes, michael"
+      },
+      {
+        "sections_dept":"bait",
+        "sections_instructor":"bouchard, shawn"
+      },
+      {
+        "sections_dept":"stat",
+        "sections_instructor":"bouchard-cote, alexandre"
+      },
+      {
+        "sections_dept":"stat",
+        "sections_instructor":"bouchard-cote, alexandre"
+      },
+      {
+        "sections_dept":"stat",
+        "sections_instructor":"bouchard-cote, alexandre"
+      },
+      {
+        "sections_dept":"stat",
+        "sections_instructor":"bouchard-cote, alexandre"
+      },
+      {
+        "sections_dept":"stat",
+        "sections_instructor":"bouchard-cote, alexandre"
+      },
+      {
+        "sections_dept":"cnps",
+        "sections_instructor":"buchanan, marla"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"cawley, susan;ducharme, michel"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;grunburg, michael ;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;jones, lydia;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;jones, lydia;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;klibadze, dali;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;klibadze, dali;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;redlich, jeremy;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;revell, stephanie;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;sanders, travis;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;struch, gela;svanidze, tamara"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"coordinator;struch, gela;svanidze, tamara"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett;ellis, shona margaret;hawkes, michael"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett;germano, bernardita;kalas, pamela;kopp, christopher;moussavi, maryam;nomme, kathy margaret;norman, lynn;sun, chin"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"couch, brett;kalas, pamela"
+      },
+      {
+        "sections_dept":"comm",
+        "sections_instructor":"cubbon, paul;hodgson, antony;kruchten, philippe;simonite, james"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"cubbon, paul;hodgson, antony;kruchten, philippe;simonite, james"
+      },
+      {
+        "sections_dept":"baen",
+        "sections_instructor":"cubbon, paul;kruchten, philippe;miller, david"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"cubbon, paul;kruchten, philippe;miller, david"
+      },
+      {
+        "sections_dept":"plan",
+        "sections_instructor":"dhall, ruchir"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel;mcdonald, robert aj"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"ducharme, michel;quiney, linda"
+      },
+      {
+        "sections_dept":"mtrl",
+        "sections_instructor":"gordnian, kamyar;mobuchon, christophe"
+      },
+      {
+        "sections_dept":"mtrl",
+        "sections_instructor":"gordnian, kamyar;mobuchon, christophe"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"gorsuch, anne"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"gorsuch, anne"
+      },
+      {
+        "sections_dept":"hist",
+        "sections_instructor":"gorsuch, anne;myers, tamara"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"hodgson, antony;kruchten, philippe"
+      },
+      {
+        "sections_dept":"soci",
+        "sections_instructor":"ikebuchi, shelly"
+      },
+      {
+        "sections_dept":"soci",
+        "sections_instructor":"ikebuchi, shelly"
+      },
+      {
+        "sections_dept":"soci",
+        "sections_instructor":"ikebuchi, shelly"
+      },
+      {
+        "sections_dept":"soci",
+        "sections_instructor":"ikebuchi, shelly"
+      },
+      {
+        "sections_dept":"soci",
+        "sections_instructor":"ikebuchi, shelly"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"jones, lydia;struch, gela"
+      },
+      {
+        "sections_dept":"cpsc",
+        "sections_instructor":"kirkpatrick, bonnie;manuch, jan"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"klibadze, dali;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"klibadze, dali;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"klibadze, dali;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"klibadze, dali;struch, gela"
+      },
+      {
+        "sections_dept":"cpen",
+        "sections_instructor":"kruchten, philippe"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"kruchten, philippe"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"kruchten, philippe"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"kruchten, philippe;lawrence, peter"
+      },
+      {
+        "sections_dept":"apsc",
+        "sections_instructor":"kruchten, philippe;lawrence, peter"
+      },
+      {
+        "sections_dept":"nurs",
+        "sections_instructor":"kryworuchko, jennifer"
+      },
+      {
+        "sections_dept":"nurs",
+        "sections_instructor":"kryworuchko, jennifer;segaric, cheryl"
+      },
+      {
+        "sections_dept":"cpsc",
+        "sections_instructor":"manuch, jan"
+      },
+      {
+        "sections_dept":"cpsc",
+        "sections_instructor":"manuch, jan"
+      },
+      {
+        "sections_dept":"cpsc",
+        "sections_instructor":"manuch, jan"
+      },
+      {
+        "sections_dept":"cpsc",
+        "sections_instructor":"manuch, jan"
+      },
+      {
+        "sections_dept":"cpsc",
+        "sections_instructor":"manuch, jan"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"matsuuchi, linda"
+      },
+      {
+        "sections_dept":"biol",
+        "sections_instructor":"matsuuchi, linda"
+      },
+      {
+        "sections_dept":"scie",
+        "sections_instructor":"matsuuchi, linda;oberg, gunilla"
+      },
+      {
+        "sections_dept":"scie",
+        "sections_instructor":"matsuuchi, linda;steyn, douw gerbrand"
+      },
+      {
+        "sections_dept":"mtrl",
+        "sections_instructor":"mobuchon, christophe;poursartip, anoshiravan"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"petro, ingrid;struch, gela"
+      },
+      {
+        "sections_dept":"comm",
+        "sections_instructor":"quayle, moura;thiruchittampalam, dharini"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"redlich, jeremy;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"redlich, jeremy;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"roy, catherine;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"sanders, travis;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"sanders, travis;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"schenkel, guido;struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;svanidze, tamara"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"germ",
+        "sections_instructor":"struch, gela;tba"
+      },
+      {
+        "sections_dept":"comm",
+        "sections_instructor":"thiruchittampalam, dharini"
+      },
+      {
+        "sections_dept":"comm",
+        "sections_instructor":"thiruchittampalam, dharini"
+      }
+    ]
+}

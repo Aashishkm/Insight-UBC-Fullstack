@@ -51,30 +51,35 @@ export class DataProcessorModel {
 					 }
 					// json.parse takes a base 64 string and converts in into an javascript object
 					// wait for all the "courses" to finish being converted
-					Promise.all(promiseArray)
-						.then((stringData: any) => {
-							// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
-							this.parseStuff(stringData, id)
-								.then((result) => {
-									insight.datasets.set(id, result);
-									// push the newly (approved) data to our memory
-									insight.addedDatasetIds.push(id);
-									this.saveToDisk(result);
-									return resolve(insight.addedDatasetIds);
-								})
-								.catch((error) => {
-									return reject(new InsightError("bad"));
-								});
-						})
-						.catch((error) => {
-							return reject(new InsightError("bad"));
-						});
+					this.resolvePromises(promiseArray, id, insight, resolve, reject);
 				})
 				.catch((error) => {
 					return reject(new InsightError("bad"));
 				});
 		});
 		return returnPromise;
+	}
+
+	private resolvePromises(promiseArray: Array<Promise<any>>, id: string, insight: InsightFacade,
+		resolve: (value: (PromiseLike<string[]> | string[])) => void, reject: (reason?: any) => void) {
+		Promise.all(promiseArray)
+			.then((stringData: any) => {
+				// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
+				this.parseStuff(stringData, id)
+					.then((result) => {
+						insight.datasets.set(id, result);
+						// push the newly (approved) data to our memory
+						insight.addedDatasetIds.push(id);
+						this.saveToDisk(result);
+						return resolve(insight.addedDatasetIds);
+					})
+					.catch((error) => {
+						return reject(new InsightError("bad"));
+					});
+			})
+			.catch((error) => {
+				return reject(new InsightError("bad"));
+			});
 	}
 
 	public parseStuff(string: string[], id: string): Promise<DatasetModel> {
@@ -154,6 +159,7 @@ export class DataProcessorModel {
 		}
 	 }
 	 // should be sync according to scott ta
+
 	public loadDatasetFromDisk(insight: InsightFacade) {
 		// let dataset: DatasetModel;
 		try {

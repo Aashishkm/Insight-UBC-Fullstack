@@ -1,0 +1,27 @@
+{
+  "title": "performQuery incorrect formatting (missing COLUMNS)",
+  "input": {
+
+    "WHERE":{
+
+      "GT":{
+
+        "sections_avg":97
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+
+
+      "ORDER":"sections_avg"
+
+    }
+
+  } ,
+  "errorExpected": true,
+  "expected": "InsightError"
+
+}

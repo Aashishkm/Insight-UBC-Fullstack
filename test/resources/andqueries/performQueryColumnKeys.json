@@ -1,0 +1,673 @@
+{
+  "title": "performQuery keys column",
+  "input": {
+
+    "WHERE":{
+
+      "IS":{
+
+        "sections_instructor": "*berkowitz*"
+
+      }
+
+    },
+
+    "OPTIONS":{
+
+      "COLUMNS":[
+
+        "sections_uuid",
+
+        "sections_id",
+
+        "sections_title",
+
+        "sections_instructor",
+
+        "sections_dept",
+
+        "sections_year",
+
+        "sections_avg",
+
+        "sections_pass",
+
+        "sections_fail",
+
+        "sections_audit"
+
+      ],
+
+      "ORDER":"sections_fail"
+
+    }
+
+  } ,
+  "errorExpected": false,
+  "expected": [
+      {
+        "sections_uuid":"82589",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2011,
+        "sections_avg":81.1,
+        "sections_pass":30,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"70924",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2014,
+        "sections_avg":81.89,
+        "sections_pass":35,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"36523",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2013,
+        "sections_avg":82.92,
+        "sections_pass":39,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"29380",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2015,
+        "sections_avg":83.03,
+        "sections_pass":33,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"21383",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2010,
+        "sections_avg":86.31,
+        "sections_pass":29,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"8650",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2012,
+        "sections_avg":84.91,
+        "sections_pass":34,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71185",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":73.7,
+        "sections_pass":98,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"98482",
+        "sections_id":"550",
+        "sections_title":"app stat mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2015,
+        "sections_avg":80.85,
+        "sections_pass":46,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"44869",
+        "sections_id":"550",
+        "sections_title":"app stat mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2014,
+        "sections_avg":79.73,
+        "sections_pass":49,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"44865",
+        "sections_id":"540",
+        "sections_title":"data anly&utiliz",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2014,
+        "sections_avg":79.88,
+        "sections_pass":41,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"4611",
+        "sections_id":"540",
+        "sections_title":"data anly&utiliz",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2013,
+        "sections_avg":76.87,
+        "sections_pass":55,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"4610",
+        "sections_id":"540",
+        "sections_title":"data anly&utiliz",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2013,
+        "sections_avg":77.53,
+        "sections_pass":55,
+        "sections_fail":0,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"22170",
+        "sections_id":"554",
+        "sections_title":"app stat in mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"spha",
+        "sections_year":2009,
+        "sections_avg":80.93,
+        "sections_pass":26,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"96321",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;werker, gregory",
+        "sections_dept":"comm",
+        "sections_year":2009,
+        "sections_avg":79.37,
+        "sections_pass":61,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"96320",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;hasheminia, hamed",
+        "sections_dept":"comm",
+        "sections_year":2009,
+        "sections_avg":73.51,
+        "sections_pass":54,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71184",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":74.02,
+        "sections_pass":99,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71180",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;yuen, andrew",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":76.53,
+        "sections_pass":56,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"57723",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;hasheminia, hamed",
+        "sections_dept":"comm",
+        "sections_year":2010,
+        "sections_avg":75.15,
+        "sections_pass":59,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"57722",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;graystone, brian",
+        "sections_dept":"comm",
+        "sections_year":2010,
+        "sections_avg":73.5,
+        "sections_pass":57,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"38779",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2015,
+        "sections_avg":71.27,
+        "sections_pass":158,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"713",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2011,
+        "sections_avg":74.49,
+        "sections_pass":217,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"87410",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"busi",
+        "sections_year":2015,
+        "sections_avg":69.07,
+        "sections_pass":13,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"44867",
+        "sections_id":"540",
+        "sections_title":"data anly&utiliz",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2014,
+        "sections_avg":76.49,
+        "sections_pass":40,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"44866",
+        "sections_id":"540",
+        "sections_title":"data anly&utiliz",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2014,
+        "sections_avg":78.12,
+        "sections_pass":42,
+        "sections_fail":1,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"96322",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;fowler, ellen",
+        "sections_dept":"comm",
+        "sections_year":2009,
+        "sections_avg":75,
+        "sections_pass":60,
+        "sections_fail":2,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"81447",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2014,
+        "sections_avg":72.79,
+        "sections_pass":158,
+        "sections_fail":2,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71183",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;fowler, ellen",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":76.22,
+        "sections_pass":75,
+        "sections_fail":2,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"57721",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;graystone, brian",
+        "sections_dept":"comm",
+        "sections_year":2010,
+        "sections_avg":70.77,
+        "sections_pass":54,
+        "sections_fail":2,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"38776",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2015,
+        "sections_avg":71.89,
+        "sections_pass":195,
+        "sections_fail":2,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"6538",
+        "sections_id":"550",
+        "sections_title":"app stat mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2016,
+        "sections_avg":78.62,
+        "sections_pass":53,
+        "sections_fail":2,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"96323",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;fowler, ellen",
+        "sections_dept":"comm",
+        "sections_year":2009,
+        "sections_avg":69.07,
+        "sections_pass":43,
+        "sections_fail":3,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"81446",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2014,
+        "sections_avg":74.5,
+        "sections_pass":180,
+        "sections_fail":3,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71179",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;liang, liping",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":72.81,
+        "sections_pass":55,
+        "sections_fail":3,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71178",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;ghement, isabella",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":75.6,
+        "sections_pass":54,
+        "sections_fail":3,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"714",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2011,
+        "sections_avg":75.14,
+        "sections_pass":197,
+        "sections_fail":3,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"96324",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2009,
+        "sections_avg":69.86,
+        "sections_pass":157,
+        "sections_fail":4,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71182",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;fowler, ellen",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":72.04,
+        "sections_pass":71,
+        "sections_fail":4,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"38777",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2015,
+        "sections_avg":73.55,
+        "sections_pass":211,
+        "sections_fail":4,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"712",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2011,
+        "sections_avg":76.74,
+        "sections_pass":210,
+        "sections_fail":4,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"4613",
+        "sections_id":"550",
+        "sections_title":"app stat mgmt",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"babs",
+        "sections_year":2013,
+        "sections_avg":75.63,
+        "sections_pass":47,
+        "sections_fail":4,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"83620",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2013,
+        "sections_avg":71.99,
+        "sections_pass":189,
+        "sections_fail":5,
+        "sections_audit":2
+      },
+      {
+        "sections_uuid":"83618",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2013,
+        "sections_avg":75.67,
+        "sections_pass":236,
+        "sections_fail":6,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"81445",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2014,
+        "sections_avg":70.9,
+        "sections_pass":156,
+        "sections_fail":7,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"71181",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan;ryan, chris",
+        "sections_dept":"comm",
+        "sections_year":2007,
+        "sections_avg":67.39,
+        "sections_pass":63,
+        "sections_fail":7,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"57725",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2010,
+        "sections_avg":72.68,
+        "sections_pass":224,
+        "sections_fail":7,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"43908",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2012,
+        "sections_avg":75.14,
+        "sections_pass":225,
+        "sections_fail":7,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"38778",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2015,
+        "sections_avg":69.36,
+        "sections_pass":170,
+        "sections_fail":7,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"43909",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2012,
+        "sections_avg":69.85,
+        "sections_pass":231,
+        "sections_fail":8,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"83619",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2013,
+        "sections_avg":70.7,
+        "sections_pass":234,
+        "sections_fail":9,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"57724",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2010,
+        "sections_avg":71.53,
+        "sections_pass":229,
+        "sections_fail":9,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"43910",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2012,
+        "sections_avg":67.77,
+        "sections_pass":172,
+        "sections_fail":9,
+        "sections_audit":0
+      },
+      {
+        "sections_uuid":"96325",
+        "sections_id":"291",
+        "sections_title":"appl stat in bus",
+        "sections_instructor":"berkowitz, jonathan",
+        "sections_dept":"comm",
+        "sections_year":2009,
+        "sections_avg":69.45,
+        "sections_pass":154,
+        "sections_fail":10,
+        "sections_audit":0
+      }
+    ]
+}
