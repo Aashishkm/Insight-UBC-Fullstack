@@ -1,13 +1,13 @@
 import {InsightDataset, InsightDatasetKind} from "../controller/IInsightFacade";
 import {CourseModel} from "./CourseModel";
 import {SectionModel} from "./SectionModel";
-export class DatasetModel {
+import {Data} from "./Data";
+export class DatasetModel extends Data {
 	public courses: CourseModel[];
 	public sections: SectionModel[];
-	public insightDataset: InsightDataset;
 
 	constructor(insightDataset: InsightDataset) {
-		this.insightDataset = insightDataset;
+		super(insightDataset);
 		this.courses = [];
 		this.sections = [];
 	}

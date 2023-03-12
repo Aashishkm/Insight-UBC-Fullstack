@@ -1,4 +1,3 @@
-
 import {DatasetModel} from "../Models/DatasetModel";
 import {DataProcessorModel} from "./DataProcessorModel";
 import * as fs from "fs-extra";
@@ -9,17 +8,13 @@ import {
 	InsightDatasetKind,
 	InsightError,
 	InsightResult,
-	NotFoundError, ResultTooLargeError,
+	NotFoundError,
+	ResultTooLargeError,
 } from "./IInsightFacade";
 
-import {
-	QueryClass,
-	QueryModel
-} from "../Models/QueryModel";
+import {QueryClass, QueryModel} from "../Models/QueryModel";
 import PerformQueryHelpers from "./PerformQueryHelpers";
-import {SectionModel} from "../Models/SectionModel";
 import QueryModelHelpers from "./QueryModelHelpers";
-
 
 /**
  * This is the main programmatic entry point for the project.
@@ -56,17 +51,23 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Invalid dataset id 3"));
 		}
 		if (!(kind === InsightDatasetKind.Sections)) {
-			return Promise.reject(new InsightError("Invalid insightDatasetKind"));
+			if (!(kind === InsightDatasetKind.Rooms)) {
+				return Promise.reject(new InsightError("Invalid insightDatasetKind"));
+			}
 		}
 		if (content === null) {
 			return Promise.reject(new InsightError("Invalid content"));
 		}
-		if(this.datasets.has(id)) {
+		if (this.datasets.has(id)) {
 			return Promise.reject(new InsightError("Duplicate ids"));
 		}
 
 		try {
-			return dataProcessor.addDataset(id, content, this);
+			if (kind === InsightDatasetKind.Sections) {
+				return dataProcessor.addDataset(id, content, this);
+			} else {
+				return dataProcessor.addRooms(id, content, this);
+			}
 		} catch (e) {
 			return Promise.reject("Not implemented.");
 		}
@@ -88,7 +89,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.reject(new InsightError("Invalid dataset id 3"));
 		}
 
-		if (!(this.datasets.has(id))) {
+		if (!this.datasets.has(id)) {
 			return Promise.reject(new NotFoundError("Dataset Not added"));
 		}
 		this.datasets.delete(id);
@@ -98,7 +99,8 @@ export default class InsightFacade implements IInsightFacade {
 			fs.remove("./data/" + id + ".json")
 				.then(() => {
 					return resolve(id);
-				}).catch((error) => {
+				})
+				.catch((error) => {
 					return Promise.reject(new InsightError("Remove failed"));
 				});
 		});
@@ -112,7 +114,7 @@ export default class InsightFacade implements IInsightFacade {
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
 		if (!queryModelHelpers.hasWhereAndOptions(query)) {
 			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
-		};
+		}
 		try {
 			const validQuery = query as QueryModel;
 			let queryClass: QueryClass = new QueryClass();
@@ -142,5 +144,4 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		return Promise.resolve(insightDatasets);
 	}
-
 }

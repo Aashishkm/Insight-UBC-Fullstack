@@ -1,15 +1,29 @@
 import {Filter, MField, Options, SField, Where} from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 
-export {isSField, isSKey, isMKey, isMField, isSection, isWhere, isFilterList,
-	validateSComparison, validateMComparison, isOptions, isKey, isField, isFilter, isNComparison};
+export {
+	isSField,
+	isSKey,
+	isMKey,
+	isMField,
+	isSection,
+	isWhere,
+	isFilterList,
+	validateSComparison,
+	validateMComparison,
+	isOptions,
+	isKey,
+	isField,
+	isFilter,
+	isNComparison,
+};
 
 function isSField(arg: string): boolean {
 	return Object.values(SField).includes(arg as unknown as SField);
 }
 
 function isSKey(input: any): boolean {
-	if(!input.includes("_")) {
+	if (!input.includes("_")) {
 		throw new InsightError("SKey does not have '_'");
 	}
 	let inputArr: string[] = input.split("_");
@@ -48,7 +62,7 @@ function isMField(arg: string): boolean {
 	return Object.values(MField).includes(arg as unknown as MField);
 }
 function isMKey(input: any): boolean {
-	if(!input.includes("_")) {
+	if (!input.includes("_")) {
 		throw new InsightError("MKey does not have '_'");
 	}
 	let inputArr: string[] = input.split("_");
@@ -130,7 +144,7 @@ function isField(field: string) {
 }
 
 function isKey(input: string) {
-	if(!input.includes("_")) {
+	if (!input.includes("_")) {
 		throw new InsightError("Key does not have '_'");
 	}
 	let inputArr: string[] = input.split("_");
@@ -154,11 +168,16 @@ function isNComparison(arg: any): arg is Filter {
 	}
 }
 function hasComparator(arg: any): boolean {
-	return arg.AND !== undefined || arg.OR !== undefined || arg.LT !== undefined || arg.GT !== undefined ||
-		arg.EQ !== undefined || arg.IS !== undefined || arg.NOT !== undefined;
+	return (
+		arg.AND !== undefined ||
+		arg.OR !== undefined ||
+		arg.LT !== undefined ||
+		arg.GT !== undefined ||
+		arg.EQ !== undefined ||
+		arg.IS !== undefined ||
+		arg.NOT !== undefined
+	);
 }
 function hasRequiredLength(arg: any, reqLength: number): boolean {
 	return Object.keys(arg).length === reqLength;
 }
-
-

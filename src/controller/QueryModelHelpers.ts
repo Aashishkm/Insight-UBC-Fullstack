@@ -4,19 +4,23 @@ import {
 	LogicComparison,
 	MComparator,
 	MComparison,
-	MKey, NComparison,
-	QueryClass, QueryModel,
-	SComparison, SKey,
-	Where
+	MKey,
+	NComparison,
+	QueryClass,
+	QueryModel,
+	SComparison,
+	SKey,
+	Where,
 } from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 import {
 	isFilterList,
 	isKey,
 	isNComparison,
-	isOptions, isWhere,
+	isOptions,
+	isWhere,
 	validateMComparison,
-	validateSComparison
+	validateSComparison,
 } from "./QueryModelHelpersValidation";
 
 export default class QueryModelHelpers {
@@ -191,7 +195,7 @@ export default class QueryModelHelpers {
 	}
 
 	private compareKeys(key1: Key, key2: Key): boolean {
-		return (key1.idString === key2.idString && key1.field === key2.field);
+		return key1.idString === key2.idString && key1.field === key2.field;
 	}
 
 	private isKeyInList(key: Key, keyList: Key[]): boolean {
@@ -210,5 +214,4 @@ export default class QueryModelHelpers {
 	public hasWhereAndOptions(arg: any): arg is QueryModel {
 		return arg.WHERE !== undefined && arg.OPTIONS !== undefined;
 	}
-
 }

@@ -67,7 +67,6 @@ export default class PerformQueryHelpers {
 				list.push(this.applyComparison(filter));
 			});
 			return union(list);
-
 		} else {
 			let list: SectionModel[][] = [];
 			filters.forEach((filter) => {
@@ -136,14 +135,14 @@ export default class PerformQueryHelpers {
 		let res: SectionModel[] = [];
 		if (datasetAll) {
 			res = datasetAll.sections.filter((section) => {
-				return (datasetFiltered.indexOf(section) === -1);
+				return datasetFiltered.indexOf(section) === -1;
 			});
 		}
 		return res;
 	}
 
 	private isIDinDatasets(id: string): boolean {
-		return (this.datasets.has(id));
+		return this.datasets.has(id);
 	}
 
 	public applyOrder(order: Key, insightResultList: InsightResult[]): InsightResult[] {
@@ -168,7 +167,7 @@ function intersection(sectionLists: SectionModel[][]) {
 	let result: SectionModel[] = [];
 	let lists: SectionModel[][];
 
-	if(sectionLists.length === 1) {
+	if (sectionLists.length === 1) {
 		lists = [sectionLists[0]];
 	} else {
 		lists = sectionLists;
@@ -176,9 +175,11 @@ function intersection(sectionLists: SectionModel[][]) {
 	for (let currentList of lists) {
 		for (let currentValue of currentList) {
 			if (result.indexOf(currentValue) === -1) {
-				if(lists.filter(function(obj) {
-					return obj.indexOf(currentValue) === -1;
-				}).length === 0) {
+				if (
+					lists.filter(function (obj) {
+						return obj.indexOf(currentValue) === -1;
+					}).length === 0
+				) {
 					result.push(currentValue);
 				}
 			}
@@ -190,7 +191,7 @@ function intersection(sectionLists: SectionModel[][]) {
 function union(sectionLists: SectionModel[][]) {
 	let result: SectionModel[] = [];
 	let lists: SectionModel[][] = [];
-	if(sectionLists.length === 1) {
+	if (sectionLists.length === 1) {
 		lists = [sectionLists[0]];
 	} else {
 		lists = sectionLists;
