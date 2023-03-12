@@ -1,4 +1,4 @@
-import {DatasetModel} from "../Models/DatasetModel";
+import {CourseDatasetModel} from "../Models/CourseDatasetModel";
 import {DataProcessorModel} from "./DataProcessorModel";
 import * as fs from "fs-extra";
 
@@ -23,13 +23,13 @@ import QueryModelHelpers from "./QueryModelHelpers";
  */
 export default class InsightFacade implements IInsightFacade {
 	public addedDatasetIds: string[];
-	public datasets: Map<string, DatasetModel>;
+	public datasets: Map<string, CourseDatasetModel>;
 	// map.keys -->
 	constructor() {
 		let saved = new DataProcessorModel();
 
 		this.addedDatasetIds = [];
-		this.datasets = new Map<string, DatasetModel>();
+		this.datasets = new Map<string, CourseDatasetModel>();
 		saved.loadDatasetFromDisk(this);
 		console.log("InsightFacadeImpl::init()");
 	}

@@ -1,18 +1,18 @@
 import {Filter, Key, LogicComparison, MComparison, NComparison, SComparison} from "../Models/QueryModel";
-import {DatasetModel} from "../Models/DatasetModel";
+import {CourseDatasetModel} from "../Models/CourseDatasetModel";
 import {SectionModel} from "../Models/SectionModel";
 import {InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
 
 export default class PerformQueryHelpers {
 	// TODO implement ordering
-	constructor(idList: SectionModel[], datasets: Map<string, DatasetModel>) {
+	constructor(idList: SectionModel[], datasets: Map<string, CourseDatasetModel>) {
 		this.globalSectionList = idList;
 		this.datasets = datasets;
 		this.currentQueryingDatasetID = "";
 	}
 
 	public globalSectionList: SectionModel[];
-	private datasets: Map<string, DatasetModel>;
+	private datasets: Map<string, CourseDatasetModel>;
 	private currentQueryingDatasetID: string;
 	public applyWhere(filter: Filter, queryingDatasetID: string) {
 		this.currentQueryingDatasetID = queryingDatasetID;

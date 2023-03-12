@@ -1,6 +1,6 @@
 import {InsightDataset, InsightDatasetKind} from "../controller/IInsightFacade";
 
-export class Room {
+export class RoomModel {
 	public fullname: string;
 	public shortname: string;
 	public number: string;

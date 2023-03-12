@@ -2,7 +2,7 @@ import {InsightDatasetKind, InsightError} from "./IInsightFacade";
 import InsightFacade from "./InsightFacade";
 // import * as JSZip from "jszip";
 import JSZip from "jszip";
-import {DatasetModel} from "../Models/DatasetModel";
+import {CourseDatasetModel} from "../Models/CourseDatasetModel";
 import {CourseModel} from "../Models/CourseModel";
 import {SectionModel} from "../Models/SectionModel";
 import * as fs from "fs-extra";
@@ -104,10 +104,10 @@ export class DataProcessorModel {
 			});
 	}
 
-	public parseStuff(string: string[], id: string): Promise<DatasetModel> {
+	public parseStuff(string: string[], id: string): Promise<CourseDatasetModel> {
 		let kind = InsightDatasetKind.Sections;
 		let numRows = 0;
-		let dataset = new DatasetModel({id, kind, numRows});
+		let dataset = new CourseDatasetModel({id, kind, numRows});
 		// let courseData: JSON;
 		let anyData: any;
 		// if (JS)
@@ -171,7 +171,7 @@ export class DataProcessorModel {
 		return true;
 	}
 
-	public saveToDisk(dataset: DatasetModel) {
+	public saveToDisk(dataset: CourseDatasetModel) {
 		let id = dataset.insightDataset.id;
 		// let jsonData = JSON.stringify(dataset);
 		try {
@@ -184,11 +184,11 @@ export class DataProcessorModel {
 	// should be sync according to scott ta
 
 	public loadDatasetFromDisk(insight: InsightFacade) {
-		// let dataset: DatasetModel;
+		// let dataset: CourseDatasetModel;
 		try {
 			let directory = fs.readdirSync("./data/");
 			directory.forEach((file) => {
-				let dataset: DatasetModel;
+				let dataset: CourseDatasetModel;
 				dataset = fs.readJSONSync("./data/" + file);
 				insight.datasets.set(dataset.insightDataset.id, dataset);
 				insight.addedDatasetIds.push(dataset.insightDataset.id);
