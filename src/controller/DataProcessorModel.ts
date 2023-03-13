@@ -6,6 +6,9 @@ import {CourseDatasetModel} from "../Models/CourseDatasetModel";
 import {CourseModel} from "../Models/CourseModel";
 import {SectionModel} from "../Models/SectionModel";
 import * as fs from "fs-extra";
+import {RoomsProcessorHelper} from "./RoomsProcessorHelper";
+import {RoomDatasetModel} from "../Models/RoomDatasetModel";
+import {DatasetModel} from "../Models/DatasetModel";
 
 export class DataProcessorModel {
 	// check zip file
@@ -61,14 +64,27 @@ export class DataProcessorModel {
 
 	public addRooms(id: string, content: string, insight: InsightFacade): Promise<string[]> {
 		let zip = new JSZip();
-		let promiseArray = Array<Promise<any>>();
+		let returnDataset: RoomDatasetModel;
 
 		let returnPromise = new Promise<string[]>((resolve, reject) => {
 			zip.loadAsync(content, {base64: true})
 				.then((newZip: JSZip) => {
-					newZip.folder("courses")?.forEach(function (relativePath, file) {
-						promiseArray.push(file.async("text"));
-					});
+					let indexFile = newZip.file("index.htm");
+					if (indexFile === null) {
+						return reject(new InsightError("index file doesn't exist"));
+					}
+					indexFile.async("text")
+						.then((result) => {
+							let roomsStuff = new RoomsProcessorHelper();
+							return roomsStuff.parseRooms(result, this);
+							// insight.datasets.set(id, returnDataset);
+							// insight.addedDatasetIds.push(id);
+							// this.saveToDisk(returnDataset);
+							// return resolve(insight.addedDatasetIds);
+						})
+						.catch((error) => {
+							return reject(new InsightError("error opening zip file"));
+						});
 				})
 				.catch((error) => {
 					return reject(new InsightError("bad"));
@@ -171,7 +187,7 @@ export class DataProcessorModel {
 		return true;
 	}
 
-	public saveToDisk(dataset: CourseDatasetModel) {
+	public saveToDisk(dataset: DatasetModel) {
 		let id = dataset.insightDataset.id;
 		// let jsonData = JSON.stringify(dataset);
 		try {

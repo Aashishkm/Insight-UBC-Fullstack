@@ -15,6 +15,7 @@ import {
 import {QueryClass, QueryModel} from "../Models/QueryModel";
 import PerformQueryHelpers from "./PerformQueryHelpers";
 import QueryModelHelpers from "./QueryModelHelpers";
+import {DatasetModel} from "../Models/DatasetModel";
 
 /**
  * This is the main programmatic entry point for the project.
