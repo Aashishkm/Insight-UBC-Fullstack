@@ -2,11 +2,10 @@ import {InsightDatasetKind, InsightError} from "./IInsightFacade";
 import InsightFacade from "./InsightFacade";
 // import * as JSZip from "jszip";
 import JSZip from "jszip";
-import {DatasetModel} from "../Models/DatasetModel";
+import {CourseDatasetModel} from "../Models/CourseDatasetModel";
 import {CourseModel} from "../Models/CourseModel";
 import {SectionModel} from "../Models/SectionModel";
 import * as fs from "fs-extra";
-
 
 export class DataProcessorModel {
 	// check zip file
@@ -46,9 +45,9 @@ export class DataProcessorModel {
 					});
 
 					// check if the same id is saved to disk --> repeated ids so we should return error
-					 if (fs.existsSync("./data/" + id + ".json")) {
-						 return reject(new InsightError("dataset id already exists"));
-					 }
+					if (fs.existsSync("./data/" + id + ".json")) {
+						return reject(new InsightError("dataset id already exists"));
+					}
 					// json.parse takes a base 64 string and converts in into an javascript object
 					// wait for all the "courses" to finish being converted
 					this.resolvePromises(promiseArray, id, insight, resolve, reject);
@@ -60,8 +59,31 @@ export class DataProcessorModel {
 		return returnPromise;
 	}
 
-	private resolvePromises(promiseArray: Array<Promise<any>>, id: string, insight: InsightFacade,
-		resolve: (value: (PromiseLike<string[]> | string[])) => void, reject: (reason?: any) => void) {
+	public addRooms(id: string, content: string, insight: InsightFacade): Promise<string[]> {
+		let zip = new JSZip();
+		let promiseArray = Array<Promise<any>>();
+
+		let returnPromise = new Promise<string[]>((resolve, reject) => {
+			zip.loadAsync(content, {base64: true})
+				.then((newZip: JSZip) => {
+					newZip.folder("courses")?.forEach(function (relativePath, file) {
+						promiseArray.push(file.async("text"));
+					});
+				})
+				.catch((error) => {
+					return reject(new InsightError("bad"));
+				});
+		});
+		return returnPromise;
+	}
+
+	private resolvePromises(
+		promiseArray: Array<Promise<any>>,
+		id: string,
+		insight: InsightFacade,
+		resolve: (value: PromiseLike<string[]> | string[]) => void,
+		reject: (reason?: any) => void
+	) {
 		Promise.all(promiseArray)
 			.then((stringData: any) => {
 				// parse the data (store it into memory, and check if the data is even valid (at least 1 section)
@@ -82,10 +104,10 @@ export class DataProcessorModel {
 			});
 	}
 
-	public parseStuff(string: string[], id: string): Promise<DatasetModel> {
+	public parseStuff(string: string[], id: string): Promise<CourseDatasetModel> {
 		let kind = InsightDatasetKind.Sections;
 		let numRows = 0;
-		let dataset = new DatasetModel({id, kind, numRows});
+		let dataset = new CourseDatasetModel({id, kind, numRows});
 		// let courseData: JSON;
 		let anyData: any;
 		// if (JS)
@@ -106,9 +128,10 @@ export class DataProcessorModel {
 					anyData.result[sectionData].id.toString(),
 					anyData.result[sectionData].Course,
 					anyData.result[sectionData].Title,
-				    anyData.result[sectionData].Professor,
+					anyData.result[sectionData].Professor,
 					anyData.result[sectionData].Subject,
-					(anyData.result[sectionData]["Section"] === "overall") ? 1900
+					anyData.result[sectionData]["Section"] === "overall"
+						? 1900
 						: Number.parseInt(anyData.result[sectionData].Year, 10),
 					anyData.result[sectionData].Avg,
 					anyData.result[sectionData].Pass,
@@ -148,24 +171,24 @@ export class DataProcessorModel {
 		return true;
 	}
 
-	 public saveToDisk(dataset: DatasetModel) {
+	public saveToDisk(dataset: CourseDatasetModel) {
 		let id = dataset.insightDataset.id;
 		// let jsonData = JSON.stringify(dataset);
 		try {
 			fs.mkdirpSync("./data/");
 			fs.writeJSONSync("./data/" + id + ".json", dataset);
-		} catch(e) {
+		} catch (e) {
 			throw new InsightError("unable to write file to disk");
 		}
-	 }
-	 // should be sync according to scott ta
+	}
+	// should be sync according to scott ta
 
 	public loadDatasetFromDisk(insight: InsightFacade) {
-		// let dataset: DatasetModel;
+		// let dataset: CourseDatasetModel;
 		try {
 			let directory = fs.readdirSync("./data/");
 			directory.forEach((file) => {
-				let dataset: DatasetModel;
+				let dataset: CourseDatasetModel;
 				dataset = fs.readJSONSync("./data/" + file);
 				insight.datasets.set(dataset.insightDataset.id, dataset);
 				insight.addedDatasetIds.push(dataset.insightDataset.id);
@@ -173,5 +196,5 @@ export class DataProcessorModel {
 		} catch (e) {
 			return new InsightError("dataset doesn't exist");
 		}
-	 }
+	}
 }
