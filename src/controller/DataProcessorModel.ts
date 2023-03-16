@@ -73,11 +73,10 @@ export class DataProcessorModel {
 					if (indexFile === null) {
 						return reject(new InsightError("index file doesn't exist"));
 					}
-					indexFile
-						.async("text")
+					indexFile.async("text")
 						.then((result) => {
 							let roomsStuff = new RoomsProcessorHelper();
-							return roomsStuff.parseRooms(result, this);
+							return roomsStuff.parseRooms(result, this, insight);
 							// insight.datasets.set(id, returnDataset);
 							// insight.addedDatasetIds.push(id);
 							// this.saveToDisk(returnDataset);

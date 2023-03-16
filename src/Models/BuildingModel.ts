@@ -10,14 +10,16 @@ export class BuildingModel {
 	public lon: number;
 
 	public href: string;
+	public roomsPath: string;
 
 	public rooms: RoomModel[];
 
-	constructor(fullname: string, shortname: string, address: string, href: string) {
+	constructor(fullname: string, shortname: string, address: string, href: string, roomsPath: string) {
 		this.fullname = fullname;
 		this.shortname = shortname;
 		this.address = address;
 		this.href = href;
+		this.roomsPath = roomsPath;
 		this.lat = 0;
 		this.lon = 0;
 		this.rooms = [];
