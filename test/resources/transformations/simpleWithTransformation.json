@@ -1,5 +1,5 @@
 {
-	"title": "AND with only IS with 1 asterisk",
+	"title": "Simple transformation example",
 	"input": {
 		"WHERE": {
 			"AND": [
@@ -21,21 +21,20 @@
 				"sections_avg"
 			],
 			"ORDER": "sections_avg"
+		},
+		"TRANSFORMATIONS": {
+			"GROUP": ["sections_dept"],
+
+			"APPLY": [{
+
+				"overallAvg": {
+
+					"AVG": "sections_avg"
+
+				}
+
+			}]
 		}
 	},
-	"errorExpected": false,
-	"expected": [
-		{
-			"sections_dept": "cnps",
-			"sections_avg": 99.19
-		},
-		{
-			"sections_dept": "math",
-			"sections_avg": 99.78
-		},
-		{
-			"sections_dept": "math",
-			"sections_avg": 99.78
-		}
-	]
+	"errorExpected": false
 }

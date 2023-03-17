@@ -310,4 +310,55 @@ describe("InsightFacade", function () {
 			}
 		);
 	});
+
+	describe("PerformQuery TRANSFORM", () => {
+		before(function () {
+			console.info(`Before: ${this.test?.parent?.title}`);
+
+			facade = new InsightFacade();
+			let dataset1 = facade.addDataset("sections", sections, InsightDatasetKind.Sections);
+			let dataset2 = facade.addDataset("ubc", getContentFromArchives("minipair.zip"),
+				InsightDatasetKind.Sections);
+
+			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
+			// Will *fail* if there is a problem reading ANY dataset.
+			const loadDatasetPromises = [dataset1, dataset2];
+
+			return Promise.all(loadDatasetPromises);
+		});
+
+		after(function () {
+			console.info(`After: ${this.test?.parent?.title}`);
+			clearDisk();
+		});
+
+		type PQErrorKind = "ResultTooLargeError" | "InsightError" | "NotFoundError";
+
+		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
+			"Dynamic InsightFacade PerformQuery tests",
+			(input) => facade.performQuery(input),
+			"./test/resources/transformations",
+			{
+				assertOnResult: async (actual, expected) => {
+					const test = await expected;
+					// expect(actual).to.deep.equal(test);
+					expect(actual).to.deep.members(test);
+					expect(actual).to.have.length(test.length);
+				},
+				errorValidator: (error): error is PQErrorKind =>
+					error === "ResultTooLargeError" || error === "InsightError" || error === "NotFoundError",
+				assertOnError: (actual, expected) => {
+					if (expected === "NotFoundError") {
+						expect(actual).to.be.instanceof(NotFoundError);
+					} else if (expected === "InsightError") {
+						expect(actual).to.be.instanceof(InsightError);
+					} else if (expected === "ResultTooLargeError") {
+						expect(actual).to.be.instanceof(ResultTooLargeError);
+					} else {
+						expect.fail("UNEXPECTED ERROR");
+					}
+				},
+			}
+		);
+	});
 });

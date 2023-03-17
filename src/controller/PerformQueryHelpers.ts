@@ -1,4 +1,4 @@
-import {Filter, Key, LogicComparison, MComparison, NComparison, SComparison} from "../Models/QueryModel";
+import {AnyKey, Filter, Key, LogicComparison, MComparison, NComparison, SComparison} from "../Models/QueryModel";
 import {DatasetModel} from "../Models/DatasetModel";
 import {SectionModel} from "../Models/SectionModel";
 import {InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
@@ -29,14 +29,14 @@ export default class PerformQueryHelpers {
 		this.globalSectionList = idList;
 	}
 
-	public applyColumns(columns: Key[]): InsightResult[] {
+	public applyColumns(columns: AnyKey[]): InsightResult[] {
 		if (!this.datasets.has(columns[0].idString)) {
 			throw new InsightError("Dataset not added");
 		}
 		let resultArr: any = [];
 		this.globalSectionList.forEach((section) => {
 			let obj: {[key: string]: any} = {};
-			columns.forEach((key) => {
+			(columns as Key[]).forEach((key) => {
 				let objProperty = key.idString + "_" + key.field;
 				obj[objProperty] = section[key.field];
 			});
@@ -161,6 +161,8 @@ export default class PerformQueryHelpers {
 		});
 		return res;
 	}
+
+
 }
 
 // fn from https://stackoverflow.com/questions/37320296/how-to-calculate-intersection-of-multiple-arrays-in-javascript-and-what-does-e
@@ -230,3 +232,4 @@ function validateSFieldInput(inp: string): boolean {
 		return false;
 	}
 }
+

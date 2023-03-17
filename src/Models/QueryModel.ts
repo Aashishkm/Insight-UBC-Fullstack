@@ -14,11 +14,29 @@ export {QueryModel,
 	MComparator,
 	MField,
 	SField,
-	QueryClass};
+	QueryClass,
+	Transformations,
+	ApplyRule,
+	ApplyToken,
+	AnyKey,
+	ApplyKey,
+	Order,
+	Direction};
 
 type MComparator = "LT" | "GT" | "EQ";
 type Logic = "AND" | "OR";
 
+enum Direction {
+	up = "UP",
+	down = "DOWN"
+}
+enum ApplyToken {
+	max = "MAX",
+	min = "MIN",
+	avg = "AVG",
+	count = "COUNT",
+	sum = "SUM"
+}
 enum MField {
 	avg = "avg",
 	pass = "pass",
@@ -37,6 +55,7 @@ enum SField {
 interface QueryModel {
 	 WHERE: Where;
 	 OPTIONS: Options;
+	 TRANSFORMATIONS?: Transformations;
 }
 
 interface Where {
@@ -51,9 +70,11 @@ interface Where {
 
 class QueryClass {
 	public where: Filter = {};
-	public columns: Key[] = [];
+	public columns: AnyKey[] = [];
 	public queryId: string = "";
-	public order?: Key;
+	public order?: Order;
+	public group?: Key[];
+	public apply?: ApplyRule[];
 }
 
 class Filter {
@@ -98,10 +119,28 @@ class NComparison implements Filter {
 	}
 }
 interface Options {
-	COLUMNS: Key[];
-	ORDER: Key;
+	COLUMNS: AnyKey[];
+	ORDER: Order;
 }
-class Key {
+
+class Order {
+	public dir?: Direction;
+	public keys?: AnyKey[];
+	public key?: AnyKey;
+}
+
+interface AnyKey {
+	idString: string;
+}
+
+class ApplyKey implements AnyKey {
+	public idString: string;
+
+	constructor(idString: string) {
+		this.idString = idString;
+	}
+}
+class Key implements AnyKey {
 	public idString: string;
 	public field: MField | SField;
 	// splits string into id and field
@@ -129,4 +168,21 @@ class SKey implements Key {
 		this.idString = key[0];
 		this.field = key[1];
 	};
+}
+
+interface Transformations {
+	GROUP: Key[],
+	APPLY: ApplyRule[]
+}
+
+class ApplyRule {
+	public applyKey: ApplyKey;
+	public applyToken: ApplyToken;
+	public key: Key;
+
+	constructor(applyKey: string, applyToken: ApplyToken, key: Key) {
+		this.applyKey = new ApplyKey(applyKey);
+		this.applyToken = applyToken;
+		this.key = key;
+	}
 }

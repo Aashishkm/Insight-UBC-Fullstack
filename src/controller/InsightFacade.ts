@@ -108,27 +108,35 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
+		if (query === undefined) {
+			return Promise.reject(new InsightError("Query is undefined"));
+		}
 		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
-		if (!queryModelHelpers.hasWhereAndOptions(query)) {
-			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
+		if (!queryModelHelpers.validQueryStructure(query)) {
+			return Promise.reject(new InsightError("Invalid query structure"));
 		};
 		try {
 			const validQuery = query as QueryModel;
 			let queryClass: QueryClass = new QueryClass();
 			queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
 			queryModelHelpers.handleWhere(validQuery.WHERE, queryClass);
+			if (validQuery.TRANSFORMATIONS !== undefined) {
+				queryModelHelpers.handleTransformations(validQuery.TRANSFORMATIONS, queryClass);
+			}
 			queryClass.queryId = queryClass.columns[0].idString;
-			performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
-			const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
-			let res: InsightResult[] = unsortedRes;
-			if (queryClass.order !== undefined) {
-				res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
-			}
-			if (res.length > 5000) {
-				throw new ResultTooLargeError("Over 5k entries :(");
-			}
-			return Promise.resolve(res);
+			console.log(queryClass);
+			// performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
+			// const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
+			// let res: InsightResult[] = unsortedRes;
+			// if (queryClass.order !== undefined) {
+			// 	res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
+			// }
+			// if (res.length > 5000) {
+			// 	throw new ResultTooLargeError("Over 5k entries :(");
+			// }
+			// return Promise.resolve(res);
+			return Promise.reject();
 		} catch (e) {
 			return Promise.reject(e);
 		}
