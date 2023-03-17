@@ -1,5 +1,5 @@
-
-export {QueryModel,
+export {
+	QueryModel,
 	Options,
 	Key,
 	Logic,
@@ -42,7 +42,7 @@ enum MField {
 	pass = "pass",
 	fail = "fail",
 	audit = "audit",
-	year = "year"
+	year = "year",
 }
 
 enum SField {
@@ -50,7 +50,7 @@ enum SField {
 	id = "id",
 	instructor = "instructor",
 	title = "title",
-	uuid = "uuid"
+	uuid = "uuid",
 }
 interface QueryModel {
 	 WHERE: Where;
@@ -158,7 +158,7 @@ class MKey implements Key {
 		let key: any[] = keyString.split("_");
 		this.idString = key[0];
 		this.field = key[1];
-	};
+	}
 }
 class SKey implements Key {
 	public idString: string;
@@ -167,7 +167,7 @@ class SKey implements Key {
 		let key: any[] = keyString.split("_");
 		this.idString = key[0];
 		this.field = key[1];
-	};
+	}
 }
 
 interface Transformations {

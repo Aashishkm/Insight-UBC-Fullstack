@@ -105,7 +105,6 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-
 		it("should accept a dataset with emppty data in some sections, but not all", function () {
 			let emptysection: string;
 			emptysection = getContentFromArchives("emptystringsection.zip");
@@ -114,6 +113,13 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.deep.equal(["nodata"]);
 		});
 
+		it("should accept a valid rooms dataset", function () {
+			let rooms: string;
+			rooms = getContentFromArchives("campus.zip");
+
+			const result = facade.addDataset("roomsData", rooms, InsightDatasetKind.Rooms);
+			return expect(result).to.eventually.deep.equal(["roomsData"]);
+		});
 
 		it("should reject a dataset with no sections", function () {
 			let nosections: string;
@@ -266,8 +272,11 @@ describe("InsightFacade", function () {
 
 			facade = new InsightFacade();
 			let dataset1 = facade.addDataset("sections", sections, InsightDatasetKind.Sections);
-			let dataset2 = facade.addDataset("ubc", getContentFromArchives("minipair.zip"),
-				InsightDatasetKind.Sections);
+			let dataset2 = facade.addDataset(
+				"ubc",
+				getContentFromArchives("minipair.zip"),
+				InsightDatasetKind.Sections
+			);
 
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.

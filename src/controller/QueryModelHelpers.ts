@@ -1,27 +1,20 @@
 import {
-	Filter,
-	Key,
-	LogicComparison,
-	MComparator,
-	MComparison,
-	MKey, NComparison,
-	QueryClass, QueryModel,
-	SComparison, SKey,
-	Where,
-	ApplyRule, ApplyToken,
-	AnyKey,
-	ApplyKey, Order
+	Filter, Key, LogicComparison, MComparator, MComparison,
+	MKey, NComparison, QueryClass, QueryModel, SComparison, SKey,
+	Where, ApplyRule, ApplyToken, AnyKey, ApplyKey, Order
 } from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 import {
 	isFilterList,
 	validateKey,
 	isNComparison,
-	isOptions, isWhere,
+	isOptions,
+	isWhere,
 	validateMComparison,
 	validateSComparison,
 	validateTransformations,
 	isApplyRuleList, isApplyKey, isKey, isAnyKey, isDirectedOrder, validateDirectedOrder
+
 } from "./QueryModelHelpersValidation";
 
 export default class QueryModelHelpers {
@@ -254,7 +247,7 @@ export default class QueryModelHelpers {
 	}
 
 	private compareKeys(key1: Key, key2: Key): boolean {
-		return (key1.idString === key2.idString && key1.field === key2.field);
+		return key1.idString === key2.idString && key1.field === key2.field;
 	}
 
 	private compareApplyKeys(key1: ApplyKey, key2: ApplyKey): boolean {
