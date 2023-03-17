@@ -208,7 +208,7 @@ export class DataProcessorModel {
 		try {
 			let directory = fs.readdirSync("./data/");
 			directory.forEach((file) => {
-				let dataset: CourseDatasetModel;
+				let dataset: DatasetModel;
 				dataset = fs.readJSONSync("./data/" + file);
 				insight.datasets.set(dataset.insightDataset.id, dataset);
 				insight.addedDatasetIds.push(dataset.insightDataset.id);
