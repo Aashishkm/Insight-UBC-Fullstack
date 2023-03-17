@@ -11,28 +11,10 @@ import {
 } from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 
-<<<<<<< HEAD
 export {isSField, isSKey, isMKey, isMField, isSection, isWhere, isFilterList,
 	validateSComparison, validateMComparison, isOptions, validateKey, isField, isFilter, isNComparison,
 	validateTransformations, isApplyRuleList, isKey, isApplyKey, isAnyKey, isDirectedOrder, validateDirectedOrder};
-=======
-export {
-	isSField,
-	isSKey,
-	isMKey,
-	isMField,
-	isSection,
-	isWhere,
-	isFilterList,
-	validateSComparison,
-	validateMComparison,
-	isOptions,
-	isKey,
-	isField,
-	isFilter,
-	isNComparison,
-};
->>>>>>> 3d4ed1518cdce828f1406b43f5b4d910e3faf7a7
+
 
 function isSField(arg: string): boolean {
 	return Object.values(SField).includes(arg as unknown as SField);
@@ -171,13 +153,8 @@ function isField(field: string) {
 	return isMField(field) || isSField(field);
 }
 
-<<<<<<< HEAD
 function validateKey(input: string) {
-	if(!input.includes("_")) {
-=======
-function isKey(input: string) {
 	if (!input.includes("_")) {
->>>>>>> 3d4ed1518cdce828f1406b43f5b4d910e3faf7a7
 		throw new InsightError("Key does not have '_'");
 	}
 	let inputArr: string[] = input.split("_");
@@ -222,7 +199,7 @@ function hasComparator(arg: any): boolean {
 function hasRequiredLength(arg: any, reqLength: number): boolean {
 	return Object.keys(arg).length === reqLength;
 }
-<<<<<<< HEAD
+
 
 function isApplyRuleList(arg: any): arg is ApplyRule[] {
 	if (arg.constructor.name !== "Array") {
@@ -318,5 +295,4 @@ function isAnyKeyList(arg: any): boolean {
 	});
 	return true;
 }
-=======
->>>>>>> 3d4ed1518cdce828f1406b43f5b4d910e3faf7a7
+
