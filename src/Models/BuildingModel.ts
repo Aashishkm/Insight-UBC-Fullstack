@@ -20,8 +20,8 @@ export class BuildingModel {
 		this.address = address;
 		this.href = href;
 		this.roomsPath = roomsPath;
-		this.lat = 0;
-		this.lon = 0;
+		this.lat = 999;
+		this.lon = 999;
 		this.rooms = [];
 	}
 }
