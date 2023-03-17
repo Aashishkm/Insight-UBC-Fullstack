@@ -9,7 +9,7 @@ export class RoomModel {
 	public lat: number;
 	public lon: number;
 	public seats: number;
-	public type: number;
+	public type: string;
 	public furniture: string;
 	public href: string;
 
@@ -22,7 +22,7 @@ export class RoomModel {
 		lat: number,
 		lon: number,
 		seats: number,
-		type: number,
+		type: string,
 		furniture: string,
 		href: string
 	) {

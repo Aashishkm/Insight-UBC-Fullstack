@@ -15,6 +15,7 @@ import {
 import {QueryClass, QueryModel} from "../Models/QueryModel";
 // import PerformQueryHelpers from "./PerformQueryHelpers";
 import QueryModelHelpers from "./QueryModelHelpers";
+import {DatasetModel} from "../Models/DatasetModel";
 
 /**
  * This is the main programmatic entry point for the project.
@@ -23,13 +24,13 @@ import QueryModelHelpers from "./QueryModelHelpers";
  */
 export default class InsightFacade implements IInsightFacade {
 	public addedDatasetIds: string[];
-	public datasets: Map<string, CourseDatasetModel>;
+	public datasets: Map<string, DatasetModel>;
 	// map.keys -->
 	constructor() {
 		let saved = new DataProcessorModel();
 
 		this.addedDatasetIds = [];
-		this.datasets = new Map<string, CourseDatasetModel>();
+		this.datasets = new Map<string, DatasetModel>();
 		saved.loadDatasetFromDisk(this);
 		console.log("InsightFacadeImpl::init()");
 	}
@@ -110,9 +111,6 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
-		if (query === undefined) {
-			return Promise.reject(new InsightError("Query is undefined"));
-		}
 		// const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
 
