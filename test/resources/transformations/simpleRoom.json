@@ -1,0 +1,112 @@
+{
+	"title": "In rooms dataset rooms, find entries whose Seats is greater than 200; show Seats and Full Name; sort in ascending order by Seats.",
+	"input": {
+		"WHERE": {
+			"GT": {
+				"rooms_seats": 200
+			}
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"rooms_seats",
+				"rooms_fullname"
+			],
+			"ORDER": "rooms_seats"
+		}
+	},
+	"errorExpected": false,
+	"expected": [
+		{
+			"rooms_seats": 205,
+			"rooms_fullname": "Leonard S. Klinck (also known as CSCI)"
+		},
+		{
+			"rooms_seats": 224,
+			"rooms_fullname": "Mathematics"
+		},
+		{
+			"rooms_seats": 225,
+			"rooms_fullname": "Geography"
+		},
+		{
+			"rooms_seats": 228,
+			"rooms_fullname": "Biological Sciences"
+		},
+		{
+			"rooms_seats": 236,
+			"rooms_fullname": "Pharmaceutical Sciences Building"
+		},
+		{
+			"rooms_seats": 240,
+			"rooms_fullname": "Chemistry"
+		},
+		{
+			"rooms_seats": 250,
+			"rooms_fullname": "Forest Sciences Centre"
+		},
+		{
+			"rooms_seats": 257,
+			"rooms_fullname": "Hennings"
+		},
+		{
+			"rooms_seats": 260,
+			"rooms_fullname": "Henry Angus"
+		},
+		{
+			"rooms_seats": 265,
+			"rooms_fullname": "Chemistry"
+		},
+		{
+			"rooms_seats": 275,
+			"rooms_fullname": "Buchanan"
+		},
+		{
+			"rooms_seats": 280,
+			"rooms_fullname": "Neville Scarfe"
+		},
+		{
+			"rooms_seats": 299,
+			"rooms_fullname": "Student Recreation Centre"
+		},
+		{
+			"rooms_seats": 299,
+			"rooms_fullname": "Student Recreation Centre"
+		},
+		{
+			"rooms_seats": 299,
+			"rooms_fullname": "Student Recreation Centre"
+		},
+		{
+			"rooms_seats": 325,
+			"rooms_fullname": "Wesbrook"
+		},
+		{
+			"rooms_seats": 350,
+			"rooms_fullname": "Earth Sciences Building"
+		},
+		{
+			"rooms_seats": 350,
+			"rooms_fullname": "Life Sciences Centre"
+		},
+		{
+			"rooms_seats": 350,
+			"rooms_fullname": "Life Sciences Centre"
+		},
+		{
+			"rooms_seats": 375,
+			"rooms_fullname": "Hebb"
+		},
+		{
+			"rooms_seats": 426,
+			"rooms_fullname": "Centre for Interactive  Research on Sustainability"
+		},
+		{
+			"rooms_seats": 442,
+			"rooms_fullname": "Robert F. Osborne Centre"
+		},
+		{
+			"rooms_seats": 503,
+			"rooms_fullname": "Woodward (Instructional Resources Centre-IRC)"
+		}
+	]
+}

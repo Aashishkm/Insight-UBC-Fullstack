@@ -13,7 +13,7 @@ import {
 } from "./IInsightFacade";
 
 import {QueryClass, QueryModel} from "../Models/QueryModel";
-// import PerformQueryHelpers from "./PerformQueryHelpers";
+import PerformQueryHelpers from "./PerformQueryHelpers";
 import QueryModelHelpers from "./QueryModelHelpers";
 import {DatasetModel} from "../Models/DatasetModel";
 
@@ -111,14 +111,12 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
-		// const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
+		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
-
-		if (!queryModelHelpers.validQueryStructure(query)) {
-			return Promise.reject(new InsightError("Invalid query structure"));
-		};
-
 		try {
+			if (!queryModelHelpers.validQueryStructure(query)) {
+				return Promise.reject(new InsightError("Invalid query structure"));
+			};
 			const validQuery = query as QueryModel;
 			let queryClass: QueryClass = new QueryClass();
 			queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
@@ -128,17 +126,16 @@ export default class InsightFacade implements IInsightFacade {
 			}
 			queryClass.queryId = queryClass.columns[0].idString;
 			console.log(queryClass);
-			// performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
-			// const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
-			// let res: InsightResult[] = unsortedRes;
-			// if (queryClass.order !== undefined) {
-			// 	res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
-			// }
-			// if (res.length > 5000) {
-			// 	throw new ResultTooLargeError("Over 5k entries :(");
-			// }
-			// return Promise.resolve(res);
-			return Promise.reject();
+			performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
+			const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
+			let res: InsightResult[] = unsortedRes;
+			if (queryClass.order !== undefined) {
+				// res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
+			}
+			if (res.length > 5000) {
+				throw new ResultTooLargeError("Over 5k entries :(");
+			}
+			return Promise.resolve(res);
 		} catch (e) {
 			return Promise.reject(e);
 		}

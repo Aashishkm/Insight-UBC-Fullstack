@@ -1,27 +1,12 @@
 export {
-	QueryModel,
-	Options,
-	Key,
-	Logic,
-	MKey,
-	SKey,
-	Where,
-	LogicComparison,
-	Filter,
-	MComparison,
-	SComparison,
-	NComparison,
-	MComparator,
-	MField,
-	SField,
-	QueryClass,
-	Transformations,
-	ApplyRule,
-	ApplyToken,
-	AnyKey,
-	ApplyKey,
-	Order,
-	Direction};
+	QueryModel, Options, Key,
+	Logic, MKey, SKey,
+	Where, LogicComparison, Filter,
+	MComparison, SComparison, NComparison,
+	MComparator, MField, SField,
+	QueryClass, Transformations, ApplyRule,
+	ApplyToken, AnyKey, ApplyKey, Order, Direction,
+	SFieldRoom, SFieldSection, MFieldRoom, MFieldSection};
 
 type MComparator = "LT" | "GT" | "EQ";
 type Logic = "AND" | "OR";
@@ -48,12 +33,45 @@ enum MField {
 	seats = "seats"
 }
 
+enum MFieldSection {
+	avg = "avg",
+	pass = "pass",
+	fail = "fail",
+	audit = "audit",
+	year = "year"
+}
+
+enum MFieldRoom {
+	lat = "lat",
+	lon = "lon",
+	seats = "seats"
+}
+
 enum SField {
 	dept = "dept",
 	id = "id",
 	instructor = "instructor",
 	title = "title",
 	uuid = "uuid",
+	fullname = "fullname",
+	shortname = "shortname",
+	number = "number",
+	name = "name",
+	address = "address",
+	type = "type",
+	furniture = "furniture",
+	href = "href"
+}
+
+enum SFieldSection {
+	dept = "dept",
+	id = "id",
+	instructor = "instructor",
+	title = "title",
+	uuid = "uuid"
+}
+
+enum SFieldRoom {
 	fullname = "fullname",
 	shortname = "shortname",
 	number = "number",

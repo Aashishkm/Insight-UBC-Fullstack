@@ -278,9 +278,14 @@ describe("InsightFacade", function () {
 				InsightDatasetKind.Sections
 			);
 
+			let rooms: string;
+			rooms = getContentFromArchives("campus.zip");
+
+			let dataset3 = facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms);
+
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [dataset1, dataset2];
+			const loadDatasetPromises = [dataset1, dataset2, dataset3];
 
 			return Promise.all(loadDatasetPromises);
 		});
@@ -295,7 +300,7 @@ describe("InsightFacade", function () {
 		folderTest<unknown, Promise<InsightResult[]>, PQErrorKind>(
 			"Dynamic InsightFacade PerformQuery tests",
 			(input) => facade.performQuery(input),
-			"./test/resources/andqueries",
+			"./test/resources/removethis",
 			{
 				assertOnResult: async (actual, expected) => {
 					const test = await expected;
@@ -329,9 +334,13 @@ describe("InsightFacade", function () {
 			let dataset2 = facade.addDataset("ubc", getContentFromArchives("minipair.zip"),
 				InsightDatasetKind.Sections);
 
+			let rooms: string;
+			rooms = getContentFromArchives("campus.zip");
+
+			let dataset3 = facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms);
 			// Load the datasets specified in datasetsToQuery and add them to InsightFacade.
 			// Will *fail* if there is a problem reading ANY dataset.
-			const loadDatasetPromises = [dataset1, dataset2];
+			const loadDatasetPromises = [dataset1, dataset2, dataset3];
 
 			return Promise.all(loadDatasetPromises);
 		});
