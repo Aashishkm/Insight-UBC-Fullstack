@@ -8,36 +8,44 @@ import * as http from "http";
 import InsightFacade from "./InsightFacade";
 
 export class RoomsProcessorHelper {
-	public parseRooms(indexData: string, processor: DataProcessorModel, insight: InsightFacade): Promise<any> {
+	public parseRooms(indexData: string, insight: InsightFacade, newZip: JSZip): Promise<any> {
 		let buildingList: BuildingModel[];
 		let parsedIndex = parse(indexData);
 		let promiseArray = Array<Promise<any>>();
 		let roomsPromiseArray = Array<Promise<any>>();
 		let buildingTableNode = this.getBuildingTableNode(parsedIndex);
-		let newZip = new JSZip();
+		let parsedFiles = Array<any>();
 		// console.log(tableNode);
 		buildingList = this.saveBuildingList(buildingTableNode);
 		for (let b of buildingList) {
 			promiseArray.push(this.getGeoLocation(b));
 		}
 		Promise.all(promiseArray).then((result) => {
-			console.log("hi");
-			/*
-			buildingList.forEach((b: BuildingModel) => {
-				getRoomFile();
-				newZip.file(b.roomsPath)!.async("text")
-					.then((file) => {
-						return Promise.reject(new InsightError("bad"));
-					});
-			}); */
+			for (let b of buildingList) {
+				let roomsFile = newZip.file(b.roomsPath);
+				roomsPromiseArray.push(roomsFile!.async("text"));
+			}
+			Promise.all(roomsPromiseArray)
+				.then((resultArray) => {
+					parsedFiles = this.parseThis(resultArray);
+					for (let p of parsedFiles) {
+						this.getRoomTableNode(p);
+					}
+
+				});
+
 		});
+		for (let file of parsedFiles) {
+			console.log("hi");
+			// this.getRoomTableNode(file);
+		}
 		// console.log(buildingList);
 		return Promise.reject(new InsightError("bad"));
 	}
 
 	public getBuildingTableNode(file: any): any {
 		if (file.nodeName === "tbody") {
-			if (this.checkPotentialTable(file) === true) {
+			if (this.checkPotentialTable(file)) {
 				return file;
 			}
 		}
@@ -164,5 +172,68 @@ export class RoomsProcessorHelper {
 			}
 		});
 		return returnPromise;
+	}
+
+	public parseThis(data: any): any[] {
+		let returnArr: any[] = [];
+		returnArr = data.map((m: string) => parse(m));
+		return returnArr;
+	}
+
+
+	public getRoomTableNode(file: any): any {
+		if (file.nodeName === "tbody") {
+			if (this.checkPotentialRoomTable(file)) {
+				return file;
+			}
+		}
+
+		if (file.childNodes !== undefined && file.childNodes !== null) {
+			for (let nodes of file.childNodes) {
+				let result = this.getRoomTableNode(nodes);
+				if (result !== false) {
+					return result;
+				}
+			}
+		}
+		return false;
+	}
+
+	public checkPotentialRoomTable(file: any): boolean {
+		let flag1 = false;
+		let flag2 = false;
+		let flag3 = false;
+		let flag4 = false;
+		let flag5 = false;
+		if (file.childNodes === undefined || file.childNodes === null) {
+			return false;
+		}
+		for (let nodes of file.childNodes) {
+			if (nodes.nodeName === "tr") {
+				for (let babyNodes of nodes.childNodes) {
+					if (babyNodes.nodeName === "td") {
+						if (babyNodes.attrs[0].value === "views-field views-field-nothing") {
+							flag1 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-field-building-code") {
+							flag2 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-title") {
+							flag3 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-field-building-address") {
+							flag4 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-field-building-image") {
+							flag5 = true;
+						}
+						if (flag1 && flag2 && flag3 && flag4 && flag5) {
+							return true;
+						}
+					}
+				}
+			}
+		}
+		return false;
 	}
 }

@@ -76,7 +76,7 @@ export class DataProcessorModel {
 					indexFile.async("text")
 						.then((result) => {
 							let roomsStuff = new RoomsProcessorHelper();
-							return roomsStuff.parseRooms(result, this, insight);
+							return roomsStuff.parseRooms(result, insight, newZip);
 							// insight.datasets.set(id, returnDataset);
 							// insight.addedDatasetIds.push(id);
 							// this.saveToDisk(returnDataset);
