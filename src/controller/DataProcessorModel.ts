@@ -73,7 +73,7 @@ export class DataProcessorModel {
 						return reject(new InsightError("dataset id already exists"));
 					}
 					let indexFile = newZip.file("index.htm");
-					if (indexFile === null) {
+					if (indexFile === null || indexFile === undefined) {
 						return reject(new InsightError("index file doesn't exist"));
 					}
 					indexFile

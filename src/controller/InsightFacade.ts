@@ -110,7 +110,8 @@ export default class InsightFacade implements IInsightFacade {
 		// notes --> should I be removing stuff in disk that are i disk but aren't in memory?
 	}
 
-	public performQuery(query: unknown): Promise<InsightResult[]> { /*
+	public performQuery(query: unknown): Promise<InsightResult[]> {
+		/*
 		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
 		if (!queryModelHelpers.hasWhereAndOptions(query)) {
