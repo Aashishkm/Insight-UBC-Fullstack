@@ -73,7 +73,7 @@ export class DataProcessorModel {
 						return reject(new InsightError("dataset id already exists"));
 					}
 					let indexFile = newZip.file("index.htm");
-					if (indexFile === null) {
+					if (indexFile === null || indexFile === undefined) {
 						return reject(new InsightError("index file doesn't exist"));
 					}
 					indexFile
@@ -208,7 +208,7 @@ export class DataProcessorModel {
 		try {
 			let directory = fs.readdirSync("./data/");
 			directory.forEach((file) => {
-				let dataset: CourseDatasetModel;
+				let dataset: DatasetModel;
 				dataset = fs.readJSONSync("./data/" + file);
 				insight.datasets.set(dataset.insightDataset.id, dataset);
 				insight.addedDatasetIds.push(dataset.insightDataset.id);

@@ -76,8 +76,15 @@ describe("InsightFacade", function () {
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
-		it("should reject the wrong InsightDatasetKind ", function () {
+		it("should reject rooms dataset with no index file", function () {
 			const result = facade.addDataset("wrongdatasetkind", sections, InsightDatasetKind.Rooms);
+			return expect(result).to.eventually.be.rejectedWith(InsightError);
+		});
+
+		it("should reject rooms dataset with only index file", function () {
+			let onlyIndex: string;
+			onlyIndex = getContentFromArchives("onlyindex.zip");
+			const result = facade.addDataset("onlyindex", onlyIndex, InsightDatasetKind.Rooms);
 			return expect(result).to.eventually.be.rejectedWith(InsightError);
 		});
 
@@ -205,6 +212,19 @@ describe("InsightFacade", function () {
 			const dataset = await facade.listDatasets();
 
 			expect(dataset).to.deep.equal([{id: "ab", kind: InsightDatasetKind.Sections, numRows: 64612}]);
+		});
+
+		it("should list a dataset with stuff in it", async function () {
+			let rooms: string;
+			rooms = getContentFromArchives("campus.zip");
+			await facade.addDataset("ab", sections, InsightDatasetKind.Sections);
+			await facade.addDataset("rooms", rooms, InsightDatasetKind.Rooms);
+
+			const dataset = await facade.listDatasets();
+			expect(dataset).to.deep.equal([
+				{id: "ab", kind: InsightDatasetKind.Sections, numRows: 64612},
+				{id: "rooms", kind: InsightDatasetKind.Rooms, numRows: 364},
+			]);
 		});
 	});
 
