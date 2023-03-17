@@ -43,6 +43,9 @@ enum MField {
 	fail = "fail",
 	audit = "audit",
 	year = "year",
+	lat = "lat",
+	lon = "lon",
+	seats = "seats"
 }
 
 enum SField {
@@ -51,6 +54,14 @@ enum SField {
 	instructor = "instructor",
 	title = "title",
 	uuid = "uuid",
+	fullname = "fullname",
+	shortname = "shortname",
+	number = "number",
+	name = "name",
+	address = "address",
+	type = "type",
+	furniture = "furniture",
+	href = "href"
 }
 interface QueryModel {
 	 WHERE: Where;

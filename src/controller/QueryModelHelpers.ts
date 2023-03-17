@@ -1,20 +1,12 @@
 import {
-	Filter, Key, LogicComparison, MComparator, MComparison,
-	MKey, NComparison, QueryClass, QueryModel, SComparison, SKey,
-	Where, ApplyRule, ApplyToken, AnyKey, ApplyKey, Order
+	Filter, Key, LogicComparison, MComparator, MComparison, MKey, NComparison, QueryClass,
+	QueryModel, SComparison, SKey, Where, ApplyRule, ApplyToken, AnyKey, ApplyKey, Order
 } from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 import {
-	isFilterList,
-	validateKey,
-	isNComparison,
-	isOptions,
-	isWhere,
-	validateMComparison,
-	validateSComparison,
-	validateTransformations,
-	isApplyRuleList, isApplyKey, isKey, isAnyKey, isDirectedOrder, validateDirectedOrder
-
+	isFilterList, validateKey, isNComparison, isOptions, isWhere, validateMComparison,
+	validateSComparison, validateTransformations, isApplyRuleList, isApplyKey, isKey, isAnyKey,
+	isDirectedOrder, validateDirectedOrder
 } from "./QueryModelHelpersValidation";
 
 export default class QueryModelHelpers {
@@ -159,11 +151,10 @@ export default class QueryModelHelpers {
 	}
 
 	private createOrder(order: Order, columns: AnyKey[]): Order {
-		const parsedOrder = JSON.parse(JSON.stringify(order));
-		if (isAnyKey(parsedOrder)) {
-			return this.createOrderAnyKey(parsedOrder, columns);
-		} else if (isDirectedOrder(parsedOrder)) {
-			return this.createDirectedOrder(parsedOrder);
+		if (isAnyKey(order)) {
+			return this.createOrderAnyKey(order, columns);
+		} else if (isDirectedOrder(order)) {
+			return this.createDirectedOrder(order);
 		} else {
 			throw new InsightError("Order is incorrectly formatted");
 		}
@@ -172,21 +163,35 @@ export default class QueryModelHelpers {
 	private createDirectedOrder(order: any): Order {
 		let ret = new Order();
 		validateDirectedOrder(order);
+		ret.dir = order.dir;
+		ret.keys = this.createAnyKeyList(order.keys);
 		return ret;
 	}
 
-	private createOrderAnyKey(order: any, columns: AnyKey[]): Order {
-		let k: AnyKey;
-		let ret = new Order();
-		if (isKey(order)) {
-			k = new Key(order);
-		} else if (isApplyKey(order)) {
-			k = new ApplyKey(order);
+	private createAnyKeyList(anyKeyList: any): AnyKey[] {
+		let anyKeyResult: AnyKey[] = [];
+		anyKeyList.forEach((anyKey: AnyKey) => {
+			anyKeyResult.push(this.createAnyKey(anyKey));
+		});
+		return anyKeyResult;
+	}
+
+	private createAnyKey(anyKey: any): AnyKey {
+		let resultKey: AnyKey;
+		if (isKey(anyKey)) {
+			resultKey = new Key(anyKey);
+		} else if (isApplyKey(anyKey)) {
+			resultKey = new ApplyKey(anyKey);
 		} else {
 			throw new InsightError("Order key invalid");
 		}
-		ret.key = k;
-		if (!this.isKeyInList(k, columns)) {
+		return resultKey;
+	}
+
+	private createOrderAnyKey(order: any, columns: AnyKey[]): Order {
+		let ret = new Order();
+		ret.key = this.createAnyKey(order);
+		if (!this.isKeyInList(ret.key, columns)) {
 			throw new InsightError("ORDER key must be in COLUMNS");
 		}
 		return ret;

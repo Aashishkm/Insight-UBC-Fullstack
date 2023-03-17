@@ -13,7 +13,7 @@ import {
 } from "./IInsightFacade";
 
 import {QueryClass, QueryModel} from "../Models/QueryModel";
-import PerformQueryHelpers from "./PerformQueryHelpers";
+// import PerformQueryHelpers from "./PerformQueryHelpers";
 import QueryModelHelpers from "./QueryModelHelpers";
 
 /**
@@ -113,7 +113,7 @@ export default class InsightFacade implements IInsightFacade {
 		if (query === undefined) {
 			return Promise.reject(new InsightError("Query is undefined"));
 		}
-		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
+		// const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
 
 		if (!queryModelHelpers.validQueryStructure(query)) {
