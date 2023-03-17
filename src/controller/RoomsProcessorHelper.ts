@@ -194,6 +194,11 @@ export class RoomsProcessorHelper {
 	}
 
 	public checkPotentialRoomTable(file: any): boolean {
+		let flag1 = false;
+		let flag2 = false;
+		let flag3 = false;
+		let flag4 = false;
+		let flag5 = false;
 		if (file.childNodes === undefined || file.childNodes === null) {
 			return false;
 		}
@@ -201,7 +206,22 @@ export class RoomsProcessorHelper {
 			if (nodes.nodeName === "tr") {
 				for (let babyNodes of nodes.childNodes) {
 					if (babyNodes.nodeName === "td") {
-						if (babyNodes.attrs[0].value === "views-field views-field-field-room-number") {
+						if (babyNodes.attrs[0].value === "views-field views-field-nothing") {
+							flag1 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-field-building-code") {
+							flag2 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-title") {
+							flag3 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-field-building-address") {
+							flag4 = true;
+						}
+						if (babyNodes.attrs[0].value === "views-field views-field-field-building-image") {
+							flag5 = true;
+						}
+						if (flag1 && flag2 && flag3 && flag4 && flag5) {
 							return true;
 						}
 					}
