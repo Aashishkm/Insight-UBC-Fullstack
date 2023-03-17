@@ -69,6 +69,9 @@ export class DataProcessorModel {
 		let returnPromise = new Promise<string[]>((resolve, reject) => {
 			zip.loadAsync(content, {base64: true})
 				.then((newZip: JSZip) => {
+					if (fs.existsSync("./data/" + id + ".json")) {
+						return reject(new InsightError("dataset id already exists"));
+					}
 					let indexFile = newZip.file("index.htm");
 					if (indexFile === null) {
 						return reject(new InsightError("index file doesn't exist"));
