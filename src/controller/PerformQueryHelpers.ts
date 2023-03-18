@@ -1,16 +1,16 @@
 import {
-	AnyKey, Filter, Key,
-	LogicComparison, MComparison, MFieldRoom, MFieldSection,
-	NComparison, SComparison, SField, SFieldRoom, SFieldSection
+	AnyKey, ApplyRule, Filter, Group, Key, LogicComparison, MComparison, MFieldRoom,
+	MFieldSection, NComparison, Order, QueryClass, SComparison, SField, SFieldRoom, SFieldSection
 } from "../Models/QueryModel";
 import {CourseDatasetModel} from "../Models/CourseDatasetModel";
 import {SectionModel} from "../Models/SectionModel";
 import {InsightDatasetKind, InsightError, InsightResult} from "./IInsightFacade";
 import {DatasetModel} from "../Models/DatasetModel";
-import {Cipher} from "crypto";
 import {RoomDatasetModel} from "../Models/RoomDatasetModel";
 import {RoomModel} from "../Models/RoomModel";
 import {SectionRoomModel} from "../Models/SectionRoomModel";
+import Decimal from "decimal.js";
+import {findAvg, findCount, findMax, findMin, findSum, intersection, matches, union} from "./PerformQueryHelpers2";
 
 export default class PerformQueryHelpers {
 	// TODO implement ordering
@@ -20,9 +20,12 @@ export default class PerformQueryHelpers {
 		this.currentQueryingDatasetID = "";
 	}
 
+	private groups: Group[] = [];
+
 	public globalSectionList: SectionRoomModel[];
 	private datasets: Map<string, DatasetModel>;
 	private currentQueryingDatasetID: string;
+	private currentQueryingDatasetKind: InsightDatasetKind = InsightDatasetKind.Sections;
 	public applyWhere(filter: Filter, queryingDatasetID: string) {
 		this.currentQueryingDatasetID = queryingDatasetID;
 		let idList: SectionRoomModel[] = [];
@@ -178,7 +181,7 @@ export default class PerformQueryHelpers {
 		return resultSections;
 	}
 
-	// TODO fix this later optimize!
+	// TODO optimize!
 	private handleNComparison(nComparison: NComparison): SectionRoomModel[] {
 		const datasetAll = this.datasets.get(this.currentQueryingDatasetID);
 		const datasetFiltered = this.applyComparison(nComparison.filter);
@@ -206,92 +209,91 @@ export default class PerformQueryHelpers {
 		return this.datasets.has(id);
 	}
 
-	public applyOrder(order: Key, insightResultList: InsightResult[]): InsightResult[] {
-		// TODO finish me!
+	public applyOrder(order: Order, insightResultList: InsightResult[]): InsightResult[] {
 		let res = insightResultList;
-		const orderProperty = order.idString + "_" + order.field;
-		res = res.sort((a, b) => {
-			if (a[orderProperty] < b[orderProperty]) {
-				return -1;
+		if (order.key !== undefined) {
+			if (order.key instanceof Key) {
+				const orderProperty = order.key.idString + "_" + order.key.field;
+				res = res.sort((a, b) => {
+					if (a[orderProperty] < b[orderProperty]) {
+						return -1;
+					}
+					if (a[orderProperty] > b[orderProperty]) {
+						return 1;
+					}
+					return 0;
+				});
 			}
-			if (a[orderProperty] > b[orderProperty]) {
-				return 1;
-			}
-			return 0;
-		});
+		} else if (order.dir !== undefined) {
+			console.log("Finish me!");
+		}
 		return res;
 	}
 
-
-}
-
-// fn from https://stackoverflow.com/questions/37320296/how-to-calculate-intersection-of-multiple-arrays-in-javascript-and-what-does-e
-function intersection(sectionLists: SectionRoomModel[][]) {
-	let result: SectionRoomModel[] = [];
-	let lists: SectionRoomModel[][];
-
-	if (sectionLists.length === 1) {
-		lists = [sectionLists[0]];
-	} else {
-		lists = sectionLists;
-	}
-	for (let currentList of lists) {
-		for (let currentValue of currentList) {
-			if (result.indexOf(currentValue) === -1) {
-				if (
-					lists.filter(function (obj) {
-						return obj.indexOf(currentValue) === -1;
-					}).length === 0
-				) {
-					result.push(currentValue);
-				}
-			}
+	public applyTransformations(queryClass: QueryClass) {
+		if (queryClass.group) {
+			this.applyGroup(queryClass.group);
+		}
+		if (queryClass.apply) {
+			this.applyApply(queryClass.apply);
 		}
 	}
-	return result;
-}
 
-function union(sectionLists: SectionRoomModel[][]) {
-	let result: SectionRoomModel[] = [];
-	let lists: SectionRoomModel[][] = [];
-	if (sectionLists.length === 1) {
-		lists = [sectionLists[0]];
-	} else {
-		lists = sectionLists;
+	private applyGroup(groupKeys: Key[]) {
+		// TODO finish me
+		let groupBy = function(xs: any[], key: any) {
+			return xs.reduce(function(rv, x) {
+				(rv[x[key]] = rv[x[key]] || []).push(x);
+				return rv;
+			}, {});
+		};
+		let groupList: Group[] = [];
+		let preGroups = groupBy(this.globalSectionList, groupKeys[0].field);
+		Object.keys(preGroups).forEach((key) => {
+			let groupTemp = new Group();
+			groupTemp.members = preGroups[key];
+			groupTemp.groupedBy = key;
+			groupList.push(groupTemp);
+		});
+		this.groups = groupList;
 	}
-	lists.forEach((list) => {
-		result = result.concat(list);
-	});
-	result = [...new Set(result)];
-	return result;
-}
-function matches(input: string, regex: string): boolean {
-	if (regex === "*") {
-		return true;
-	} else if (!regex.includes("*")) {
-		return input === regex;
-	} else if (regex[0] === "*" && regex[regex.length - 1] === "*") {
-		const match = regex.substring(1, regex.length - 1);
-		validateSFieldInput(match);
-		return input.includes(match);
-	} else if (regex[0] === "*") {
-		const match = regex.substring(1);
-		validateSFieldInput(match);
-		return input.endsWith(match);
-	} else if (regex[regex.length - 1] === "*") {
-		const match = regex.substring(0, regex.length - 1);
-		validateSFieldInput(match);
-		return input.startsWith(match);
-	} else if (regex.includes("*")) {
-		throw new InsightError("Must only contain wildcards at start or/and end");
-	}
-	return false;
-}
-function validateSFieldInput(inp: string): boolean {
-	if (inp.includes("*")) {
-		throw new InsightError("Must only contain wildcards at start or/and end");
-	} else {
-		return false;
-	}
-}
 
+	private applyApply(applyRules: ApplyRule[]) {
+		const rule = applyRules[0];
+		this.groups.forEach((group) => {
+			if (rule.applyToken === "MAX") {
+				group.res = (findMax(group, rule));
+			} else if (rule.applyToken === "MIN") {
+				group.res = (findMin(group, rule));
+			} else if (rule.applyToken === "AVG") {
+				group.res = (findAvg(group, rule));
+			} else if (rule.applyToken === "COUNT") {
+				group.res = (findCount(group));
+			} else if (rule.applyToken === "SUM") {
+				group.res = (findSum(group, rule));
+			}
+		});
+	}
+
+	public applyColumnsGrouped(queryClass: QueryClass) {
+		const dataset = this.datasets.get(this.currentQueryingDatasetID);
+		let resultArr: any = [];
+		// if (dataset instanceof CourseDatasetModel) {
+		// 	this.groups.forEach((group) => {
+		// 		let obj
+		// 	})
+		// } else if (dataset instanceof RoomDatasetModel) {
+		// 	(this.globalSectionList as RoomModel[]).forEach((room) => {
+		// 		let obj: {[key: string]: any} = {};
+		// 		(columns as Key[]).forEach((key) => {
+		// 			let objProperty = key.idString + "_" + key.field;
+		// 			obj[objProperty] = room[(key.field as unknown as SFieldRoom | MFieldRoom)];
+		// 		});
+		// 		resultArr.push(obj);
+		// 	});
+		// }
+
+		return resultArr;
+	}
+
+}

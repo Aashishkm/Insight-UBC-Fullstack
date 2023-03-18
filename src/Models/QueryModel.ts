@@ -1,3 +1,5 @@
+import {InsightResult} from "../controller/IInsightFacade";
+
 export {
 	QueryModel, Options, Key,
 	Logic, MKey, SKey,
@@ -6,7 +8,8 @@ export {
 	MComparator, MField, SField,
 	QueryClass, Transformations, ApplyRule,
 	ApplyToken, AnyKey, ApplyKey, Order, Direction,
-	SFieldRoom, SFieldSection, MFieldRoom, MFieldSection};
+	SFieldRoom, SFieldSection, MFieldRoom, MFieldSection,
+	Group};
 
 type MComparator = "LT" | "GT" | "EQ";
 type Logic = "AND" | "OR";
@@ -117,7 +120,12 @@ class LogicComparison implements Filter {
 		this.filterList = filterList;
 	}
 }
-//
+
+class Group {
+	public members: InsightResult[] = [];
+	public groupedBy: string = "";
+	public res = 0;
+}
 class MComparison implements Filter {
 	public comparator: MComparator;
 	public mKey: MKey;
