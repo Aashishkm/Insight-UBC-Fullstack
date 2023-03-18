@@ -1,4 +1,6 @@
-export class SectionModel {
+import {SectionRoomModel} from "./SectionRoomModel";
+
+export class SectionModel implements SectionRoomModel {
 	public uuid: string;
 	public id: string;
 	public title: string;

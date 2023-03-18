@@ -111,20 +111,28 @@ export default class InsightFacade implements IInsightFacade {
 	}
 
 	public performQuery(query: unknown): Promise<InsightResult[]> {
-		/*
 		const performQueryHelpers: PerformQueryHelpers = new PerformQueryHelpers([], this.datasets);
 		const queryModelHelpers: QueryModelHelpers = new QueryModelHelpers();
-		if (!queryModelHelpers.hasWhereAndOptions(query)) {
-			return Promise.reject(new InsightError("No WHERE or OPTIONS"));
-		}
 		try {
+			if (!queryModelHelpers.validQueryStructure(query)) {
+				return Promise.reject(new InsightError("Invalid query structure"));
+			};
 			const validQuery = query as QueryModel;
 			let queryClass: QueryClass = new QueryClass();
 			queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
 			queryModelHelpers.handleWhere(validQuery.WHERE, queryClass);
+			if (validQuery.TRANSFORMATIONS !== undefined) {
+				queryModelHelpers.handleTransformations(validQuery.TRANSFORMATIONS, queryClass);
+			}
 			queryClass.queryId = queryClass.columns[0].idString;
 			performQueryHelpers.applyWhere(queryClass.where, queryClass.queryId);
-			const unsortedRes: InsightResult[] = performQueryHelpers.applyColumns(queryClass.columns);
+			let unsortedRes: InsightResult[] = [];
+			if (validQuery.TRANSFORMATIONS !== undefined) {
+				performQueryHelpers.applyTransformations(queryClass);
+				performQueryHelpers.applyColumnsGrouped(queryClass);
+			} else {
+				unsortedRes = performQueryHelpers.applyColumns(queryClass.columns);
+			}
 			let res: InsightResult[] = unsortedRes;
 			if (queryClass.order !== undefined) {
 				res = performQueryHelpers.applyOrder(queryClass.order, unsortedRes);
@@ -135,8 +143,7 @@ export default class InsightFacade implements IInsightFacade {
 			return Promise.resolve(res);
 		} catch (e) {
 			return Promise.reject(e);
-		} */
-		return Promise.reject(new InsightError("Remove failed"));
+		}
 	}
 
 	public listDatasets(): Promise<InsightDataset[]> {

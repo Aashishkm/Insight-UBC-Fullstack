@@ -1,42 +1,22 @@
 import {
-	Filter,
-	Key,
-	LogicComparison,
-	MComparator,
-	MComparison,
-	MKey,
-	NComparison,
-	QueryClass,
-	QueryModel,
-	SComparison,
-	SKey,
-	Where,
+	Filter, Key, LogicComparison, MComparator, MComparison, MKey, NComparison, QueryClass,
+	QueryModel, SComparison, SKey, Where, ApplyRule, ApplyToken, AnyKey, ApplyKey, Order
 } from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 import {
-	isFilterList,
-	isKey,
-	isNComparison,
-	isOptions,
-	isWhere,
-	validateMComparison,
-	validateSComparison,
+	isFilterList, validateKey, isNComparison, isOptions, isWhere, validateMComparison,
+	validateSComparison, validateTransformations, isApplyRuleList, isApplyKey, isKey, isAnyKey,
+	isDirectedOrder, validateDirectedOrder
 } from "./QueryModelHelpersValidation";
 
 export default class QueryModelHelpers {
 	private datasetID: string = "";
 	public handleOptions(options: any, queryClass: QueryClass) {
-		/** Takes in OPTIONS from a query and modifies given queryClass with respective columns and order
-		 * @param options an object to verify as options
-		 * @param queryClass the queryClass is modified, adding columns and optionally order
-		 *
-		 * should throw an InsightError if OPTIONS is improperly formatted
-		 */
 		if (isOptions(options)) {
 			queryClass.columns = this.getColumnKeys(options.COLUMNS);
 			this.checkKeyConsistency(queryClass.columns);
 			if (options.ORDER) {
-				queryClass.order = this.createOrderKey(options.ORDER, queryClass.columns);
+				queryClass.order = this.createOrder(options.ORDER, queryClass.columns);
 			}
 		} else {
 			throw new InsightError("Options not formatted correctly");
@@ -44,12 +24,6 @@ export default class QueryModelHelpers {
 	}
 
 	public handleWhere(where: any, queryClass: QueryClass) {
-		/** Takes in WHERE from a query and modifies given queryClass's filter
-		 * @param where an object to verify as a WHERE
-		 * @param queryClass the queryClass is modified, adding a filter object
-		 *
-		 * should throw an InsightError if WHERE is improperly formatted
-		 */
 		if (Object.keys(where).length === 0) {
 			// empty body matches all entries
 			queryClass.where = {};
@@ -60,14 +34,68 @@ export default class QueryModelHelpers {
 		}
 	}
 
-	public makeFilterObjects(filter: Where): Filter {
-		/** Takes in an unchecked filter and creates a filter object
-		 * @param filter a Where object to be made into a Filter object
-		 * @returns Filter
-		 *
-		 * should throw an InsightError if there is no matching property, but this
-		 * should not happen because isWhere checks for this already
-		 */
+	public handleTransformations(transformations: any, queryClass: QueryClass) {
+		if (validateTransformations(transformations)) {
+			queryClass.apply = this.createApplyRuleList(transformations.APPLY);
+			queryClass.group = this.createKeyList(transformations.GROUP);
+		}
+	}
+
+	private createKeyList(keyList: any): Key[] {
+		let resultKeyList: Key[] = [];
+		if (this.isKeyList(keyList)) {
+			keyList.forEach((key: Key) => {
+				resultKeyList.push(this.createKey(key));
+			});
+		} else {
+			throw new InsightError("Bad Key list");
+		}
+		if (resultKeyList.length === 0) {
+			throw new InsightError("Empty key list");
+		}
+		return resultKeyList;
+	}
+
+	private isKeyList(arg: any): boolean {
+		if (arg.constructor.name !== "Array") {
+			throw new InsightError("key list is not array");
+		}
+		arg.forEach((key: any) => {
+			if (!isKey(key)) {
+				return false;
+			}
+		});
+		return true;
+	}
+
+	private createApplyRuleList(applyRuleList: any): ApplyRule[] {
+		let resultApplyRuleList: ApplyRule[] = [];
+		if (isApplyRuleList(applyRuleList)) {
+			applyRuleList.forEach((applyRule: ApplyRule) => {
+				resultApplyRuleList.push(this.createApplyRule(applyRule));
+			});
+		} else {
+			throw new InsightError("Bad apply rule list");
+		}
+		if (resultApplyRuleList.length === 0) {
+			throw new InsightError("Empty key list");
+		}
+		return resultApplyRuleList;
+	}
+
+	private createApplyRule(applyRule: any): ApplyRule {
+		const applyRuleName = this.getFirstKeyOfObject(applyRule);
+		const applyTokenAndKey = this.getFirstValueOfObject(applyRule);
+		const applyToken = this.getFirstKeyOfObject(applyTokenAndKey) as ApplyToken;
+		const key = this.createKey(this.getFirstValueOfObject(applyTokenAndKey));
+		return new ApplyRule(applyRuleName, applyToken, key);
+	}
+
+	private createKey(keyString: any): Key {
+		return new Key(keyString);
+	}
+
+	private makeFilterObjects(filter: Where): Filter {
 		if (filter.AND !== undefined) {
 			if (isFilterList(filter.AND)) {
 				return new LogicComparison("AND", this.makeFilterObjectsList(filter.AND));
@@ -94,12 +122,6 @@ export default class QueryModelHelpers {
 	}
 
 	private makeFilterObjectsList(filterList: Filter[]): Filter[] {
-		/** Takes in a list of unchecked Filter objects and returns checked a list of filter objects
-		 * @param filterList a list of unchecked Filter objects
-		 * @returns Filter[]
-		 *
-		 * recursively calls makeFilterObjects
-		 */
 		let resultFilterList: Filter[] = [];
 		filterList.forEach((filter) => {
 			resultFilterList.push(this.makeFilterObjects(filter));
@@ -110,12 +132,16 @@ export default class QueryModelHelpers {
 		return resultFilterList;
 	}
 
-	public getColumnKeys(columns: Key[]): Key[] {
-		let keyList: Key[] = [];
+	public getColumnKeys(columns: AnyKey[]): AnyKey[] {
+		let keyList: AnyKey[] = [];
 		// push each string into a key array
 		JSON.parse(JSON.stringify(columns)).forEach((value: string) => {
-			if (isKey(value)) {
+			if (isApplyKey(value)) {
+				keyList.push(new ApplyKey(value));
+			} else if (isKey(value)) {
 				keyList.push(new Key(value));
+			} else {
+				throw new InsightError("Bad key in COLUMNS");
 			}
 		});
 		if (keyList.length === 0) {
@@ -124,20 +150,48 @@ export default class QueryModelHelpers {
 		return keyList;
 	}
 
-	private createOrderKey(orderKey: Key, columns: Key[]): Key {
-		/** Creates a model order key from given object
-		 * @param key non-validated order key
-		 * @param columns COLUMNS keys
-		 * @returns Key
-		 *
-		 * throws InsightError if it does not mention a COLUMN key
-		 */
-		// TODO perhaps need to validate key string before
-		if (!isKey(JSON.parse(JSON.stringify(orderKey)))) {
+	private createOrder(order: Order, columns: AnyKey[]): Order {
+		if (isAnyKey(order)) {
+			return this.createOrderAnyKey(order, columns);
+		} else if (isDirectedOrder(order)) {
+			return this.createDirectedOrder(order);
+		} else {
+			throw new InsightError("Order is incorrectly formatted");
+		}
+	}
+
+	private createDirectedOrder(order: any): Order {
+		let ret = new Order();
+		validateDirectedOrder(order);
+		ret.dir = order.dir;
+		ret.keys = this.createAnyKeyList(order.keys);
+		return ret;
+	}
+
+	private createAnyKeyList(anyKeyList: any): AnyKey[] {
+		let anyKeyResult: AnyKey[] = [];
+		anyKeyList.forEach((anyKey: AnyKey) => {
+			anyKeyResult.push(this.createAnyKey(anyKey));
+		});
+		return anyKeyResult;
+	}
+
+	private createAnyKey(anyKey: any): AnyKey {
+		let resultKey: AnyKey;
+		if (isKey(anyKey)) {
+			resultKey = new Key(anyKey);
+		} else if (isApplyKey(anyKey)) {
+			resultKey = new ApplyKey(anyKey);
+		} else {
 			throw new InsightError("Order key invalid");
 		}
-		const ret = new Key(JSON.parse(JSON.stringify(orderKey)));
-		if (!this.isKeyInList(ret, columns)) {
+		return resultKey;
+	}
+
+	private createOrderAnyKey(order: any, columns: AnyKey[]): Order {
+		let ret = new Order();
+		ret.key = this.createAnyKey(order);
+		if (!this.isKeyInList(ret.key, columns)) {
 			throw new InsightError("ORDER key must be in COLUMNS");
 		}
 		return ret;
@@ -183,11 +237,14 @@ export default class QueryModelHelpers {
 		return Object.values(obj)[0];
 	}
 
-	private checkKeyConsistency(keys: Key[]) {
+	private checkKeyConsistency(keys: AnyKey[]) {
+		const filteredKeys = keys.filter((value) => {
+			return (value instanceof Key);
+		});
 		if (this.datasetID === "") {
-			this.datasetID = keys[0].idString;
+			this.datasetID = filteredKeys[0].idString;
 		}
-		for (const key of keys) {
+		for (const key of filteredKeys) {
 			if (key.idString !== this.datasetID) {
 				throw new InsightError("All datasets mentioned must be the same");
 			}
@@ -198,10 +255,21 @@ export default class QueryModelHelpers {
 		return key1.idString === key2.idString && key1.field === key2.field;
 	}
 
-	private isKeyInList(key: Key, keyList: Key[]): boolean {
+	private compareApplyKeys(key1: ApplyKey, key2: ApplyKey): boolean {
+		return key1.idString === key2.idString;
+	}
+
+	private isKeyInList(key: AnyKey, keyList: AnyKey[]): boolean {
 		for (const k of keyList) {
-			if (this.compareKeys(key, k)) {
-				return true;
+			if (k instanceof Key) {
+				if (this.compareKeys(key as Key, k)) {
+					return true;
+				}
+			}
+			if (k instanceof ApplyKey) {
+				if (this.compareApplyKeys(key , k)) {
+					return true;
+				}
 			}
 		}
 		return false;
@@ -211,7 +279,20 @@ export default class QueryModelHelpers {
 		return new NComparison(this.makeFilterObjects(filter));
 	}
 
-	public hasWhereAndOptions(arg: any): arg is QueryModel {
-		return arg.WHERE !== undefined && arg.OPTIONS !== undefined;
+	public validQueryStructure(arg: any): arg is QueryModel {
+		return this.hasWhereAndOptions(arg) || this.hasWhereOptionsTransformations(arg);
+	}
+
+	private hasWhereAndOptions(arg: any): arg is QueryModel {
+		return arg.WHERE !== undefined && arg.OPTIONS !== undefined && this.hasRequiredLength(arg, 2);
+	}
+
+	private hasWhereOptionsTransformations(arg: any): arg is QueryModel {
+		return arg.WHERE !== undefined && arg.OPTIONS !== undefined && arg.TRANSFORMATIONS !== undefined
+		&& this.hasRequiredLength(arg, 3);
+	}
+
+	private hasRequiredLength(arg: any, reqLength: number): boolean {
+		return Object.keys(arg).length === reqLength;
 	}
 }

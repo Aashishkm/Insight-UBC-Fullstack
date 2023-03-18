@@ -1,22 +1,20 @@
-import {Filter, MField, Options, SField, Where} from "../Models/QueryModel";
+import {
+	Filter,
+	MField,
+	Options,
+	SField,
+	Where,
+	Transformations,
+	ApplyRule,
+	ApplyToken,
+	Direction
+} from "../Models/QueryModel";
 import {InsightError} from "./IInsightFacade";
 
-export {
-	isSField,
-	isSKey,
-	isMKey,
-	isMField,
-	isSection,
-	isWhere,
-	isFilterList,
-	validateSComparison,
-	validateMComparison,
-	isOptions,
-	isKey,
-	isField,
-	isFilter,
-	isNComparison,
-};
+export {isSField, isSKey, isMKey, isMField, isSection, isWhere, isFilterList,
+	validateSComparison, validateMComparison, isOptions, validateKey, isField, isFilter, isNComparison,
+	validateTransformations, isApplyRuleList, isKey, isApplyKey, isAnyKey, isDirectedOrder, validateDirectedOrder};
+
 
 function isSField(arg: string): boolean {
 	return Object.values(SField).includes(arg as unknown as SField);
@@ -139,11 +137,23 @@ function isOptions(arg: any): arg is Options {
 	}
 }
 
+function validateTransformations(arg: any): arg is Transformations {
+	if (arg.GROUP === undefined) {
+		throw new InsightError("TRANSFORMATIONS missing GROUP");
+	} else if (arg.APPLY === undefined) {
+		throw new InsightError("TRANSFORMATIONS missing APPLY");
+	} else if (!hasRequiredLength(arg, 2)) {
+		throw new InsightError("invalid keys in TRANSFORMATIONS");
+	} else {
+		return true;
+	}
+}
+
 function isField(field: string) {
 	return isMField(field) || isSField(field);
 }
 
-function isKey(input: string) {
+function validateKey(input: string) {
 	if (!input.includes("_")) {
 		throw new InsightError("Key does not have '_'");
 	}
@@ -160,6 +170,14 @@ function isKey(input: string) {
 	return true;
 }
 
+function isKey(arg: string) {
+	try {
+		validateKey(arg);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
 function isNComparison(arg: any): arg is Filter {
 	if (!isFilter(arg)) {
 		throw new InsightError("Negation malformed");
@@ -181,3 +199,100 @@ function hasComparator(arg: any): boolean {
 function hasRequiredLength(arg: any, reqLength: number): boolean {
 	return Object.keys(arg).length === reqLength;
 }
+
+
+function isApplyRuleList(arg: any): arg is ApplyRule[] {
+	if (arg.constructor.name !== "Array") {
+		throw new InsightError("APPLY does not contain an array");
+	}
+	arg.forEach((applyRule: any) => {
+		isApplyRule(applyRule);
+	});
+	return true;
+}
+
+function isApplyRule(arg: any): arg is ApplyRule {
+	if (!hasRequiredLength(arg, 1)) {
+		throw new InsightError("Apply rule has more than 1 key");
+	}
+	const applyKeyName = getFirstKeyOfObject(arg);
+	validateApplyKeyName(applyKeyName);
+	const applyTokenAndKey = getFirstValueOfObject(arg);
+	validateApplyTokenAndKey(applyTokenAndKey);
+	return true;
+
+}
+
+function validateApplyTokenAndKey(arg: any) {
+	if (!hasRequiredLength(arg, 1)) {
+		throw new InsightError("applykey has more than 1 key");
+	}
+	const token = getFirstKeyOfObject(arg);
+	if (!isToken(token)) {
+		throw new InsightError("Apply token invalid");
+	}
+	const key = getFirstValueOfObject(arg) as string;
+	if (!validateKey(key)) {
+		throw new InsightError("Apply key invalid");
+	}
+}
+
+function isToken(arg: string): boolean {
+	return Object.values(ApplyToken).includes(arg as unknown as ApplyToken);
+}
+
+function validateApplyKeyName(applyKeyName: string) {
+	if (applyKeyName.includes("_")) {
+		throw new InsightError("Apply key cannot contain underscores");
+	}
+}
+
+function getFirstKeyOfObject(obj: any) {
+	return Object.keys(obj)[0];
+}
+
+function getFirstValueOfObject(obj: any) {
+	return Object.values(obj)[0];
+}
+
+function isApplyKey(arg: string): boolean {
+	try {
+		validateApplyKeyName(arg);
+		return true;
+	} catch (e) {
+		return false;
+	}
+}
+
+function isAnyKey(arg: any): boolean {
+	return isApplyKey(arg) || isKey(arg);
+}
+
+function isDirectedOrder(arg: any): boolean {
+	return (arg.dir !== undefined && arg.keys !== undefined && hasRequiredLength(arg, 2));
+}
+
+function validateDirectedOrder(arg: any) {
+	if (!isDirection(arg.dir)) {
+		throw new InsightError("Invalid direction");
+	} else if (!isAnyKeyList(arg.keys)) {
+		throw new InsightError("AnyKeyList in Order is invalid");
+	}
+}
+
+function isDirection(arg: any): boolean {
+	return Object.values(Direction).includes(arg as unknown as Direction);
+}
+
+function isAnyKeyList(arg: any): boolean {
+	if (arg.constructor.name !== "Array") {
+		throw new InsightError("Not array in AnyKeyList");
+	}
+	arg.forEach((anyKey: any) => {
+		if (!isAnyKey(anyKey)) {
+			return false;
+		}
+	});
+	return true;
+}
+

@@ -1,0 +1,30 @@
+{
+	"title": "Extra key in Query",
+	"input": {
+		"WHERE": {
+			"AND": [
+				{
+					"GT": {
+						"sections_avg": 99
+					}
+				},
+				{
+					"IS": {
+						"sections_instructor": "*"
+					}
+				}
+			]
+		},
+		"OPTIONS": {
+			"COLUMNS": [
+				"sections_dept",
+				"sections_avg"
+			],
+			"ORDER": "sections_avg"
+		},
+		"NOTOPTIONS": {
+
+		}
+	},
+	"errorExpected": true
+}
