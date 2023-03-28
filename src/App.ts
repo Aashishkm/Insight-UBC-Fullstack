@@ -24,8 +24,9 @@ export class App {
 		clearDisk();
 		console.info("App::initFacade - starting");
 		ServerMethods.facade = new InsightFacade();
-		const sections = getContentFromArchives("pair.zip");
-		await ServerMethods.facade.addDataset("sections", sections, InsightDatasetKind.Sections);
+		// UNCOMMENT FOR DEMO!!!
+		// const sections = getContentFromArchives("pair.zip");
+		// await ServerMethods.facade.addDataset("sections", sections, InsightDatasetKind.Sections);
 	}
 }
 
