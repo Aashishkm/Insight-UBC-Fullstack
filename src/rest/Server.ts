@@ -92,6 +92,8 @@ export default class Server {
 		this.express.delete("/dataset/:id", ServerMethods.remove);
 
 		this.express.put("/dataset/:id/:kind", ServerMethods.add);
+
+		this.express.put("/datasets", ServerMethods.list);
 	}
 
 

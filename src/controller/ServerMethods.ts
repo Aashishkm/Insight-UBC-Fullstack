@@ -78,6 +78,16 @@ export default class ServerMethods {
 		}
 	}
 
+	public static async list(req: Request, res: Response) {
+		try {
+			console.log(`Server::list(..) - path: ${JSON.stringify(req.body)}`);
+			const datasets = await ServerMethods.facade.listDatasets();
+			res.status(200).json({result: datasets});
+		} catch (err) {
+			console.log("unhandled error in ServerMethods::list");
+		}
+	}
+
 
 	private static getId(path: string) {
 		const arr = path.split("/");
