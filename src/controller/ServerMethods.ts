@@ -59,8 +59,43 @@ export default class ServerMethods {
 
 	}
 
+	public static async add(req: Request, res: Response) {
+		try {
+			console.log(`Server::add(..) - path: ${JSON.stringify(req.body)}`);
+			let datasetKind: InsightDatasetKind;
+			const datasetId = ServerMethods.getPutId(req.path);
+			datasetKind = ServerMethods.getKind(req.path);
+			let dataset = ServerMethods.getDataset(req.path);
+			dataset = Buffer.from(dataset).toString("base64");
+			const stuff = await ServerMethods.facade.addDataset(datasetId, dataset, datasetKind);
+			res.status(200).json({result: stuff});
+		} catch (err) {
+			if (err instanceof InsightError) {
+				res.status(400).json({error: err.message});
+			} else {
+				console.log("unhandled error in ServerMethods::add");
+			}
+		}
+	}
+
+
 	private static getId(path: string) {
 		const arr = path.split("/");
 		return arr[arr.length - 1];
+	}
+
+	private static getPutId(path: string) {
+		const arr = path.split("/");
+		return arr[arr.length - 2];
+	}
+
+	private static getKind(path: string): any {
+		const arr = path.split("/");
+		return arr[arr.length - 1];
+	}
+
+	private static getDataset(path: string) {
+		const arr = path.split("/");
+		return arr[arr.length - 3];
 	}
 }
