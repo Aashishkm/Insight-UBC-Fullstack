@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import InsightFacade from "./InsightFacade";
-import {IInsightFacade, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
-import {clearDisk, getContentFromArchives} from "../../test/TestUtil";
+import InsightFacade from "../../src/controller/InsightFacade";
+import {IInsightFacade, InsightDatasetKind, InsightError, NotFoundError} from "../../src/controller/IInsightFacade";
+import {clearDisk, getContentFromArchives} from "../TestUtil";
 
 export default class ServerMethods {
 
@@ -34,6 +34,7 @@ export default class ServerMethods {
 			/* if (err instanceof InsightError) {
 
 			} else {
+				res.status(400);
 				console.log("unhandled error in ServerMethods::query");
 			} */
 		}
@@ -60,8 +61,7 @@ export default class ServerMethods {
  			let datasetKind: InsightDatasetKind;
 			const datasetId = ServerMethods.getPutId(req.path);
 			datasetKind = ServerMethods.getKind(req.path);
-			let dataset = req.body;
-			dataset = dataset.toString("base64");
+			const dataset = (req.body as Buffer).toString("base64");
 			const stuff = await ServerMethods.facade.addDataset(datasetId, dataset, datasetKind);
 			res.status(200).json({result: stuff});
 		} catch (err) {
@@ -70,6 +70,7 @@ export default class ServerMethods {
 			if (err instanceof InsightError) {
 				res.status(400).json({error: err.message});
 			} else {
+				res.status(400);
 				console.log("unhandled error in ServerMethods::add");
 			} */
 		}
@@ -82,6 +83,7 @@ export default class ServerMethods {
 			res.status(200).json({result: datasets});
 		} catch (err) {
 			res.status(400).json({result: "error"});
+
 		}
 	}
 
