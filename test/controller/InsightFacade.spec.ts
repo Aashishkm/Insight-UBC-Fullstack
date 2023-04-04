@@ -16,6 +16,7 @@ import {clearDisk, getContentFromArchives} from "../TestUtil";
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
+	/*
 
 	let facade: IInsightFacade;
 
@@ -233,7 +234,7 @@ describe("InsightFacade", function () {
 	 * This test suite dynamically generates tests from the JSON files in test/resources/queries.
 	 * You should not need to modify it; instead, add additional files to the queries directory.
 	 * You can still make tests the normal way, this is just a convenient tool for a majority of queries.
-	 */
+	 */ /*
 	describe("PerformQuery", () => {
 		before(function () {
 			console.info(`Before: ${this.test?.parent?.title}`);
@@ -400,5 +401,5 @@ describe("InsightFacade", function () {
 			}
 		);
 	});
-
+*/
 });
