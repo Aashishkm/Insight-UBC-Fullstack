@@ -1,7 +1,7 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
-import ServerMethods from "../controller/ServerMethods";
+import ServerMethods from "./ServerMethods";
 
 export default class Server {
 	private readonly port: number;
