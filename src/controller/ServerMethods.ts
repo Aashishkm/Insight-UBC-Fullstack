@@ -35,6 +35,7 @@ export default class ServerMethods {
 			if (err instanceof InsightError) {
 				res.status(400).json({error: err.message});
 			} else {
+				res.status(400);
 				console.log("unhandled error in ServerMethods::query");
 			}
 		}
@@ -53,6 +54,7 @@ export default class ServerMethods {
 			} else if (e instanceof InsightError) {
 				res.status(400).json({error: e.message});
 			} else {
+				res.status(400);
 				// res.status(400).json({error: e.message});
 			}
 		}
@@ -65,14 +67,14 @@ export default class ServerMethods {
 			let datasetKind: InsightDatasetKind;
 			const datasetId = ServerMethods.getPutId(req.path);
 			datasetKind = ServerMethods.getKind(req.path);
-			let dataset = req.body;
-			dataset = dataset.toString("base64");
+			let dataset = (req.body as Buffer).toString("base64");
 			const stuff = await ServerMethods.facade.addDataset(datasetId, dataset, datasetKind);
 			res.status(200).json({result: stuff});
 		} catch (err) {
 			if (err instanceof InsightError) {
 				res.status(400).json({error: err.message});
 			} else {
+				res.status(400);
 				console.log("unhandled error in ServerMethods::add");
 			}
 		}
@@ -84,6 +86,7 @@ export default class ServerMethods {
 			const datasets = await ServerMethods.facade.listDatasets();
 			res.status(200).json({result: datasets});
 		} catch (err) {
+			res.status(400);
 			console.log("unhandled error in ServerMethods::list");
 		}
 	}

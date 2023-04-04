@@ -87,6 +87,7 @@ describe("Server", () => {
 				});
 		} catch (e) {
 			console.error(e);
+			expect.fail();
 		}
 	});
 
@@ -133,6 +134,34 @@ describe("Server", () => {
 				});
 		} catch (e) {
 			console.error(e);
+			expect.fail();
+		}
+	});
+
+	it("400 POST test with no query", async () => {
+		try {
+			return request("http://localhost:4321")
+				.post("/query")
+				.then((res) => {
+					expect(res.status).to.be.equal(400);
+				});
+		} catch (e) {
+			console.error(e);
+			expect.fail();
+		}
+	});
+
+	it("400 POST test with undefined query", async () => {
+		try {
+			return request("http://localhost:4321")
+				.post("/query")
+				.send(undefined)
+				.then((res) => {
+					expect(res.status).to.be.equal(400);
+				});
+		} catch (e) {
+			console.error(e);
+			expect.fail();
 		}
 	});
 
@@ -146,6 +175,7 @@ describe("Server", () => {
 				});
 		} catch (e) {
 			console.error(e);
+			expect.fail();
 		}
 	});
 
@@ -159,6 +189,7 @@ describe("Server", () => {
 				});
 		} catch (e) {
 			console.error(e);
+			expect.fail();
 		}
 	});
 
@@ -174,6 +205,7 @@ describe("Server", () => {
 				});
 		} catch (e) {
 			console.error(e);
+			expect.fail();
 		}
 	});
 
@@ -188,6 +220,24 @@ describe("Server", () => {
 				});
 		} catch (e) {
 			console.error(e);
+			expect.fail();
+		}
+	});
+
+	it("200 PUT dataset", async () => {
+		const datasetBuffer = getContentFromArchives("minipair.zip");
+		try {
+			return request("http://localhost:4321")
+				.put("/dataset/minipair/sections")
+				.send(datasetBuffer)
+				.then((res) => {
+					expect(res.status).to.be.equal(200);
+					expect(res.body).to.have.property("result");
+					expect(res.body.result).to.be.equal(["minipair"]);
+				});
+		} catch (e) {
+			console.error(e);
+			expect.fail();
 		}
 	});
 
