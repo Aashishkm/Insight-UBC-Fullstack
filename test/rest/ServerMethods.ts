@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import InsightFacade from "./InsightFacade";
-import {IInsightFacade, InsightDatasetKind, InsightError, NotFoundError} from "./IInsightFacade";
-import {clearDisk, getContentFromArchives} from "../../test/TestUtil";
+import InsightFacade from "../../src/controller/InsightFacade";
+import {IInsightFacade, InsightDatasetKind, InsightError, NotFoundError} from "../../src/controller/IInsightFacade";
+import {clearDisk, getContentFromArchives} from "../TestUtil";
 
 export default class ServerMethods {
 

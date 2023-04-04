@@ -2,7 +2,7 @@ import Server from "../../src/rest/Server";
 import InsightFacade from "../../src/controller/InsightFacade";
 import {expect} from "chai";
 import request, {Response} from "supertest";
-import ServerMethods from "../../src/controller/ServerMethods";
+import ServerMethods from "./ServerMethods";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
 import {InsightDatasetKind} from "../../src/controller/IInsightFacade";
 import * as fs from "fs-extra";
