@@ -1,6 +1,6 @@
 import Server from "./rest/Server";
 import InsightFacade from "./controller/InsightFacade";
-import ServerMethods from "../test/rest/ServerMethods";
+import ServerMethods from "./rest/ServerMethods";
 import {InsightDatasetKind} from "./controller/IInsightFacade";
 import {clearDisk, getContentFromArchives} from "../test/TestUtil";
 
