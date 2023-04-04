@@ -2,7 +2,7 @@ import Server from "../../src/rest/Server";
 import InsightFacade from "../../src/controller/InsightFacade";
 import {expect} from "chai";
 import request, {Response} from "supertest";
-import ServerMethods from "./ServerMethods";
+import ServerMethods from "../../src/rest/ServerMethods";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
 import {InsightDatasetKind} from "../../src/controller/IInsightFacade";
 import * as fs from "fs-extra";
@@ -13,7 +13,6 @@ describe("Server", () => {
 	let server: Server;
 
 	before(async () => {
-		clearDisk();
 		facade = new InsightFacade();
 		ServerMethods.facade = facade;
 		const sections = getContentFromArchives("pair.zip");

@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
-import InsightFacade from "../../src/controller/InsightFacade";
-import {IInsightFacade, InsightDatasetKind, InsightError, NotFoundError} from "../../src/controller/IInsightFacade";
+import InsightFacade from "../controller/InsightFacade";
+import {IInsightFacade, InsightDatasetKind, InsightError, NotFoundError} from "../controller/IInsightFacade";
 
 export default class ServerMethods {
 
