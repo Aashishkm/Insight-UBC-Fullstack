@@ -60,6 +60,9 @@ export default class ServerMethods {
 	}
 
 	public static async add(req: Request, res: Response) {
+		if (req.body === undefined) {
+			res.status(400).json({error: "bad"});
+		}
 		try {
 			console.log(`Server::add(..) - path: ${JSON.stringify(req.body)}`);
 			let datasetKind: InsightDatasetKind;
