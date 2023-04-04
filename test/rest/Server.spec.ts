@@ -27,11 +27,13 @@ describe("Server", () => {
 	});
 
 	// Sample on how to format PUT requests
+	//
 	/*
+
 	it("PUT test for courses dataset", async () => {
 		try {
-			return request(SERVER_URL)
-				.put(ENDPOINT_URL)
+			return request("http://localhost:4321")
+				.put("/put")
 				.send(ZIP_FILE_DATA)
 				.set("Content-Type", "application/x-zip-compressed")
 				.then((res: Response) => {
@@ -46,7 +48,7 @@ describe("Server", () => {
 			// and some more logging here!
 		}
 	});
-	 */
+ */
 
 	// The other endpoints work similarly. You should be able to find all instructions at the chai-http documentation
 });

@@ -65,8 +65,8 @@ export default class ServerMethods {
 			let datasetKind: InsightDatasetKind;
 			const datasetId = ServerMethods.getPutId(req.path);
 			datasetKind = ServerMethods.getKind(req.path);
-			let dataset = ServerMethods.getDataset(req.path);
-			dataset = Buffer.from(dataset).toString("base64");
+			let dataset = req.body;
+			dataset = dataset.toString("base64");
 			const stuff = await ServerMethods.facade.addDataset(datasetId, dataset, datasetKind);
 			res.status(200).json({result: stuff});
 		} catch (err) {
@@ -103,9 +103,11 @@ export default class ServerMethods {
 		const arr = path.split("/");
 		return arr[arr.length - 1];
 	}
-
+	/*
 	private static getDataset(path: string) {
 		const arr = path.split("/");
 		return arr[arr.length - 3];
 	}
+
+	 */
 }

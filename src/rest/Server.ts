@@ -93,7 +93,7 @@ export default class Server {
 
 		this.express.put("/dataset/:id/:kind", ServerMethods.add);
 
-		this.express.put("/datasets", ServerMethods.list);
+		this.express.get("/datasets", ServerMethods.list);
 	}
 
 
