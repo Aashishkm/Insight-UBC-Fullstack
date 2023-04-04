@@ -46,15 +46,11 @@ export default class ServerMethods {
 			console.log("removed " + datasetId);
 			res.status(200).json({result: str});
 		} catch (e) {
-			res.status(404).json({error: e});
-			/*
 			if (e instanceof NotFoundError) {
-				res.status(404).json({error: e.message});
-			} else if (e instanceof InsightError) {
-				res.status(400).json({error: e.message});
+				res.status(404).json({error: e});
 			} else {
-				// res.status(400).json({error: e.message});
-			} */
+				res.status(400).json({error: e});
+			}
 		}
 
 	}
