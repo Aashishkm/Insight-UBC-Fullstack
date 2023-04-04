@@ -67,7 +67,7 @@ export default class ServerMethods {
 			let datasetKind: InsightDatasetKind;
 			const datasetId = ServerMethods.getPutId(req.path);
 			datasetKind = ServerMethods.getKind(req.path);
-			let dataset = (req.body as Buffer).toString("base64");
+			const dataset = (req.body as Buffer).toString("base64");
 			const stuff = await ServerMethods.facade.addDataset(datasetId, dataset, datasetKind);
 			res.status(200).json({result: stuff});
 		} catch (err) {

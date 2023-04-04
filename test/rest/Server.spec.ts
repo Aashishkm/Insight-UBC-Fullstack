@@ -5,6 +5,7 @@ import request, {Response} from "supertest";
 import ServerMethods from "../../src/controller/ServerMethods";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
 import {InsightDatasetKind} from "../../src/controller/IInsightFacade";
+import * as fs from "fs-extra";
 
 describe("Server", () => {
 
@@ -225,15 +226,16 @@ describe("Server", () => {
 	});
 
 	it("200 PUT dataset", async () => {
-		const datasetBuffer = getContentFromArchives("minipair.zip");
+		const datasetBuffer = fs.readFileSync("test/resources/archives/" + "minipair.zip");
 		try {
 			return request("http://localhost:4321")
 				.put("/dataset/minipair/sections")
 				.send(datasetBuffer)
+				.set("Content-type", "application/x-zip-compressed")
 				.then((res) => {
 					expect(res.status).to.be.equal(200);
 					expect(res.body).to.have.property("result");
-					expect(res.body.result).to.be.equal(["minipair"]);
+					expect(res.body.result).to.be.deep.equal(["sections", "minipair"]);
 				});
 		} catch (e) {
 			console.error(e);
@@ -241,6 +243,39 @@ describe("Server", () => {
 		}
 	});
 
+	it("400 PUT dataset invalid name", async () => {
+		const datasetBuffer = fs.readFileSync("test/resources/archives/" + "minipair.zip");
+		try {
+			return request("http://localhost:4321")
+				.put("/dataset/mini_pair/sections")
+				.send(datasetBuffer)
+				.set("Content-type", "application/x-zip-compressed")
+				.then((res) => {
+					expect(res.status).to.be.equal(400);
+					expect(res.body).to.have.property("error");
+				});
+		} catch (e) {
+			console.error(e);
+			expect.fail();
+		}
+	});
+
+	it("400 PUT dataset whitespace section ", async () => {
+		const datasetBuffer = fs.readFileSync("test/resources/archives/" + "minipair.zip");
+		try {
+			return request("http://localhost:4321")
+				.put("/dataset/minipair/%20")
+				.send(datasetBuffer)
+				.set("Content-type", "application/x-zip-compressed")
+				.then((res) => {
+					expect(res.status).to.be.equal(400);
+					expect(res.body).to.have.property("error");
+				});
+		} catch (e) {
+			console.error(e);
+			expect.fail();
+		}
+	});
 
 	// The other endpoints work similarly. You should be able to find all instructions at the chai-http documentation
 });
