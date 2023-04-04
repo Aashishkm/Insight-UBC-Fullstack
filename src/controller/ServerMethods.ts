@@ -56,9 +56,6 @@ export default class ServerMethods {
 	}
 
 	public static async add(req: Request, res: Response) {
-		if (req.body === undefined) {
-			res.status(400).json({error: "bad"});
-		}
 		try {
  			let datasetKind: InsightDatasetKind;
 			const datasetId = ServerMethods.getPutId(req.path);
