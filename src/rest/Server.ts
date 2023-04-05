@@ -146,7 +146,7 @@ export default class Server {
 			res.status(200).json({result: str});
 		} catch (e) {
 			if (e instanceof NotFoundError) {
-				res.status(404).json({error: "error"});
+				res.status(404).json({error: "Removal unsuccessful, dataset not found"});
 			} else {
 				res.status(400).json({error: "error"});
 			}
