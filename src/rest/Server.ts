@@ -1,12 +1,16 @@
 import express, {Application, Request, Response} from "express";
 import * as http from "http";
 import cors from "cors";
-import ServerMethods from "./ServerMethods";
+import ServerMethods from "../controller/ServerMethods";
+import {IInsightFacade, InsightDatasetKind, NotFoundError} from "../controller/IInsightFacade";
+import InsightFacade from "../controller/InsightFacade";
 
 export default class Server {
 	private readonly port: number;
 	private express: Application;
 	private server: http.Server | undefined;
+
+	public static facade: InsightFacade = new InsightFacade();
 
 	constructor(port: number) {
 		console.info(`Server::<init>( ${port} )`);
@@ -37,14 +41,16 @@ export default class Server {
 				console.error("Server::start() - server already listening");
 				reject();
 			} else {
-				this.server = this.express.listen(this.port, () => {
-					console.info(`Server::start() - server listening on port: ${this.port}`);
-					resolve();
-				}).on("error", (err: Error) => {
-					// catches errors in server start
-					console.error(`Server::start() - server ERROR: ${err.message}`);
-					reject(err);
-				});
+				this.server = this.express
+					.listen(this.port, () => {
+						console.info(`Server::start() - server listening on port: ${this.port}`);
+						resolve();
+					})
+					.on("error", (err: Error) => {
+						// catches errors in server start
+						console.error(`Server::start() - server ERROR: ${err.message}`);
+						reject(err);
+					});
 			}
 		});
 	}
@@ -84,23 +90,111 @@ export default class Server {
 	private registerRoutes() {
 		// This is an example endpoint this you can invoke by accessing this URL in your browser:
 		// http://localhost:4321/echo/hello
-		this.express.get("/echo/:msg", ServerMethods.echo);
+		this.express.get("/echo/:msg", Server.echo);
 
 		// TODO: your other endpoints should go here
-		this.express.post("/query", ServerMethods.query);
+		this.express.post("/query", Server.query);
 
-		this.express.delete("/dataset/:id", ServerMethods.remove);
+		this.express.delete("/dataset/:id", Server.remove);
 
-		this.express.put("/dataset/:id/:kind", ServerMethods.add);
+		this.express.put("/dataset/:id/:kind", Server.add);
 
-		this.express.get("/datasets", ServerMethods.list);
+		this.express.get("/datasets", Server.list);
 	}
-
 
 	/**
 	 * The next two methods handle the echo service.
 	 * These are almost certainly not the best place to put these, but are here for your reference.
 	 * By updating the Server.echo function pointer above, these methods can be easily moved.
 	 */
+	public static echo(req: Request, res: Response) {
+		try {
+			console.log(`Server::echo(..) - params: ${JSON.stringify(req.params)}`);
+			const response = Server.performEcho(req.params.msg);
+			res.status(200).json({result: response});
+		} catch (err) {
+			res.status(400).json({error: "error"});
+		}
+	}
 
+	private static performEcho(msg: string): string {
+		if (typeof msg !== "undefined" && msg !== null) {
+			return `${msg}...${msg}`;
+		} else {
+			return "Message not provided";
+		}
+	}
+
+	public static async query(req: Request, res: Response) {
+		try {
+			const queryResult = await Server.facade.performQuery(req.body);
+			res.status(200).json({result: queryResult});
+		} catch (err) {
+			res.status(400).json({error: "error"});
+			/* if (err instanceof InsightError) {
+			} else {
+				console.log("unhandled error in ServerMethods::query");
+			} */
+		}
+	}
+
+	public static async remove(req: Request, res: Response) {
+		try {
+			const datasetId = Server.getId(req.path);
+			const str = await Server.facade.removeDataset(datasetId);
+			console.log("removed " + datasetId);
+			res.status(200).json({result: str});
+		} catch (e) {
+			if (e instanceof NotFoundError) {
+				res.status(404).json({error: "error"});
+			} else {
+				res.status(400).json({error: "error"});
+			}
+		}
+	}
+
+	public static async add(req: Request, res: Response) {
+		try {
+			let datasetKind: InsightDatasetKind;
+			const datasetId = Server.getPutId(req.path);
+			datasetKind = Server.getKind(req.path);
+			let dataset = req.body;
+			dataset = dataset.toString("base64");
+			const stuff = await Server.facade.addDataset(datasetId, dataset, datasetKind);
+			res.status(200).json({result: stuff});
+		} catch (err) {
+			res.status(400).json({error: "error"});
+			/*
+			if (err instanceof InsightError) {
+				res.status(400).json({error: err.message});
+			} else {
+				console.log("unhandled error in ServerMethods::add");
+			} */
+		}
+	}
+
+	public static async list(req: Request, res: Response) {
+		try {
+			// console.log(`Server::list(..) - path: ${JSON.stringify(req.body)}`);
+			const datasets = await Server.facade.listDatasets();
+			res.status(200).json({result: datasets});
+		} catch (err) {
+			res.status(400).json({result: "error"});
+		}
+	}
+
+	private static getId(path: string) {
+		const arr = path.split("/");
+		return arr[arr.length - 1];
+	}
+
+	private static getPutId(path: string) {
+		const arr = path.split("/");
+		return arr[arr.length - 2];
+	}
+
+	private static getKind(path: string): any {
+		const arr = path.split("/");
+		return arr[arr.length - 1];
+	}
 }

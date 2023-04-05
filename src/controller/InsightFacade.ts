@@ -116,7 +116,7 @@ export default class InsightFacade implements IInsightFacade {
 		try {
 			if (!queryModelHelpers.validQueryStructure(query)) {
 				return Promise.reject(new InsightError("Invalid query structure"));
-			};
+			}
 			const validQuery = query as QueryModel;
 			let queryClass: QueryClass = new QueryClass();
 			queryModelHelpers.handleOptions(validQuery.OPTIONS, queryClass);
