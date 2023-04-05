@@ -1,6 +1,6 @@
 import Server from "./rest/Server";
 import InsightFacade from "./controller/InsightFacade";
-import ServerMethods from "./rest/ServerMethods";
+import ServerMethods from "./controller/ServerMethods";
 import {InsightDatasetKind} from "./controller/IInsightFacade";
 import {clearDisk, getContentFromArchives} from "../test/TestUtil";
 
@@ -8,16 +8,18 @@ import {clearDisk, getContentFromArchives} from "../test/TestUtil";
  * Main app class that is run with the node command. Starts the server.
  */
 export class App {
-
 	public initServer(port: number) {
 		console.info(`App::initServer( ${port} ) - start`);
 
 		const server = new Server(port);
-		return server.start().then(() => {
-			console.info("App::initServer() - started");
-		}).catch((err: Error) => {
-			console.error(`App::initServer() - ERROR: ${err.message}`);
-		});
+		return server
+			.start()
+			.then(() => {
+				console.info("App::initServer() - started");
+			})
+			.catch((err: Error) => {
+				console.error(`App::initServer() - ERROR: ${err.message}`);
+			});
 	}
 
 	public async initFacade() {
@@ -35,5 +37,5 @@ console.info("App - starting");
 const app = new App();
 (async () => {
 	await app.initServer(4321);
-	await app.initFacade();
+	// await app.initFacade();
 })();

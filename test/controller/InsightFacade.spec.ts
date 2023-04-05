@@ -16,7 +16,6 @@ import {clearDisk, getContentFromArchives} from "../TestUtil";
 use(chaiAsPromised);
 
 describe("InsightFacade", function () {
-
 	let facade: IInsightFacade;
 
 	// Declare datasets used in tests. You should add more datasets like this!
@@ -352,8 +351,11 @@ describe("InsightFacade", function () {
 
 			facade = new InsightFacade();
 			let dataset1 = facade.addDataset("sections", sections, InsightDatasetKind.Sections);
-			let dataset2 = facade.addDataset("ubc", getContentFromArchives("minipair.zip"),
-				InsightDatasetKind.Sections);
+			let dataset2 = facade.addDataset(
+				"ubc",
+				getContentFromArchives("minipair.zip"),
+				InsightDatasetKind.Sections
+			);
 
 			let rooms: string;
 			rooms = getContentFromArchives("campus.zip");
@@ -400,5 +402,4 @@ describe("InsightFacade", function () {
 			}
 		);
 	});
-
 });

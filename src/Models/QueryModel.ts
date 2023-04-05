@@ -1,29 +1,49 @@
 import {InsightResult} from "../controller/IInsightFacade";
 
 export {
-	QueryModel, Options, Key,
-	Logic, MKey, SKey,
-	Where, LogicComparison, Filter,
-	MComparison, SComparison, NComparison,
-	MComparator, MField, SField,
-	QueryClass, Transformations, ApplyRule,
-	ApplyToken, AnyKey, ApplyKey, Order, Direction,
-	SFieldRoom, SFieldSection, MFieldRoom, MFieldSection,
-	Group};
+	QueryModel,
+	Options,
+	Key,
+	Logic,
+	MKey,
+	SKey,
+	Where,
+	LogicComparison,
+	Filter,
+	MComparison,
+	SComparison,
+	NComparison,
+	MComparator,
+	MField,
+	SField,
+	QueryClass,
+	Transformations,
+	ApplyRule,
+	ApplyToken,
+	AnyKey,
+	ApplyKey,
+	Order,
+	Direction,
+	SFieldRoom,
+	SFieldSection,
+	MFieldRoom,
+	MFieldSection,
+	Group,
+};
 
 type MComparator = "LT" | "GT" | "EQ";
 type Logic = "AND" | "OR";
 
 enum Direction {
 	up = "UP",
-	down = "DOWN"
+	down = "DOWN",
 }
 enum ApplyToken {
 	max = "MAX",
 	min = "MIN",
 	avg = "AVG",
 	count = "COUNT",
-	sum = "SUM"
+	sum = "SUM",
 }
 enum MField {
 	avg = "avg",
@@ -33,7 +53,7 @@ enum MField {
 	year = "year",
 	lat = "lat",
 	lon = "lon",
-	seats = "seats"
+	seats = "seats",
 }
 
 enum MFieldSection {
@@ -41,13 +61,13 @@ enum MFieldSection {
 	pass = "pass",
 	fail = "fail",
 	audit = "audit",
-	year = "year"
+	year = "year",
 }
 
 enum MFieldRoom {
 	lat = "lat",
 	lon = "lon",
-	seats = "seats"
+	seats = "seats",
 }
 
 enum SField {
@@ -63,7 +83,7 @@ enum SField {
 	address = "address",
 	type = "type",
 	furniture = "furniture",
-	href = "href"
+	href = "href",
 }
 
 enum SFieldSection {
@@ -71,7 +91,7 @@ enum SFieldSection {
 	id = "id",
 	instructor = "instructor",
 	title = "title",
-	uuid = "uuid"
+	uuid = "uuid",
 }
 
 enum SFieldRoom {
@@ -82,12 +102,12 @@ enum SFieldRoom {
 	address = "address",
 	type = "type",
 	furniture = "furniture",
-	href = "href"
+	href = "href",
 }
 interface QueryModel {
-	 WHERE: Where;
-	 OPTIONS: Options;
-	 TRANSFORMATIONS?: Transformations;
+	WHERE: Where;
+	OPTIONS: Options;
+	TRANSFORMATIONS?: Transformations;
 }
 
 interface Where {
@@ -208,8 +228,8 @@ class SKey implements Key {
 }
 
 interface Transformations {
-	GROUP: Key[],
-	APPLY: ApplyRule[]
+	GROUP: Key[];
+	APPLY: ApplyRule[];
 }
 
 class ApplyRule {

@@ -289,7 +289,7 @@ export default class QueryModelHelpers {
 
 	private hasWhereOptionsTransformations(arg: any): arg is QueryModel {
 		return arg.WHERE !== undefined && arg.OPTIONS !== undefined && arg.TRANSFORMATIONS !== undefined
-		&& this.hasRequiredLength(arg, 3);
+			&& this.hasRequiredLength(arg, 3);
 	}
 
 	private hasRequiredLength(arg: any, reqLength: number): boolean {

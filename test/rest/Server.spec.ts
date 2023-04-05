@@ -2,33 +2,40 @@ import Server from "../../src/rest/Server";
 import InsightFacade from "../../src/controller/InsightFacade";
 import {expect} from "chai";
 import request, {Response} from "supertest";
-import ServerMethods from "../../src/rest/ServerMethods";
+// import ServerMethods from "../../src//ServerMethods";
 import {clearDisk, getContentFromArchives} from "../TestUtil";
 import {InsightDatasetKind} from "../../src/controller/IInsightFacade";
 import * as fs from "fs-extra";
+import ServerMethods from "../../src/controller/ServerMethods";
 
 describe("Server", () => {
-
 	let facade: InsightFacade;
 	let server: Server;
 
 	before(async () => {
+		clearDisk();
 		facade = new InsightFacade();
-		ServerMethods.facade = facade;
+		Server.facade = facade;
 		const sections = getContentFromArchives("pair.zip");
-		await ServerMethods.facade.addDataset("sections", sections, InsightDatasetKind.Sections);
+		await Server.facade.addDataset("sections", sections, InsightDatasetKind.Sections);
 		server = new Server(4321);
-		server.start().then().catch((err) => {
-			console.error(err.message);
-		});
+		server
+			.start()
+			.then()
+			.catch((err) => {
+				console.error(err.message);
+			});
 		// TODO: start server here once and handle errors properly
 	});
 
 	after(async () => {
 		// TODO: stop server here once!
-		server.stop().then().catch((err) => {
-			console.error(err.message);
-		});
+		server
+			.stop()
+			.then()
+			.catch((err) => {
+				console.error(err.message);
+			});
 	});
 
 	beforeEach(() => {
@@ -42,7 +49,6 @@ describe("Server", () => {
 
 	// Sample on how to format PUT requests
 
-
 	it("POST test for courses dataset", async () => {
 		const query = {
 			WHERE: {
@@ -51,31 +57,27 @@ describe("Server", () => {
 						AND: [
 							{
 								GT: {
-									sections_avg: 90
-								}
+									sections_avg: 90,
+								},
 							},
 							{
 								IS: {
-									sections_dept: "adhe"
-								}
-							}
-						]
+									sections_dept: "adhe",
+								},
+							},
+						],
 					},
 					{
 						EQ: {
-							sections_avg: 95
-						}
-					}
-				]
+							sections_avg: 95,
+						},
+					},
+				],
 			},
 			OPTIONS: {
-				COLUMNS: [
-					"sections_dept",
-					"sections_id",
-					"sections_avg"
-				],
-				ORDER: "sections_avg"
-			}
+				COLUMNS: ["sections_dept", "sections_id", "sections_avg"],
+				ORDER: "sections_avg",
+			},
 		};
 		try {
 			return request("http://localhost:4321")
@@ -99,31 +101,27 @@ describe("Server", () => {
 						AND: [
 							{
 								GT: {
-									sections_avg: 90
-								}
+									sections_avg: 90,
+								},
 							},
 							{
 								IS: {
-									sections_dept: 50
-								}
-							}
-						]
+									sections_dept: 50,
+								},
+							},
+						],
 					},
 					{
 						EQ: {
-							sections_avg: 95
-						}
-					}
-				]
+							sections_avg: 95,
+						},
+					},
+				],
 			},
 			OPTIONS: {
-				COLUMNS: [
-					"sections_dept",
-					"sections_id",
-					"sections_avg"
-				],
-				ORDER: "sections_avg"
-			}
+				COLUMNS: ["sections_dept", "sections_id", "sections_avg"],
+				ORDER: "sections_avg",
+			},
 		};
 		try {
 			return request("http://localhost:4321")
@@ -192,7 +190,6 @@ describe("Server", () => {
 			expect.fail();
 		}
 	});
-
 
 	it("404 DELETE test for courses dataset", async () => {
 		try {
