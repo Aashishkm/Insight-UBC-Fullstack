@@ -95,7 +95,7 @@ export default class InsightFacade implements IInsightFacade {
 		}
 		this.datasets.delete(id);
 		let index = this.addedDatasetIds.indexOf(id);
-		delete this.addedDatasetIds[index];
+		this.addedDatasetIds.splice(index, 1);
 		let returnPromise = new Promise<string>((resolve, reject) => {
 			fs.remove("./data/" + id + ".json")
 				.then(() => {
